@@ -47,25 +47,18 @@
 
             
             this.generalStart();
-            this.new_click();
-            this.apply_click();
             this.makeSelectLang();
+            this.new_click();
             this.update_click();
             this.lang_click();
             this.remove_click();
             this.update_click();
             this.option_changed();
+            this.apply_click();
 
         },
 
         generalStart: function() {
-
-            // numeric names input
-            var $inputNamed = $(this.element);
-            $inputNamed.each(function(index){
-                index++
-                $($inputNamed).attr("name", "iTranslate" +(index+1));
-            });
 
             var $wrapBox = $('<div />', {
                 "class" : "input-prepend form-translation"
@@ -107,24 +100,27 @@
 
             $($self.element).prev().on('click', function () {
 
-                var $current_div = $($self.element).parent();
-                $current_div.find('.chosen-language').removeClass('open');
-                $(this).toggleClass('open');
-                console.log($(this));
-                if ($(this).hasClass('open')) {
-
+                    $current_div = $(this).parent();
+                    $current_div.find('.chosen-language').removeClass('open');
+                    $(this).toggleClass('open');
+                    if ($(this).hasClass('open')) {
                     $current_div.find('.update').css('display', 'none');
                     $current_div.find('.apply').css('display', 'inline-block');
-
                     $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
                     $current_div.find('.select-language').children('option[value="select"]').attr('selected', true);
-
+                    $current_div.find('.current-language .translated').css('display', 'none');
                     $current_div.find('.current-language .new-word').attr('placeholder', 'Text to translate').attr('value', '').val('').css('display', 'inline-block');
-                    
-                    $current_div.addClass('show');
-                } else {
-                    $current_div.removeClass('show');
-                }
+
+                    $('.form-translation').each(function() {
+                    if ($(this).hasClass('show')) {
+                        $(this).removeClass('show');
+                        return;
+                    }
+                    });
+                        $current_div.addClass('show');
+                    } else {
+                        $current_div.removeClass('show');
+                    }
  
             });
         },
@@ -151,36 +147,43 @@
             $self = this;
             var applyBtn = $($self.element).next().find('.apply');
 
-            applyBtn.click(function() {
+            applyBtn.on('click', function(e) {
 
-                $main = $(this).parent().parent().parent().siblings('input');
-                $name = $main.attr('name');
-                $current_div = $main.parent();
-                $selected = $current_div.find('.select-language option:selected').attr('value');
-                $translation = $current_div.find('.new-word').val();
+                e.preventDefault();
 
-                if ($selected != "select" && $translation != "") {
-                    $str = '<span id="' + $selected  + '" class="chosen-language">' + $selected;
-                    $str += '<a href="#" class="remove icon-remove"></a>';
-                    $str += '<input class="m-wrap" type="hidden" name="' + $name + '[' + $selected + ']" value="' + $translation + '"/>';
-                    $str += '</span>';
-                    var $object = $($str).appendTo($current_div.find('.language-tabs'));
-                    $object.css({backgroundColor: "#ffb848"});
-                    $object.animate({backgroundColor: "#eee"}, 700);
+                    //input name!!!
+                    $main = $(this).parent().parent().parent().siblings('input');
+                    $name = $main.attr('name');
+                    $current_div = $main.parent();
+                    $selected = $current_div.find('.select-language option:selected').attr('value');
+                    $translation = $current_div.find('.new-word').val();
+                    if ($selected != "select" && $translation != "") {
+                        $str = '<span id="' + $selected + '" class="chosen-language">' + $selected;
+                        $str += '<a href="/" class="remove icon-remove"></a>';
+                        $str += '<input class="m-wrap" type="hidden" name="' + $name + '[' + $selected + ']" value="' + $translation + '"/>';
+                        $str += '</span>';
+                        $object = $($str).appendTo($current_div.find('.language-tabs'));
+                        $object.css({backgroundColor: "#ffb848"});
+                        $object.animate({backgroundColor: "#eee"}, 700);
+                        $object.click(lang_click);
+                        $object.children(".remove").click(remove_click);
 
-                    $object.mouseover(function(){
+                        $object.mouseover(function(){
                         $(this).css({backgroundColor: "#e1e1e1"});
-                    });
+                        });
 
-                    $object.mouseleave(function(){
-                        $(this).css({backgroundColor: "#eee"});
-                    }); 
-                    $current_div.find('.apply').css('display', 'none');
-                    $current_div.find('.update').css('display', 'inline-block');
-                }
-                $current_div.children('.open-translation').removeClass('open');
-                $object.toggleClass('open');
-                return false; //link deactivated
+                        $object.mouseleave(function(){
+                            $(this).css({backgroundColor: "#eee"});
+                        }); 
+
+                        $current_div.find('.apply').css('display', 'none');
+                        $current_div.find('.update').css('display', 'inline-block');
+                    }
+
+                    $current_div.children('.open-translation').removeClass('open');
+                    $object.toggleClass('open');
+                    
+                    return false; //link deactivated
             });
             
         },
@@ -191,28 +194,28 @@
 
             var langTabBtn = $($self.element).next().next();
 
-            console.log(langTabBtn);
-
             $(function () {
                 langTabBtn.unbind('click').on('click', '.chosen-language', function() {
 
                     $current_div = $(this).parent().parent();
                     $current_div.children('.open-translation').removeClass('open');
-                    $(this).toggleClass('open');
                     $(this).siblings().removeClass('open');
+                    $(this).toggleClass('open');
                     if ($(this).hasClass('open')) {
-
                         $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
                         $current_div.find('.select-language').children('option[value="' + $(this).attr('id') + '"]').attr('selected', true);
 
-                        $input = $(this).children('input').val();
-                        $current_div.find('textarea').val($input);
+                        $current_div.find('.current-language .new-word').css('display', 'none');
+                        $input = $(this).children('input');
+
+                        $current_div.find('.current-language .translated').html($input.val()).val($input.val());
                         $current_div.find('.current-language .translated').css('display', 'inline-block');
 
                         $current_div.find('.apply').css('display', 'none');
                         $current_div.find('.update').css('display', 'inline-block');
+
                         $('.form-translation').each(function() {
-                            if ($(this).hasClass('show')) {
+                        if ($(this).hasClass('show')) {
                                 $(this).removeClass('show');
                                 return;
                             }
@@ -257,10 +260,6 @@
 
             $selectForm.append(items);
 
-            $selectForm.on('change', function () {
-                $("option:selected", this).attr("selected", true).siblings().attr("selected", false);
-            });
-
         },
         remove_click: function() {
 
@@ -283,19 +282,23 @@
         },
         option_changed: function() {
 
-            $('.select-language').change(function() {
+            $selectForm = $(this.element).next().find('.select-language');
 
-                $current_div = $(this).parent().parent().parent();
-                $selected = $(this).children('option:selected').attr('value');
+            $selectForm.on('change', function() {
 
-                $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
-                $current_div.find('.select-language').children('option[value="' + $selected + '"]').attr('selected', true);
+                    $current_div = $(this).parent().parent().parent();
+                    $current_div.find('.chosen-language').removeClass('open');
+                    $current_div.children('.open-translate').toggleClass('open');
+                    $selected = $(this).children('option:selected').attr('value');
 
-                $current_div.find('.update').css('display', 'none');
-                $current_div.find('.apply').css('display', 'inline-block');
-                $the_same = false;
+                    $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
+                    $current_div.find('.select-language').children('option[value="' + $selected + '"]').attr('selected', true);
 
-                $current_div.find('.language-tabs').children('span').each(function() {
+                    $current_div.find('.update').css('display', 'none');
+                    $current_div.find('.apply').css('display', 'inline-block');
+                    $the_same = false;
+
+                    $current_div.find('.language-tabs').children('span').each(function() {
 
                     if ($selected == $(this).attr('id')) {
                         $current_div.find('.apply').css('display', 'none');
@@ -303,15 +306,16 @@
                         $the_same = true;
                         return;
                     }
-                });
+                    });
 
-                if ($the_same == false) {
-                    $current_div.find('.current-language .translated').css('display', 'none');
-                    $current_div.find('.current-language .new-word').attr('value', '').attr('placeholder', 'Text to translate').css('display', 'inline-block');
-                    $current_div.find('.current-language .new-word').focus();
-                } else {
-                    $input = $current_div.find('.language-tabs span[id=' + $selected + ']').children('input').val();
-                    $current_div.find('textarea').css('display', 'inline-block').val($input);
+                    if ($the_same == false) {
+                        $current_div.find('.current-language .translated').css('display', 'none');
+                        $current_div.find('.current-language .new-word').attr('value', '').attr('placeholder', 'Text to translate').css('display', 'inline-block');
+                        $current_div.find('.current-language .new-word').focus();
+                    } else {
+                        $current_div.find('.current-language .new-word').css('display', 'none');
+                        $input = $current_div.find('.language-tabs span[id=' + $selected + ']').children('input');
+                        $current_div.find('.current-language .translated').css('display', 'inline-block').html($input.val()).val($input.val());
                 }
             });
             
