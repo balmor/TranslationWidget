@@ -109,66 +109,6 @@ input[type="text"], textarea {
     line-height: 8px;
 }
 
-// @media screen and (-webkit-min-device-pixel-ratio:0) {
-
-//     select {
-//         -webkit-appearance: none;
-//         display: inline-block;
-//         background: #fff url("@{image-path}/sub.png") no-repeat right center;
-
-//         &:focus {
-//             background: darken(#fff,10%) url("@{image-path}/sub.png") no-repeat right center;
-//         }
-//     }
-
-//     select {
-//         line-height: 14px;
-//     }
-// }
-
-// input[type="radio"] {
-//     -webkit-appearance: none;
-//     margin: 0;
-//     width: auto !important;
-//     border: none;
-//     position: relative;
-//     padding: 0;
-
-//     &:after {
-//         content: "";
-//         display: inline-block;
-//         vertical-align: middle;
-//         position: relative;
-//         background-color: #fff;
-//         border-radius: 50px;
-//         border-width: 1px;
-//         border-style: solid;
-//         border-color: rgba(0,0,0,.3);
-//         width: 11px;
-//         height: 11px;
-//         line-height: 16px;
-//         -webkit-box-shadow: inset 1px 2px 3px rgba(0,0,0,.2), 0 1px 0 rgba(102, 102, 102, 0.2);
-//         top: -2px;
-//     }
-
-//     &:checked {
-//         &:before {
-//             content: "";
-//             width: 5px;
-//             height: 5px;
-//             border-radius: 2px;
-//             position: absolute;
-//             top: 50%;
-//             left: 50%;
-//             z-index: 100;
-//             text-shadow: 0 1px #111;
-//             background: #9aca0b;
-//             margin-left: -3px;
-//             margin-top: -3px;
-//         }
-//     }
-// }
-
 input[type="checkbox"] {
     padding-top: 0;
     margin-top: 0;
@@ -179,11 +119,26 @@ input[type="checkbox"] {
 body {
 
     header {
-        padding: 40px 0;
+        padding: 25px 0;
         background: #999;
         text-align: center;
         border-top: 2px solid rgba(255,255,255,.5);
         border-bottom: 3px solid rgba(255,255,255,.4);
+
+        h1 {
+            font-size: 38px;
+            line-height: 38px;
+            letter-spacing: 1px;
+
+            span {
+                color: #e1e1e1;
+                font-size: 20px;
+                text-transform: none;
+                line-height: 38px;
+                vertical-align: top;
+                margin-left: 10px;
+            }
+        }
     }
 
     section {

@@ -1,13 +1,12 @@
 #Translation Fields - jQuery form widget
-Translation Fields is a jQuery widget to translation languages for fields.
+#####Version - 0.1.4
+
+Translation Fields is a jQuery widget which you can use to enable sending variables in different languages.
 
 ##Demo
-[See Example](http://dduda.nexwai.pl/translation-fields/)
-
+[See example](http://dduda.nexwai.pl/translation-fields/)
 
 ##Documentation
-
-Let me introduce you a widget which you can use to enable sending variables in different languages.  
 
 ### Preparing your HTML
 
@@ -55,9 +54,36 @@ Add as many `<div class="control-group">` with content as many words you want to
 
 ### JS configuration
 
+######To run Translation Fields just add 
+```html
+    <script>
+        $('.lang-translation').formWidget();
+    </script>
+```
+
+#####Avaible options:
+```html
+    <script>
+        $('.lang-translation').formWidget({
+            inputNamePrefix: "translateWidget-",  // change name text
+            removeText: "Delete this translation?" // change remove text
+        });
+    </script>
+```
+
 * First check out list of languages which is placed in JS file (that is js/form-widget.js):
 
-It is TEMPORARY way to modify languages list. In the future it will change.
+```javascript
+var data = {
+                "select": "Select language",
+                "PL": "Polish",
+                "EN": "English",
+                "FR": "French",
+                "ES": "Spanish",
+                "DE": "German"
+            }
+```
+If you want to add more languages or remove lines with languages that disturbes, modify this list. It is TEMPORARY way to modify languages list. In the future it will change.
 
 * There is no need to modify anything else in .html and .js files.
 
@@ -73,8 +99,7 @@ It is TEMPORARY way to modify languages list. In the future it will change.
 
 ## License
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Translation Fields</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a> and also under the
-[MIT License](LICENSE.txt).
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Translation Fields</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a> and also available under [the MIT License](LICENSE.txt).
 
 ## Contact/Help
 
