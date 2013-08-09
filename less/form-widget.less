@@ -1,0 +1,200 @@
+/**
+ *
+ * Styels for Translation Fields
+ *
+ * @author      Damian Duda <dduda@nexway.com>
+ *
+ */
+
+
+/* FORM WIDGET STYLES */
+
+
+.form-translation {
+    position: relative;
+
+    input[type="text"].lang-translation,  .form-translation textarea.lang-translation {
+        /*width: 300px;*/
+        background: #fff !important;
+        border: 1px solid #e5e5e5;        
+    }
+
+    /* translation */
+    .open-translation {
+        cursor: pointer;
+
+        &:hover {
+            background: #eee;
+            box-shadow: inset 0 -4px 7px rgba(255,255,255,.9);            
+        }
+
+        .icon-reorder {
+            margin-left: 0;
+            position: relative;
+            top: 1px;
+            color: #999;
+            cursor: pointer;
+
+            &:before {
+                cursor: pointer;                
+            }
+        }
+
+        .icon-caret-up {
+            position: absolute;
+            top: 0;
+            left: 9px;
+            color: #999;
+            font-size: 8px;
+            cursor: pointer;          
+
+            &:before {
+                cursor: pointer;                
+            }  
+        }
+    }
+
+    /* options */
+    .translation-options {
+        position: absolute;
+        bottom: 34px;
+        left: 0;
+        visibility: hidden;
+        background: #f4f4f4;
+        opacity: 0;
+        color: #333;
+        width: 100%;
+        z-index: 1000;
+
+        /*box-shadow: 0 -1px 1px rgba(0,0,0,.2);*/
+        transition: all .4s ease;
+        -webkit-transition: all .4s ease;
+
+        .translation-content {
+            .clearfix;
+
+            border: 1px solid #d9d9d9;
+            /*height: 112px;*/
+            position: relative;
+            padding: 0 5%;
+
+            zoom: 1;  
+
+            .hide-border {
+                position: absolute;
+                left: 0;
+                bottom: -1px;
+                width: 27px;
+                height: 1px;
+                background: #f4f4f4;                
+            }
+
+            .select-language {
+                width: 100%;
+                margin: 16px 0;
+
+                .current-language {
+                    .m-wrap {
+                        background: #fff;
+                        border: 1px solid #d9d9d9 !important;
+                        float: left;
+                        min-width: 40%;
+                        width: 60%;
+                        max-width: 60%;
+                        max-height: 100px;
+                        margin-bottom: 15px;
+                        margin-right: 1%;
+                        display: inline-block;     
+
+                        &:focus {
+                            border: 1px solid #999 !important;                            
+                        }               
+                    }
+
+                    .btn {
+                        float: right;
+                        margin-bottom: 15px;
+                        padding-left: 0;
+                        padding-right: 0;
+                        width: 25%;
+                    }
+                }
+            }   
+        }
+    }
+
+    /* language tabs */
+    .language-tabs {
+        position: absolute;
+        top: 6px;
+        left: 32px;
+        right: 6px;
+        padding: 0;
+        overflow: auto;  
+
+        span {
+            display: inline-block;
+            font: 300 12px 'Open Sans';            
+        }     
+
+        .chosen-language {
+            padding: 3px 5px;
+            margin: 0 2px;
+            color: #555;
+            background: #ffb848;  
+
+            &:hover {
+                cursor: pointer;
+                background: #e1e1e1;            
+            }     
+
+            .remove {
+                margin-left: 7px;
+                text-decoration: none;
+                color: #777;
+                font-size: 12px;
+                line-height: 14px;
+
+                &:hover {
+                    color: #333;
+                }
+            }                 
+        } 
+    }
+
+    /* show */
+    &.show {
+        .open-translation {
+            background: #f4f4f4;
+            border-top: 1px solid transparent;     
+            
+            .icon-reorder {
+                color: #666;  
+            }
+
+            .icon-caret-up {
+                color: #555;
+            }
+        }
+
+        .translation-options {
+            display: block;
+            visibility: visible;
+            opacity: 1;            
+        }
+    }
+}
+
+
+.form-translation .translation-options .translation-content .current-language .m-wrap {
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    float: left;
+    min-width: 40%;
+    width: 60%;
+    max-width: 60%;
+    max-height: 100px;
+    margin-bottom: 15px;
+    margin-right: 1%;
+    display: inline-block;
+}
