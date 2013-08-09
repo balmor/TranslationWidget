@@ -10,6 +10,8 @@
 // scripts and/or other plugins which may not be closed properly.
 ;(function ( $, window, document, undefined ) {
 
+
+
     // undefined is used here as the undefined global variable in ECMAScript 3 is
     // mutable (ie. it can be changed by someone else). undefined isn't really being
     // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
@@ -22,12 +24,15 @@
     // Create the defaults once
     var pluginName = "formWidget",
         defaults = {
-            propertyName: "value"
+            inputNamePrefix: "translateWidget-"
         };
 
     // The actual plugin constructor
-    function Plugin( element, options ) {
+    function Plugin( element, options, countWidgetInstances ) {
         this.element = element;
+        this.countWidgetInstances = countWidgetInstances;
+
+        $thisElement = $(this.element);
 
         // jQuery has an extend method which merges the contents of two or
         // more objects, storing the result in the first object. The first object
@@ -43,25 +48,26 @@
 
     Plugin.prototype = {
 
+
         init: function() {
 
-            
             // numeric names input
-            var $inputNamed = $('.translation-options').prev();
-            $inputNamed.each(function(index, element)
-                {$(element).attr("name", "iTranslate"+(index+1));
-            });
             this.initMethods();
         },
 
         initMethods: function() {
 
+            this.setInputName();
             this.newClick();
             this.addTranslate();
             this.updateTranslate();
             this.removeTranslate();
 
-            $(this.element).before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
+            $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
+        },
+
+        setInputName: function() {
+            $thisElement.attr("name",this.options.inputNamePrefix + this.countWidgetInstances);
         },
 
         // Show new, blank form for translate
@@ -80,9 +86,9 @@
                 "class" : "input-prepend form-translation"
             });
 
-            $(this.element).wrap($wrapBox);
-            $(this.element).after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a></div></div></div>');
-            $(this.element).next().find('.apply').after('<span class="hide-border"></span>');
+            $thisElement.wrap($wrapBox);
+            $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a></div></div></div>');
+            $thisElement.next().find('.apply').after('<span class="hide-border"></span>');
 
         },
 
@@ -130,7 +136,7 @@
                     "DE": "German"
                 }
 
-                $(this.element).next().children('.translation-content').prepend(sTranslate);
+                $thisElement.next().children('.translation-content').prepend(sTranslate);
 
                 $.each(data, function(key, value) {
                     
@@ -143,7 +149,7 @@
                     $('option[value=' + selectedOpt + ']').attr('selected', true);
                 }
 
-                var $selectForm = $(this.element).next().find('.select-language');
+                var $selectForm = $thisElement.next().find('.select-language');
 
                 $selectForm.append(items);
 
@@ -276,9 +282,11 @@
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
     $.fn[pluginName] = function ( options ) {
+        var countWidgetInstances = 0;
         return this.each(function () {
             if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName, new Plugin( this, options ));
+                countWidgetInstances++;
+                $.data(this, "plugin_" + pluginName, new Plugin( this, options, countWidgetInstances ));
             }
         });
     };
