@@ -61,7 +61,7 @@ Add as many `<div class="control-group">` with content as many words you want to
     </script>
 ```
 
-#####Avaible options:
+######Avaible options:
 ```html
     <script>
         $('.lang-translation').formWidget({
