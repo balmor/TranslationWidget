@@ -1,4 +1,10 @@
 #Translation Fields - jQuery form widget
+#####Version - 0.1.2
+
+Translation Fields is a jQuery widget to translation languages for fields.
+
+##Demo
+[See example](http://dduda.nexwai.pl/translation-fields/)
 
 ##Documentation
 
@@ -52,11 +58,21 @@ Add as many `<div class="control-group">` with content as many words you want to
 
 * First check out list of languages which is placed in JS file (that is js/form-widget.js):
 
-It is TEMPORARY way to modify languages list. In the future it will change.
+```javascript
+var data = {
+                "select": "Select language",
+                "PL": "Polish",
+                "EN": "English",
+                "FR": "French",
+                "ES": "Spanish",
+                "DE": "German"
+            }
+```
+If you want to add more languages or remove lines with languages that disturbes, modify this list. It is TEMPORARY way to modify languages list. In the future it will change.
 
 * There is no need to modify anything else in .html and .js files.
 
-### Usage
+### How To Use
 
 * To add new translation click at icon on the left side.
 * Select language you want and write this word in this language.
@@ -68,7 +84,7 @@ It is TEMPORARY way to modify languages list. In the future it will change.
 
 ## License
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Translation Fields</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Translation Fields</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a> and also available under [the MIT License](LICENSE.txt).
 
 ## Contact/Help
 
