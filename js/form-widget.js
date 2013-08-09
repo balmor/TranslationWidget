@@ -1,31 +1,20 @@
-/*
-* Translation Fields - jQuery Form Widget to translate
-*
-* @author   Ariana Las <ariana.las@gmail.com>
-* @author   Mariusz Maroń <mmaron@nexway.com>
-*
-* version   0.1.4
-*
-*/
+/**
+ * Translation Fields - jQuery Form Widget to translate
+ *
+ * @author   Ariana Las <ariana.las@gmail.com>
+ * @author   Mariusz Maroń <mmaron@nexway.com>
+ *
+ * version   0.1.4
+ *
+ */
 
 
-// the semi-colon before function invocation is a safety net against concatenated
-// scripts and/or other plugins which may not be closed properly.
 ;(function ( $, window, document, undefined ) {
 
-    // undefined is used here as the undefined global variable in ECMAScript 3 is
-    // mutable (ie. it can be changed by someone else). undefined isn't really being
-    // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
-    // can no longer be modified.
-
-    // window and document are passed through as local variable rather than global
-    // as this (slightly) quickens the resolution process and can be more efficiently
-    // minified (especially when both are regularly referenced in your plugin).
-
-    // Create the defaults once
+    /** @constructor */
     var pluginName = "formWidget",
         defaults = {
-            inputNamePrefix: "translateWidget-",
+            inputNamePrefix: "",
             removeText: "Delete this translation?"
         };
 
@@ -35,12 +24,7 @@
         this.countWidgetInstances = countWidgetInstances;
         $thisElement = $(this.element);
 
-        // jQuery has an extend method which merges the contents of two or
-        // more objects, storing the result in the first object. The first object
-        // is generally empty as we don't want to alter the default options for
-        // future instances of the plugin
         this.options = $.extend( {}, defaults, options );
-
         this._defaults = defaults;
         this._name = pluginName;
 
@@ -93,8 +77,14 @@
             });
         },
 
+        /**
+         *  Set the unique input name. User can set default prefix name.
+         */
         setInputName: function() {
-            $thisElement.attr("name",this.options.inputNamePrefix + this.countWidgetInstances); 
+            var labelName = $thisElement.parents(".control-group").children("label").text();
+                labelName = labelName.replace(" ","_");
+
+            $thisElement.attr("name",this.options.inputNamePrefix + labelName); 
         },
 
         langTab: function() {
@@ -344,8 +334,6 @@
 
     };
 
-    // A really lightweight plugin wrapper around the constructor,
-    // preventing against multiple instantiations
     $.fn[pluginName] = function ( options ) {
         var countWidgetInstances = 0;
 
@@ -358,4 +346,3 @@
     };
 
 })( jQuery, window, document );
-
