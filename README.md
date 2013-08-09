@@ -54,6 +54,23 @@ Add as many `<div class="control-group">` with content as many words you want to
 
 ### JS configuration
 
+######To run Translation Fields just add 
+```html
+    <script>
+        $('.lang-translation').formWidget();
+    </script>
+```
+
+#####Avaible options:
+```html
+    <script>
+        $('.lang-translation').formWidget({
+            inputNamePrefix: "translateWidget-",  // change name text
+            removeText: "Delete this translation?" // change remove text
+        });
+    </script>
+```
+
 * First check out list of languages which is placed in JS file (that is js/form-widget.js):
 
 ```javascript

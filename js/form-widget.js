@@ -25,7 +25,8 @@
     // Create the defaults once
     var pluginName = "formWidget",
         defaults = {
-            inputNamePrefix: "translateWidget-"
+            inputNamePrefix: "translateWidget-",
+            removeText: "Delete this translation?"
         };
 
     // The actual plugin constructor
@@ -288,7 +289,7 @@
             $(function () {
                $($self.element).next().next().on('click', '.remove', function(e) {
                     e.preventDefault();
-                    if (confirm("Delete?")) {
+                    if (confirm($self.options.removeText)) {
                         $main = $(this).parent().parent().siblings('input');
                         $current_div = $main.parent();
                         $current_div.removeClass('show');
