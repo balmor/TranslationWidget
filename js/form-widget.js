@@ -14,7 +14,7 @@
     /** @constructor */
     var pluginName = "formWidget",
         defaults = {
-            inputNamePrefix: "translateWidget-",
+            inputNamePrefix: "",
             removeText: "Delete this translation?"
         };
 
@@ -81,7 +81,10 @@
          *  Set the unique input name. User can set default prefix name.
          */
         setInputName: function() {
-            $thisElement.attr("name",this.options.inputNamePrefix + this.countWidgetInstances); 
+            var labelName = $thisElement.parents(".control-group").children("label").text();
+                labelName = labelName.replace(" ","_");
+
+            $thisElement.attr("name",this.options.inputNamePrefix + labelName); 
         },
 
         langTab: function() {
