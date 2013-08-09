@@ -4,7 +4,7 @@
 Translation Fields is a jQuery widget to translation languages for fields.
 
 ##Demo
-[See example](http://dduda.nexwai.pl/translation-fields/).
+[See example](http://dduda.nexwai.pl/translation-fields/)
 
 ##Documentation
 
