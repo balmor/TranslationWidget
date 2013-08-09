@@ -10,7 +10,7 @@
 
 ## Contact/Help
 
-dduda@nexway.com
-mmaron@nexway.com
-alas@gmail.com
+dduda@nexway.com <br>
+mmaron@nexway.com <br>
+alas@gmail.com <br>
 kgorecki@nexway.com
