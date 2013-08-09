@@ -10,8 +10,6 @@
 // scripts and/or other plugins which may not be closed properly.
 ;(function ( $, window, document, undefined ) {
 
-
-
     // undefined is used here as the undefined global variable in ECMAScript 3 is
     // mutable (ie. it can be changed by someone else). undefined isn't really being
     // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
@@ -31,7 +29,6 @@
     function Plugin( element, options, countWidgetInstances ) {
         this.element = element;
         this.countWidgetInstances = countWidgetInstances;
-
         $thisElement = $(this.element);
 
         // jQuery has an extend method which merges the contents of two or
@@ -48,241 +45,281 @@
 
     Plugin.prototype = {
 
-
         init: function() {
 
-            // numeric names input
-            this.initMethods();
+            this.generalStart();
+            this.new_click();
+            this.apply_click();
+            this.makeSelectLang();
+            this.update_click();
+            this.lang_click();
+            this.remove_click();
+            this.update_click();
+            this.option_changed();
+
         },
 
-        initMethods: function() {
-
-            this.setInputName();
-            this.newClick();
-            this.addTranslate();
-            this.updateTranslate();
-            this.removeTranslate();
-
-            $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
-        },
-
-        setInputName: function() {
-            $thisElement.attr("name",this.options.inputNamePrefix + this.countWidgetInstances);
-        },
-
-        // Show new, blank form for translate
-
-        createBlankTemplate: function(translatedTxt) {
-
-            this.checkEmptyFields();
-
-            if (translatedTxt == 'undefined') {
-                $('textarea').val('');
-            } else {
-                $('textarea').val(translatedTxt);
-            }
+        generalStart: function() {
 
             var $wrapBox = $('<div />', {
                 "class" : "input-prepend form-translation"
             });
 
+            this.setInputName();
             $thisElement.wrap($wrapBox);
-            $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a></div></div></div>');
+            $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
+            $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
             $thisElement.next().find('.apply').after('<span class="hide-border"></span>');
 
+            var langTabs = this.langTab();
+
+            langTabs.insertAfter($thisElement.next()); // podobno undefined!!
+
+
+            // $(this.element)$('').insertAfter($(this.element).next());
+
+            $('body').click(function() {
+                $('.form-translation .open-translation').removeClass('open');
+                $('.form-translation .chosen-language').removeClass('open');
+                $('.form-translation').removeClass('show');
+            });
+            
+            $('.form-translation').click(function(e){
+                e.stopPropagation();
+            });
         },
 
-        newClick: function() {
+        setInputName: function() {
+            $thisElement.attr("name",this.options.inputNamePrefix + this.countWidgetInstances); 
+        },
+
+        langTab: function() {
+            var langTab = $("<div />", {
+                "class" : "language-tabs"
+            });
+            return langTab;
+        },
+
+        new_click: function() {
+
+            $thisElement.prev().on('click', function () {
+                var $current_div = $(this).parent();
+                $this = $(this);
+
+                $current_div.find('.chosen-language').removeClass('open');
+                $this.toggleClass('open');
+                if ($this.hasClass('open')) {
+
+                    $current_div.find('.update').css('display', 'none');
+                    $current_div.find('.apply').css('display', 'inline-block');
+
+                    $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
+                    $current_div.find('.select-language').children('option[value="select"]').attr('selected', true);
+
+                    $current_div.find('.current-language .new-word').attr('placeholder', 'Text to translate').attr('value', '').val('').css('display', 'inline-block');
+                    
+                    $current_div.addClass('show');
+                } else {
+                    $current_div.removeClass('show');
+                }
+ 
+            });
+        },
+
+        update_click: function() {
+
+            $thisElement.parent().find('.update').on('click', function() {
+                $current_div = $(this).parent().parent().parent().parent();
+                $input = $(this).siblings('textarea').val();
+                $selected = $current_div.find('.select-language option[selected="selected"]').attr('value');
+                $object = $current_div.find('.language-tabs span[id="' + $selected + '"]');
+                $object.children('input').attr('value', $input);
+                $object.css({backgroundColor: "#ffb848"});
+                $object.animate({backgroundColor: "#eee"}, 700);
+                $current_div.removeClass('show');
+                return false; //link deactivated
+                
+            });
+        },
+
+        apply_click: function() {
+            //input name!!!
 
             $self = this;
-            var $openBtn = $('.open-translation');
-            
-                $self.createBlankTemplate();
-                $self.makeSelectLang();
+            var applyBtn = $($self.element).next().find('.apply');
 
-            $openBtn.unbind('click').click(function(e) {
-                e.preventDefault();
-                
+            applyBtn.click(function() {
 
-                var $applyBtn = $(".translation-content .apply");
-                var translateBox = $('.m-wrap.new-word');
+                $main = $(this).parent().parent().parent().siblings('input');
+                $name = $main.attr('name');
+                $current_div = $main.parent();
+                $selected = $current_div.find('.select-language option:selected').attr('value');
+                $translation = $current_div.find('.new-word').val();
 
-                $applyBtn.text('Apply');
-                translateBox.val('');
-                $('option:selected').removeAttr('selected');
-                $(this).parent().toggleClass('show');
+                if ($selected != "select" && $translation != "") {
+                    $str = '<span id="' + $selected  + '" class="chosen-language">' + $selected;
+                    $str += '<a href="#" class="remove icon-remove"></a>';
+                    $str += '<input class="m-wrap" type="hidden" name="' + $name + '[' + $selected + ']" value="' + $translation + '"/>';
+                    $str += '</span>';
+                    var $object = $($str).appendTo($current_div.find('.language-tabs'));
+                    $object.css({backgroundColor: "#ffb848"});
+                    $object.animate({backgroundColor: "#eee"}, 700);
 
-            }); 
-        },
-        
+                    $object.mouseover(function(){
+                        $(this).css({backgroundColor: "#e1e1e1"});
+                    });
 
-        // Create select with simple data
-        makeSelectLang: function(selectedOpt) {
-
-                var sTranslate = $('<select />', {
-                    "class" : "select-language",
-                    "tabindex" : 1
-                });
-                var $contentWidget = $('.translation-content');
-                var items = [];
-
-                // Simple data for select
-                var data = {
-                    "select": "Select language",
-                    "PL": "Polish",
-                    "EN": "English",
-                    "FR": "French",
-                    "ES": "Spanish",
-                    "DE": "German"
+                    $object.mouseleave(function(){
+                        $(this).css({backgroundColor: "#eee"});
+                    }); 
+                    $current_div.find('.apply').css('display', 'none');
+                    $current_div.find('.update').css('display', 'inline-block');
                 }
-
-                $thisElement.next().children('.translation-content').prepend(sTranslate);
-
-                $.each(data, function(key, value) {
-                    
-                    items.push('<option value="' + key + '">' + value + '</option>');
-                    
-                });
-
-                if (selectedOpt) {
-
-                    $('option[value=' + selectedOpt + ']').attr('selected', true);
-                }
-
-                var $selectForm = $thisElement.next().find('.select-language');
-
-                $selectForm.append(items);
-
-                $selectForm.on('change', function () {
-                    $("option:selected", this).attr("selected", true).siblings().attr("selected", false);
-                });
-        },
-
-        // Create content for labels
-        createContentLabel: function() {
-            var $contentLabel = $("<div />", {
-
-                "class": "language-tabs"
-
+                $current_div.children('.open-translation').removeClass('open');
+                $object.toggleClass('open');
+                return false; //link deactivated
             });
-            $contentLabel.insertAfter('.translation-options');
+            
         },
 
-        // Remove translation 
-        removeTranslate: function() {
-            $(function(){
+        lang_click: function() {
 
-                var $deleteBtn = $('.language-tabs');
+            var $self = this;
 
-                $(".language-tabs").on('click', '.remove' , function(e) {
+            var langTabBtn = $($self.element).next().next();
 
-                    if (confirm("Delete?")) {
+
+            $(function () {
+                langTabBtn.unbind('click').on('click', '.chosen-language', function() {
+
+                    $current_div = $(this).parent().parent();
+                    $current_div.children('.open-translation').removeClass('open');
+                    $(this).toggleClass('open');
+                    $(this).siblings().removeClass('open');
+                    if ($(this).hasClass('open')) {
+
+                        $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
+                        $current_div.find('.select-language').children('option[value="' + $(this).attr('id') + '"]').attr('selected', true);
+
+                        $input = $(this).children('input').val();
+                        $current_div.find('textarea').val($input);
+                        $current_div.find('.current-language .translated').css('display', 'inline-block');
+
+                        $current_div.find('.apply').css('display', 'none');
+                        $current_div.find('.update').css('display', 'inline-block');
+                        $('.form-translation').each(function() {
+                            if ($(this).hasClass('show')) {
+                                $(this).removeClass('show');
+                                return;
+                            }
+                        });
+                        $current_div.addClass('show');
+                    } else {
+                        $current_div.removeClass('show');
+                    }
+                });
+            });
+            
+        },
+
+        makeSelectLang: function() {
+
+            var sTranslate = $('<select />', {
+                "class" : "select-language",
+                "tabindex" : 1
+            });
+            var $contentWidget = $('.translation-content');
+            var items = [];
+
+            // Simple data for select
+            var data = {
+                "select": "Select language",
+                "PL": "Polish",
+                "EN": "English",
+                "FR": "French",
+                "ES": "Spanish",
+                "DE": "German"
+            }
+
+            $thisElement.next().children('.translation-content').prepend(sTranslate);
+
+            $.each(data, function(key, value) {
                 
-                        e.preventDefault();
-                        $(this).parent().remove();
+                items.push('<option value="' + key + '">' + value + '</option>');
+                
+            });
 
+            var $selectForm = $thisElement.next().find('.select-language');
+
+            $selectForm.append(items);
+
+            $selectForm.on('change', function () {
+                $("option:selected", this).attr("selected", true).siblings().attr("selected", false);
+            });
+
+        },
+        remove_click: function() {
+
+            var $self = this;
+
+            $(function () {
+               $($self.element).next().next().on('click', '.remove', function(e) {
+                    e.preventDefault();
+                    if (confirm("Delete?")) {
+                        $main = $(this).parent().parent().siblings('input');
+                        $current_div = $main.parent();
+                        $current_div.removeClass('show');
+                        $(this).parent().remove();
                     }
 
+                    return false; //link deactivated
                 });
             });
-        },
-        
-        // Check avaliable languages
-        checkEmptyFields: function() {
-
-        },
-
-        // Add new translate
-        addTranslate: function() {
-
-            var self = this;
-
-            $(function(){
-
-                var $applyBtn = $(".translation-content .apply");
-
-                self.createContentLabel();
-                $applyBtn.unbind('click').click(function(e) {
-
-                    // dsad
-                    e.preventDefault();
-                    var translateBox = $(this).prev(),
-                        translatedText = translateBox.val(),
-                        tTag = $(this).parent().prev().find('option:selected').val(),
-                        $appendBoxLabel = $(this).closest('.translation-options').next(),
-                        $appendBoxInput = $appendBoxLabel.children('.chosen-language');
-
-                    var iHidden = self.createInputHidden(tTag, translatedText),
-                        nLabel = self.newLabel(tTag);
-
-                    // app
-                    nLabel.appendTo($appendBoxLabel).append(iHidden);
-
-                    // console.log(nLabel);
-                    
-
-                    // clear datra from inputs
-                    translateBox.val('');
-                    $(this).parent().prev().find('option:selected').removeAttr('selected');
-
-
-
-                });
-            });
-        },
-
-        newLabel: function(labelText) {
             
-            var nLabel = $("<span />", {
-
-                "class": "chosen-language"
-
-            }).text(labelText).append('<a href="#" class="remove icon-remove">');
-
-            return nLabel;
-
         },
+        option_changed: function() {
 
-        // Create input hidden
-        createInputHidden: function(tValue, tName) {
+            $('.select-language').change(function() {
 
-            var iHidden = $('<input/>', {
+                $current_div = $(this).parent().parent().parent();
+                $selected = $(this).children('option:selected').attr('value');
 
-                'value':    tValue,
-                'name':     tName,
-                'type':     "hidden"
+                $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
+                $current_div.find('.select-language').children('option[value="' + $selected + '"]').attr('selected', true);
 
-              });
+                $current_div.find('.update').css('display', 'none');
+                $current_div.find('.apply').css('display', 'inline-block');
+                $the_same = false;
 
-              return iHidden;
-        },
+                $current_div.find('.language-tabs').children('span').each(function() {
 
-        // Updating translate
-        updateTranslate: function() {
-
-            $self = this;
-            $element = this.element;
-
-            $(function(){
-                $($element).next().next('.language-tabs').on('click', '.chosen-language', function() {
-                    $(this).closest('.form-translation').eq(0).addClass('show');
-                    var $this = $(this),
-                        $currentTargetTag = $this.find('input').attr('value');
-                        $currentTargetText = $this.find('input').attr('name');
-
-                        $('.apply').text("Update");
-
-                        $self.createBlankTemplate($currentTargetText);
-                        $self.makeSelectLang($currentTargetTag);
+                    if ($selected == $(this).attr('id')) {
+                        $current_div.find('.apply').css('display', 'none');
+                        $current_div.find('.update').css('display', 'inline-block');
+                        $the_same = true;
+                        return;
+                    }
                 });
+
+                if ($the_same == false) {
+                    $current_div.find('.current-language .translated').css('display', 'none');
+                    $current_div.find('.current-language .new-word').attr('value', '').attr('placeholder', 'Text to translate').css('display', 'inline-block');
+                    $current_div.find('.current-language .new-word').focus();
+                } else {
+                    $input = $current_div.find('.language-tabs span[id=' + $selected + ']').children('input').val();
+                    $current_div.find('textarea').css('display', 'inline-block').val($input);
+                }
             });
+            
         }
+
     };
 
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
     $.fn[pluginName] = function ( options ) {
         var countWidgetInstances = 0;
+
         return this.each(function () {
             if (!$.data(this, "plugin_" + pluginName)) {
                 countWidgetInstances++;
@@ -293,126 +330,3 @@
 
 })( jQuery, window, document );
 
-
-
-// lang_click = function() {
-//  $current_div = $(this).parent().parent();
-//  $current_div.find('.select-language').children('option[value="select"]').attr('selected', false);
-//  $current_div.find('.select-language').children('option[value="' + $(this).attr('id') + '"]').attr('selected', true);
-//  $current_div.find('.current-language .new-word').css('display', 'none');
-//  $current_div.find('.current-language .translated').remove();
-//  $input = $(this).children('input');
-//  $str = '<textarea name="' + $input.attr('name') + '" class="m-wrap translated" rows="1"></textarea>';
-//  $current_div.find('.current-language').prepend($str);
-//  $current_div.find('.current-language .translated').append($input.val());
-//  $current_div.addClass('show');
-
-// }
-
-// new_click = function() {
-//  $current_div = $(this).parent();
-
-//  $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
-//  $current_div.find('.select-language').children('option[value="select"]').attr('selected', true);
-//  $current_div.find('.current-language .translated').remove();
-//  $current_div.find('.current-language .new-word').attr('value', '').attr('placeholder', 'Text to translate').css('display', 'inline-block');
-//  $current_div.addClass('show');
-// }
-
-// apply_click = function() {
-//  //input name!!!
-//  $main = $(this).parent().parent().parent().siblings('input');
-//  $name = $main.attr('name');
-//  $current_div = $main.parent();
-//  $selected = $current_div.find('.select-language option:selected').attr('value');
-//  $translation = $current_div.find('.new-word').val();
-//  if ($selected != "select" && $translation != "") {
-//      $str = '<span id="' + $selected  + '" class="chosen-language">' + $selected;
-//      $str += '<a href="#" class="remove icon-remove"></a>';
-//      $str += '<input class="m-wrap" type="hidden" name="' + $name + '[' + $selected + ']" value="' + $translation + '"/>';
-//      $str += '</span>';
-//      $object = $($str).appendTo($current_div.find('.language-tabs'));
-//      $object.css({backgroundColor: "#ffb848", color: "#fff"});
-//      $object.animate({backgroundColor: "#eee", color: "#555"}, 700);
-//      $object.click(lang_click);
-//      $object.children(".remove").click(remove_click);
-
-//      $(".chosen-language").mouseover(function(){
-//          $(this).css({backgroundColor: "#e1e1e1"});
-//      });
-
-//      $(".chosen-language").mouseleave(function(){
-//          $(this).css({backgroundColor: "#eee"});
-//      }); 
-//  }
-//  return false; //link deactivated
-
-// }
-
-// remove_click = function() {
-//  //input name!!!
-//  if (confirm("Delete this tranlation?")) {
-//      $main = $(this).parent().parent().siblings('input');
-//      $current_div = $main.parent();
-//      $current_div.removeClass('show');
-//      $(this).parent().remove();
-//  }
-
-//  return false; //link deactivated
-// }
-
-// jQuery(function() {
-//  $('.lang-translation').wrap('<div class="input-prepend form-translation" />')
-//  $('.form-translation').each(function() {
-//      $(this).prepend('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
-//      $str = '<div class="translation-options">\n';
-//      $str += '<div class="translation-content"\n>';
-//      $str += '<select class="select-language select2" tabindex="1">\n';
-//      $str += '<option value="select" selected="selected">Select language</option>';
-//      $str += '<option value="EN">English</option>';
-//      $str += '<option value="DE">German</option>';
-//      $str += '<option value="FR">French</option>';
-//      $str += '<option value="ES">Spanish</option>';
-//      $str += '<option value="PT">Portuguese</option>';
-//      $str += '<option value="PL">Polish</option>';
-//      $str += '<option value="JP">Japanese</option>';
-//      $str += '</select>';
-//      $str += '<div class="current-language">';
-//      $str += '<textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea>';
-//      $str += '<a href="/" class="btn blue apply">Apply</a>';
-//      $str += '</div>';
-//      $str += '<span class="hide-border"></span>';
-//      $str += '</div></div>';
-//      $($str).appendTo($(this));
-//      $str = '<div class="language-tabs">';
-//      /* SOME EXAMPLES OF TRANSLATIONS
-//      $str += '<span id="FR" class="chosen-language">FR';
-//      $str += '<a href="/" class="remove icon-remove"></a>';
-//      $str += '<input class="m-wrap" type="hidden" name="translation1[FR]" value="po-francusku"/>';
-//      $str += '</span>';
-//      $str += '<span id="EN" class="chosen-language">EN';
-//      $str += '<a href="/" class="remove icon-remove"></a>';
-//      $str += '<input class="m-wrap" type="hidden" name="translation1[EN]" value="po-angielsku"/>';
-//      $str += '</span>';
-//      */
-//      $str += '</div>';
-//      $($str).insertAfter($(this).children('.translation-options'));
-//  });
-
-
-
-//  $('body').click(function() {
-//      $('.form-translation').removeClass('show');
-//  });
-    
-//  $('.form-translation').click(function(e){
-//      e.stopPropagation();
-//  });
-
-//  $('.open-translation').click(new_click);
-//  $('.chosen-language').click(lang_click);
-//  $('.apply').click(apply_click);
-//  $('.remove').click(remove_click);
-
-  
-// });
