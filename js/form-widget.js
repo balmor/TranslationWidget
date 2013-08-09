@@ -23,12 +23,14 @@
     // Create the defaults once
     var pluginName = "formWidget",
         defaults = {
-            propertyName: "value"
+            inputNamePrefix: "translateWidget-"
         };
 
     // The actual plugin constructor
-    function Plugin( element, options ) {
+    function Plugin( element, options, countWidgetInstances ) {
         this.element = element;
+        this.countWidgetInstances = countWidgetInstances;
+        $thisElement = $(this.element);
 
         // jQuery has an extend method which merges the contents of two or
         // more objects, storing the result in the first object. The first object
@@ -46,7 +48,6 @@
 
         init: function() {
 
-            
             this.generalStart();
             this.new_click();
             this.apply_click();
@@ -61,25 +62,19 @@
 
         generalStart: function() {
 
-            // numeric names input
-            var $inputNamed = $(this.element);
-            $inputNamed.each(function(index){
-                index++
-                $($inputNamed).attr("name", "iTranslate" +(index+1));
-            });
-
             var $wrapBox = $('<div />', {
                 "class" : "input-prepend form-translation"
             });
 
-            $(this.element).wrap($wrapBox);
-            $(this.element).before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
-            $(this.element).after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
-            $(this.element).next().find('.apply').after('<span class="hide-border"></span>');
+            this.setInputName();
+            $thisElement.wrap($wrapBox);
+            $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
+            $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
+            $thisElement.next().find('.apply').after('<span class="hide-border"></span>');
 
             var langTabs = this.langTab();
 
-            langTabs.insertAfter($(this.element).next()); // podobno undefined!!
+            langTabs.insertAfter($thisElement.next()); // podobno undefined!!
 
 
             // $(this.element)$('').insertAfter($(this.element).next());
@@ -95,6 +90,10 @@
             });
         },
 
+        setInputName: function() {
+            $thisElement.attr("name",this.options.inputNamePrefix + this.countWidgetInstances); 
+        },
+
         langTab: function() {
             var langTab = $("<div />", {
                 "class" : "language-tabs"
@@ -104,15 +103,13 @@
 
         new_click: function() {
 
-            var $self = this;
+            $thisElement.prev().on('click', function () {
+                var $current_div = $(this).parent();
+                $this = $(this);
 
-            $($self.element).prev().on('click', function () {
-
-                var $current_div = $($self.element).parent();
                 $current_div.find('.chosen-language').removeClass('open');
-                $(this).toggleClass('open');
-                console.log($(this));
-                if ($(this).hasClass('open')) {
+                $this.toggleClass('open');
+                if ($this.hasClass('open')) {
 
                     $current_div.find('.update').css('display', 'none');
                     $current_div.find('.apply').css('display', 'inline-block');
@@ -132,7 +129,7 @@
 
         update_click: function() {
 
-            $(this.element).parent().find('.update').on('click', function() {
+            $thisElement.parent().find('.update').on('click', function() {
                 $current_div = $(this).parent().parent().parent().parent();
                 $input = $(this).siblings('textarea').val();
                 $selected = $current_div.find('.select-language option[selected="selected"]').attr('value');
@@ -192,7 +189,6 @@
 
             var langTabBtn = $($self.element).next().next();
 
-            console.log(langTabBtn);
 
             $(function () {
                 langTabBtn.unbind('click').on('click', '.chosen-language', function() {
@@ -246,7 +242,7 @@
                 "DE": "German"
             }
 
-            $(this.element).next().children('.translation-content').prepend(sTranslate);
+            $thisElement.next().children('.translation-content').prepend(sTranslate);
 
             $.each(data, function(key, value) {
                 
@@ -254,7 +250,7 @@
                 
             });
 
-            var $selectForm = $(this.element).next().find('.select-language');
+            var $selectForm = $thisElement.next().find('.select-language');
 
             $selectForm.append(items);
 
@@ -323,9 +319,12 @@
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
     $.fn[pluginName] = function ( options ) {
+        var countWidgetInstances = 0;
+
         return this.each(function () {
             if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName, new Plugin( this, options ));
+                countWidgetInstances++;
+                $.data(this, "plugin_" + pluginName, new Plugin( this, options, countWidgetInstances ));
             }
         });
     };
