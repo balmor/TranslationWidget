@@ -1,7 +1,10 @@
 /*
-* jQuery Form Widget to translate
+* Translation Fields - jQuery Form Widget to translate
 *
-* @author Ariana Las <ariana.las@gmail.com>
+* @author   Ariana Las <ariana.las@gmail.com>
+* @author   Mariusz Maroń <mmaron@nexway.com>
+*
+* version   0.1.4
 *
 */
 

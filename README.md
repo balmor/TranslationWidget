@@ -1,10 +1,11 @@
 #Translation Fields - jQuery form widget
-#####Version - 0.1.2
-
 Translation Fields is a jQuery widget to translation languages for fields.
 
-##Demo
-[See example](http://dduda.nexwai.pl/translation-fields/)
+####VERSION - 0.1.4
+
+
+##How it works
+You can see exmaple page [here](http://dduda.nexwai.pl/translation-fields/).
 
 ##Documentation
 
@@ -58,7 +59,6 @@ Add as many `<div class="control-group">` with content as many words you want to
 
 * First check out list of languages which is placed in JS file (that is js/form-widget.js):
 
-```javascript
 var data = {
                 "select": "Select language",
                 "PL": "Polish",
@@ -67,7 +67,6 @@ var data = {
                 "ES": "Spanish",
                 "DE": "German"
             }
-```
 If you want to add more languages or remove lines with languages that disturbes, modify this list. It is TEMPORARY way to modify languages list. In the future it will change.
 
 * There is no need to modify anything else in .html and .js files.
