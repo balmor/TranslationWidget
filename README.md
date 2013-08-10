@@ -1,14 +1,11 @@
 #Translation Fields - jQuery form widget
 Translation Fields is a jQuery widget to translation languages for fields.
 
-
-##Version
-####0.8.0
+####VERSION - 0.1.2
 
 
-##Demo
-[See Example](http://dduda.nexwai.pl/translation-fields/)
-
+##How it works
+You can see exmaple page [here](http://dduda.nexwai.pl/translation-fields/).
 
 ##Documentation
 
@@ -86,8 +83,7 @@ If you want to add more languages or remove lines with languages that disturbes,
 
 ## License
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Translation Fields</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a> and also under the
-[MIT License](LICENSE.txt).
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Translation Fields</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a> and also available under [the MIT License](LICENSE.txt).
 
 ## Contact/Help
 

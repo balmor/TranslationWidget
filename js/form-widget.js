@@ -4,7 +4,7 @@
 * @author   Ariana Las <ariana.las@gmail.com>
 * @author   Mariusz Maroń <mmaron@nexway.com>
 *
-* version   0.8.0
+* version   0.1.2
 *
 */
 
