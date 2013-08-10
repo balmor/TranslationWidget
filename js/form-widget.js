@@ -164,7 +164,7 @@
                     $str += '<a href="#" class="remove icon-remove"></a>';
                     $str += '<input class="m-wrap" type="hidden" name="' + $name + '[' + $selected + ']" value="' + $translation + '"/>';
                     $str += '</span>';
-                    $object = $($str).appendTo($current_div.find('.language-tabs'));
+                    var $object = $($str).appendTo($current_div.find('.language-tabs'));
                     $object.css({backgroundColor: "#ffb848"});
                     $object.animate({backgroundColor: "#eee"}, 700);
 

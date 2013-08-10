@@ -1,5 +1,4 @@
 #Translation Fields - jQuery form widget
-==================
 
 ##Documentation
 
