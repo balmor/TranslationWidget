@@ -1,6 +1,11 @@
 #Translation Fields - jQuery form widget
 Translation Fields is a jQuery widget to translation languages for fields.
 
+
+##Version
+####0.8.0
+
+
 ##Demo
 [See Example](http://dduda.nexwai.pl/translation-fields/)
 
