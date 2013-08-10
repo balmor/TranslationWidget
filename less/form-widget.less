@@ -17,6 +17,8 @@
         /*width: 300px;*/
         background: #fff !important;
         border: 1px solid #e5e5e5;        
+
+        cursor: default;
     }
 
     /* translation */
@@ -25,7 +27,8 @@
 
         &:hover {
             background: #eee;
-            box-shadow: inset 0 -4px 7px rgba(255,255,255,.9);            
+            @shadow: inset 0 -4px 7px rgba(255,255,255,.9);
+            .box-shadow(@shadow);          
         }
 
         .icon-reorder {
@@ -66,7 +69,8 @@
         width: 100%;
         z-index: 1000;
 
-        /*box-shadow: 0 -1px 1px rgba(0,0,0,.2);*/
+        @shadow: 0 -1px 3px rgba(0,0,0,.1);
+        .box-shadow(@shadow);
         transition: all .4s ease;
         -webkit-transition: all .4s ease;
 
