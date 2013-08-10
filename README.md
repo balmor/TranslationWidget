@@ -57,7 +57,15 @@ Add as many `<div class="control-group">` with content as many words you want to
 
 * First check out list of languages which is placed in JS file (that is js/form-widget.js):
 
-It is TEMPORARY way to modify languages list. In the future it will change.
+var data = {
+                "select": "Select language",
+                "PL": "Polish",
+                "EN": "English",
+                "FR": "French",
+                "ES": "Spanish",
+                "DE": "German"
+            }
+If you want to add more languages or remove lines with languages that disturbes, modify this list. It is TEMPORARY way to modify languages list. In the future it will change.
 
 * There is no need to modify anything else in .html and .js files.
 
