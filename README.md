@@ -53,19 +53,6 @@ Add as many `<div class="control-group">` with content as many words you want to
 
 * First check out list of languages which is placed in JS file (that is js/form-widget.js):
 
-    $str += '<select class="select-language select2" tabindex="1">\n';
-    $str += '<option value="select" selected="selected">Select language</option>';
-    $str += '<option value="EN">English</option>';
-    $str += '<option value="DE">German</option>';
-    $str += '<option value="FR">French</option>';
-    $str += '<option value="ES">Spanish</option>';
-    $str += '<option value="PT">Portuguese</option>';
-    $str += '<option value="PL">Polish</option>';
-    $str += '<option value="JP">Japanese</option>';
-    $str += '</select>';
-
-If you want to add more languages, copy line with `<option>` and replace value and content.
-Or if you want to remove some languages, please remove linesi with languages that disturbes you.
 It is TEMPORARY way to modify languages list. In the future it will change.
 
 * There is no need to modify anything else in .html and .js files.
@@ -77,7 +64,7 @@ It is TEMPORARY way to modify languages list. In the future it will change.
 * By clicking "Apply" small box with abbreviation appears.
 * You can update this word immidietly or remove this translation by clicking "x" on the right side of language box.
 * Add more translations to this word.
-* After submit, sending variables are like word-to-translate[XX]=translation where XX is abbreviation for example: cat[PL]=kot
+* After submit, variables to send look like: word-to-translate[XX]=translation where XX is language abbreviation for example: cat[PL]=kot
 * Do with this variables what you want 
 
 ## License
