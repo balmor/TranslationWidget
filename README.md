@@ -4,7 +4,7 @@
 
 Let me introduce you a widget which you can use to enable sending variables in different languages.  
 
-## Preparing your HTML
+### Preparing your HTML
 
 * You can use this widget in every `<form>` tag in your HTML document.
 * To do it, you need to write this block of code inside your `<form>`:
@@ -48,7 +48,7 @@ You can download it from here http://getbootstrap.com/2.3.2/getting-started.html
 * `<label>` and `<input name="">` should contain the same word which will be word that you want to translate on languages.  
 Add as many `<div class="control-group">` with content as many words you want to be translated.
 
-# JS configuration
+### JS configuration
 
 * First check out list of languages which is placed in JS file (that is js/form-widget.js):
 
@@ -56,7 +56,7 @@ It is TEMPORARY way to modify languages list. In the future it will change.
 
 * There is no need to modify anything else in .html and .js files.
 
-## Usage
+### Usage
 
 * To add new translation click at icon on the left side.
 * Select language you want and write this word in this language.
