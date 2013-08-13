@@ -4,7 +4,7 @@
 Translation Fields is a jQuery widget which you can use to enable sending variables in different languages.
 
 ##Demo
-[See example](http://dduda.nexwai.pl/translation-fields/)
+[See example](http://nexwaygroup.github.io/TranslationWidget/)
 
 ##Documentation
 
