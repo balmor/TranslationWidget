@@ -23,7 +23,8 @@
                 "FR": "French",
                 "ES": "Spanish",
                 "DE": "German"
-            }
+            },
+            addAnimation: ""
         };
 
     // The actual plugin constructor
@@ -65,6 +66,7 @@
             });
 
             this.setInputName();
+            this.customAddAnimation();
             $thisElement.wrap($wrapBox);
             $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
             $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><textarea class="m-wrap translated" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
@@ -170,7 +172,8 @@
          */
         applyClick: function() {
 
-            var $applyBtn = $(this.element).next().find('.apply');
+            var $applyBtn = $(this.element).next().find('.apply'),
+                self = this;
 
             $applyBtn.on('click', function(e) {
 
@@ -188,8 +191,13 @@
                     translationBadgeBody += '<input class="m-wrap" type="hidden" name="' + name + '[' + $selected + ']" value="' + translation + '"/>';
                     translationBadgeBody += '</span>';
                     $object = $(translationBadgeBody).appendTo($current_div.find('.language-tabs'));
-                    $object.css({backgroundColor: "#ffb848"});
-                    $object.animate({backgroundColor: "#eee"}, 700);
+
+                    if($.isFunction($object.customAnimation)){
+                        $object.customAnimation();
+                    } else {
+                        $object.css({backgroundColor: "#ffb848"});
+                        $object.animate({backgroundColor: "#eee"}, 700);
+                    }
 
                     $object
                     .mouseover(function(){
@@ -207,6 +215,16 @@
             });
             
         },
+        /**
+         *    If custom animation exists then use it.
+         */
+        customAddAnimation: function() {
+
+            if($.isFunction(this.options.addAnimation)){
+                $.fn["customAnimation"] = this.options.addAnimation;
+            }
+         },
+
         /**
          *    Shows translation body for existing language badge.
          */
