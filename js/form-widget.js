@@ -24,7 +24,8 @@
                 "ES": "Spanish",
                 "DE": "German"
             },
-            addAnimation: ""
+            addAnimation: "",
+            addAnimationSpeed: 500
         };
 
     // The actual plugin constructor
@@ -53,6 +54,7 @@
             this.updateClick();
             this.optionChanged();
             this.applyClick();
+            this.markTranslatedOptions();
 
         },
 
@@ -194,7 +196,8 @@
 
                     if($.isFunction($object.customAnimation)){
                         $object.customAnimation();
-                    } else {
+                    } 
+                    else {
                         $object.css({backgroundColor: "#ffb848"});
                         $object.animate({backgroundColor: "#eee"}, 700);
                     }
@@ -206,6 +209,8 @@
                     .mouseleave(function(){
                         $(this).css({backgroundColor: "#eee"});
                     }); 
+
+                    self.markTranslatedOptions();
 
                     $current_div.find('.apply').css('display', 'none');
                     $current_div.find('.update').css('display', 'inline-block');
@@ -219,9 +224,15 @@
          *    If custom animation exists then use it.
          */
         customAddAnimation: function() {
+            var animName = this.options.addAnimation,
+                animSpeed = this.options.addAnimationSpeed,
+                animationNames = ["slideToggle","fadeToggle"];
 
             if($.isFunction(this.options.addAnimation)){
                 $.fn["customAnimation"] = this.options.addAnimation;
+            } 
+            else if($.inArray(this.options.addAnimation , animationNames) != -1){
+                $.fn["customAnimation"] = function() { this[animName](0); return this[animName](animSpeed)};
             }
          },
 
@@ -311,6 +322,7 @@
                         $current_div = $main.parent();
                         $current_div.removeClass('show');
                         $(this).parent().remove();
+                        self.markTranslatedOptions();
                     }
                 });
             });
@@ -357,6 +369,15 @@
                 }
             });
             
+        },
+
+        markTranslatedOptions: function() {
+            var $thisElementParent = $(this.element).parent();
+            $thisElementParent.find("select option").removeClass("translated");
+
+            $thisElementParent.find(".language-tabs").children("span").each(function(k,v){
+                $thisElementParent.find("select option[value='" + $(v).attr("id") + "']").addClass("translated");
+            });
         }
 
     };
