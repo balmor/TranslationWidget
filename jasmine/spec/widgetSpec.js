@@ -75,5 +75,25 @@ describe("Translation fields widget", function() {
             expect(languageTabsContainer).toBeEmpty();
         });
     });
+
+    describe("User can change translation.", function() {
+
+        it("Should update translation", function() {
+            var openTranslation = $base.prev('.open-translation').trigger("click");
+
+            // add polish translation
+            $base.parent().find(".select-language").val("PL").change(); //select PL
+            $base.parent().find(".m-wrap.new-word").val("Tekst po polsku"); // add translation
+            $base.parent().find(".apply").trigger("click"); // click the button
+            $("body").trigger("click"); // click the button
+
+            $base.parent().find("#PL").trigger("click").end().find(".translated").val("I was updated!");
+            $base.parent().find(".update").trigger("click");
+
+            var updatedLanguageValue = $base.parent().find("#PL > input").val();
+
+            expect(updatedLanguageValue).toBe("I was updated!");
+        });
+    });
 });
 
