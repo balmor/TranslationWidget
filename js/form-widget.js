@@ -9,14 +9,21 @@
  *
  */
 
-
 ;(function ( $, window, document, undefined ) {
 
     /** @constructor */
     var pluginName = "translationFields",
         defaults = {
             inputNamePrefix: "",
-            removeText: "Delete this translation?"
+            removeText: "Delete this translation?",
+            languages: {
+                "select": "Select language",
+                "PL": "Polish",
+                "EN": "English",
+                "FR": "French",
+                "ES": "Spanish",
+                "DE": "German"
+            }
         };
 
     // The actual plugin constructor
@@ -38,13 +45,13 @@
 
             this.generalStart();
             this.makeSelectLang();
-            this.new_click();
-            this.update_click();
-            this.lang_click();
-            this.remove_click();
-            this.update_click();
-            this.option_changed();
-            this.apply_click();
+            this.newClick();
+            this.updateClick();
+            this.langClick();
+            this.removeClick();
+            this.updateClick();
+            this.optionChanged();
+            this.applyClick();
 
         },
 
@@ -100,7 +107,7 @@
         /**
          *    Bind click event to "new translation" button. It show/hide elements.
          */
-        new_click: function() {
+        newClick: function() {
 
             $thisElement.prev().on('click', function () {
                 
@@ -131,10 +138,11 @@
  
             });
         },
+
         /**
          *    Bind click event to "update" button. It show/hide elements and updates the hidden input.
          */
-        update_click: function() {
+        updateClick: function() {
 
             var self = this;
 
@@ -156,10 +164,11 @@
                 }                
             });
         },
+
         /**
          *    Bind click event to "apply" button. It creates new "translation badge".
          */
-        apply_click: function() {
+        applyClick: function() {
 
             var $applyBtn = $(this.element).next().find('.apply');
 
@@ -201,7 +210,7 @@
         /**
          *    Shows translation body for existing language badge.
          */
-        lang_click: function() {
+        langClick: function() {
 
             var $langTabBtn = $(this.element).nextAll(".language-tabs");
 
@@ -277,7 +286,8 @@
         /**
          *    Removes the translation for clicked language.
          */
-        remove_click: function() {
+        removeClick: function() {
+
 
             var self = this;
 
@@ -297,7 +307,7 @@
         /**
          *    It shows the translation for picked language from select.
          */
-        option_changed: function() {
+        optionChanged: function() {
 
             $selectForm = $(this.element).next().find('.select-language');
 
