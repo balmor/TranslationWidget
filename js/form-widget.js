@@ -261,14 +261,8 @@
             var items = [];
 
             // Simple data for select
-            var data = {
-                "select": "Select language",
-                "PL": "Polish",
-                "EN": "English",
-                "FR": "French",
-                "ES": "Spanish",
-                "DE": "German"
-            }
+            var data = { "select": "Select language" };
+                data = $.extend(data, this.options.languages);
 
             $thisElement.next().children('.translation-content').prepend(sTranslate);
 
