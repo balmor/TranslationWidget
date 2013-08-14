@@ -99,7 +99,19 @@
     <script src="js/form-widget.js" type="text/javascript" ></script>
 
     <script>
-        $('.lang-translation').translationFields();
+
+        $('.lang-translation').translationFields(
+            { // add custom animation
+                // addAnimation: function(){
+                    // return this.css({backgroundColor:"#FFF", position: "relative", top: -25})
+                               // .animate({backgroundColor: "#2be", top: 0}, 500).animate({backgroundColor: "#eee"},200);
+                // }
+
+                // add slideToggle or fadeToggle
+                // addAnimation: "fadeToggle"
+                // addAnimationSpeed: 2000
+            }
+        );
     </script>   
 
 </body>

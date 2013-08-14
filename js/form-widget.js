@@ -23,7 +23,9 @@
                 "FR": "French",
                 "ES": "Spanish",
                 "DE": "German"
-            }
+            },
+            addAnimation: "",
+            addAnimationSpeed: 500
         };
 
     // The actual plugin constructor
@@ -52,6 +54,7 @@
             this.updateClick();
             this.optionChanged();
             this.applyClick();
+            this.markTranslatedOptions();
 
         },
 
@@ -65,6 +68,7 @@
             });
 
             this.setInputName();
+            this.customAddAnimation();
             $thisElement.wrap($wrapBox);
             $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
             $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><textarea class="m-wrap translated" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
@@ -170,7 +174,8 @@
          */
         applyClick: function() {
 
-            var $applyBtn = $(this.element).next().find('.apply');
+            var $applyBtn = $(this.element).next().find('.apply'),
+                self = this;
 
             $applyBtn.on('click', function(e) {
 
@@ -188,8 +193,14 @@
                     translationBadgeBody += '<input class="m-wrap" type="hidden" name="' + name + '[' + $selected + ']" value="' + translation + '"/>';
                     translationBadgeBody += '</span>';
                     $object = $(translationBadgeBody).appendTo($current_div.find('.language-tabs'));
-                    $object.css({backgroundColor: "#ffb848"});
-                    $object.animate({backgroundColor: "#eee"}, 700);
+
+                    if($.isFunction($object.customAnimation)){
+                        $object.customAnimation();
+                    } 
+                    else {
+                        $object.css({backgroundColor: "#ffb848"});
+                        $object.animate({backgroundColor: "#eee"}, 700);
+                    }
 
                     $object
                     .mouseover(function(){
@@ -199,6 +210,8 @@
                         $(this).css({backgroundColor: "#eee"});
                     }); 
 
+                    self.markTranslatedOptions();
+
                     $current_div.find('.apply').css('display', 'none');
                     $current_div.find('.update').css('display', 'inline-block');
                     $current_div.children('.open-translation').removeClass('open');
@@ -207,6 +220,22 @@
             });
             
         },
+        /**
+         *    If custom animation exists then use it.
+         */
+        customAddAnimation: function() {
+            var animName = this.options.addAnimation,
+                animSpeed = this.options.addAnimationSpeed,
+                animationNames = ["slideToggle","fadeToggle"];
+
+            if($.isFunction(this.options.addAnimation)){
+                $.fn["customAnimation"] = this.options.addAnimation;
+            } 
+            else if($.inArray(this.options.addAnimation , animationNames) != -1){
+                $.fn["customAnimation"] = function() { this[animName](0); return this[animName](animSpeed)};
+            }
+         },
+
         /**
          *    Shows translation body for existing language badge.
          */
@@ -293,6 +322,7 @@
                         $current_div = $main.parent();
                         $current_div.removeClass('show');
                         $(this).parent().remove();
+                        self.markTranslatedOptions();
                     }
                 });
             });
@@ -339,6 +369,15 @@
                 }
             });
             
+        },
+
+        markTranslatedOptions: function() {
+            var $thisElementParent = $(this.element).parent();
+            $thisElementParent.find("select option").removeClass("translated");
+
+            $thisElementParent.find(".language-tabs").children("span").each(function(k,v){
+                $thisElementParent.find("select option[value='" + $(v).attr("id") + "']").addClass("translated");
+            });
         }
 
     };
