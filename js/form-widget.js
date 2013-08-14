@@ -8,14 +8,21 @@
  *
  */
 
-
 ;(function ( $, window, document, undefined ) {
 
     /** @constructor */
     var pluginName = "formWidget",
         defaults = {
             inputNamePrefix: "",
-            removeText: "Delete this translation?"
+            removeText: "Delete this translation?",
+            languages: {
+                "select": "Select language",
+                "PL": "Polish",
+                "EN": "English",
+                "FR": "French",
+                "ES": "Spanish",
+                "DE": "German"
+            }
         };
 
     // The actual plugin constructor
@@ -37,13 +44,13 @@
 
             this.generalStart();
             this.makeSelectLang();
-            this.new_click();
-            this.update_click();
-            this.lang_click();
-            this.remove_click();
-            this.update_click();
-            this.option_changed();
-            this.apply_click();
+            this.newClick();
+            this.updateClick();
+            this.langClick();
+            this.removeClick();
+            this.updateClick();
+            this.optionChanged();
+            this.applyClick();
 
         },
 
@@ -94,7 +101,7 @@
             return langTab;
         },
 
-        new_click: function() {
+        newClick: function() {
 
             $thisElement.prev().on('click', function () {
                 
@@ -127,7 +134,7 @@
             });
         },
 
-        update_click: function() {
+        updateClick: function() {
 
             var $self = this;
 
@@ -154,7 +161,7 @@
             });
         },
 
-        apply_click: function() {
+        applyClick: function() {
             //input name!!!
 
             $self = this;
@@ -199,7 +206,7 @@
             
         },
 
-        lang_click: function() {
+        langClick: function() {
 
             var $self = this;
 
@@ -272,7 +279,7 @@
             $selectForm.append(items);
 
         },
-        remove_click: function() {
+        removeClick: function() {
 
             var $self = this;
 
@@ -291,7 +298,7 @@
             });
             
         },
-        option_changed: function() {
+        optionChanged: function() {
 
             $selectForm = $(this.element).next().find('.select-language');
 
