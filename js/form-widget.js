@@ -55,6 +55,7 @@
             this.optionChanged();
             this.applyClick();
             this.markTranslatedOptions();
+            this.toggleTranslationInput();
 
         },
 
@@ -81,6 +82,7 @@
 
             $('body').click(function() {
                 $allFormTranslation.removeClass('show').find('.open-translation, .chosen-language').removeClass('open');
+
             });
             
             $allFormTranslation.click(function(e){
@@ -113,15 +115,17 @@
          */
         newClick: function() {
 
+            var self = this;
             $thisElement.prev().on('click', function () {
                 
-                var $this = $(this),
+                var $this        = $(this),
                     $current_div = $this.parent();
 
                 $current_div.find('.chosen-language').removeClass('open');
                 $this.toggleClass('open');
 
                 if ($this.hasClass('open')) {
+                    self.toggleTranslationInput();
 
                     $current_div.find('.update').css('display', 'none');
                     $current_div.find('.apply').css('display', 'inline-block');
@@ -139,7 +143,8 @@
                     } else {
                         $current_div.removeClass('show');
                     }
- 
+
+                    self.toggleTranslationInput();
             });
         },
 
@@ -333,6 +338,7 @@
          */
         optionChanged: function() {
 
+            var self = this;
             $selectForm = $(this.element).next().find('.select-language');
 
             $selectForm.on('change', function() {
@@ -367,10 +373,14 @@
                         $input = $current_div.find('.language-tabs span[id=' + $selected + ']').children('input');
                         $current_div.find('.current-language .translated').css('display', 'inline-block').html($input.val()).val($input.val());
                 }
+            self.toggleTranslationInput();
             });
+
             
         },
-
+        /**
+         *    It marks (add class translated) option element in select if it's translated.
+         */
         markTranslatedOptions: function() {
             var $thisElementParent = $(this.element).parent();
             $thisElementParent.find("select option").removeClass("translated");
@@ -378,6 +388,20 @@
             $thisElementParent.find(".language-tabs").children("span").each(function(k,v){
                 $thisElementParent.find("select option[value='" + $(v).attr("id") + "']").addClass("translated");
             });
+        },
+        /**
+         *    It hide/show textarea to pass translation.
+         *    Depends on select. If a lang is seleted - show it.
+         */
+        toggleTranslationInput: function() {
+            var $thisElementParent = $(this.element).parent();
+            
+            if($thisElementParent.find(".select-language").val() === "select") {
+                $thisElementParent.find(".m-wrap.new-word").addClass("hidden").siblings(".apply").addClass("hidden");
+            }
+            else {
+                $thisElementParent.find(".m-wrap.new-word").removeClass("hidden").siblings(".apply").removeClass("hidden");
+            }
         }
 
     };
