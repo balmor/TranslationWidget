@@ -217,6 +217,9 @@
 
                     self.markTranslatedOptions();
 
+					$current_div.find('.current-language .new-word').css('display', 'none');
+					$current_div.find('.current-language .translated').css('display', 'inline-block');
+					$current_div.find('.current-language .translated').html(translation).val(translation);
                     $current_div.find('.apply').css('display', 'none');
                     $current_div.find('.update').css('display', 'inline-block');
                     $current_div.children('.open-translation').removeClass('open');
