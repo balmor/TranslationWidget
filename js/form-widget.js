@@ -15,7 +15,13 @@
     var pluginName = "translationFields",
         defaults = {
             inputNamePrefix: "",
-            removeText: "Delete this translation?",
+            confirmBox: {
+                yesText: "Yes, delete",
+                noText: "No, go away!",
+                infoMessage: 'Are you sure ?',
+                hText: 'Confirm your request',
+                outerClick: false
+            },
             languages: {
                 "select": "Select language",
                 "PL": "Polish",
@@ -135,7 +141,7 @@
                     $current_div.find('.current-language .translated').css('display', 'none');
 
                     $('.form-translation').each(function() {
-                    if ($(this).hasClass('show')) {
+                    if ($(this).hasClass('show') ){
                         $(this).removeClass('show');
                     }
                     });
@@ -314,23 +320,82 @@
             $selectForm.append(items);
 
         },
+
+        createConfirmButtons: function() {
+
+            buttonYes = $('<a />', {
+                "class" : "button yes",
+                "id" : "removeYes",
+                "href" : "#"
+            }).text(this.options.confirmBox.yesText);
+
+            buttonNo = $('<a />', {
+                "class" : "button no",
+                "id" : "removeNo",
+                "href" : "#"
+            }).text(this.options.confirmBox.noText);
+
+            return buttonYes;
+            return buttonNo;
+        },
+
         /**
+         *    Create content HTML for confirm box
+         */
+
+        createConfirmBoxContent: function() {
+            
+            containerConfirmOverlay = $('<div id="confirmOverlay"><div id="confirmBox"><h1>'+ this.options.confirmBox.hText +'</h1><p>'+ this.options.confirmBox.infoMessage +'</p><div id="confirmButtons"></div></div></div>');
+
+        },
+
+         /**
          *    Removes the translation for clicked language.
          */
         removeClick: function() {
 
-
             var self = this;
 
             $(function () {
+
                $(self.element).next().next().on('click', '.remove', function(e) {
+
                     e.preventDefault();
-                    if (confirm(self.options.removeText)) {
-                        $main = $(this).parent().parent().siblings('input');
-                        $current_div = $main.parent();
+                    self.createConfirmBoxContent();
+                    self.createConfirmButtons();
+
+                    $(containerConfirmOverlay).hide().appendTo('body').fadeIn();
+
+                    buttonYes.appendTo('#confirmButtons');
+                    buttonNo.appendTo('#confirmButtons');
+
+                    $main = $(this).parent().parent().siblings('input');
+                    $current_div = $main.parent();
+
+                    itemToDelete = $(this).parent();
+
+
+                    $('#confirmButtons').on('click', '#removeYes', function(e) {
+                        e.preventDefault();
+                        itemToDelete.remove();
                         $current_div.removeClass('show');
-                        $(this).parent().remove();
+                        $('#confirmOverlay').fadeOut().remove();
                         self.markTranslatedOptions();
+                    });
+                    $('#confirmButtons').on('click', '#removeNo', function(e) {
+                        e.preventDefault();
+                        $('#confirmOverlay').fadeOut().remove();
+                    });
+                    
+                    if(self.options.confirmBox.outerClick == true) {
+                        $('#confirmBox').on('click', function(e) {
+                            e.stopPropagation();
+                            return false;
+                        });
+
+                        $('body').on('click', function(e) {
+                            $('#confirmOverlay').fadeOut().remove();
+                        });
                     }
                 });
             });

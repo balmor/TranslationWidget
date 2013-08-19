@@ -67,9 +67,9 @@ describe("Translation fields widget", function() {
             $base.parent().find(".m-wrap.new-word").val("Tekst po polsku"); // add translation
             $base.parent().find(".apply").trigger("click"); // click the button
 
-            $wi.data("plugin_translationFields").options.removeText = "PRESS OK";
-            var removeBadge = $base.parent().find(".remove");
-                removeBadge.trigger("click");
+            $base.parent().find("#PL .remove").trigger("click"); // click remove button
+            $("body").find("#removeYes").trigger("click"); // confirm
+
 
             var languageTabsContainer = $base.parent().find(".language-tabs");
             expect(languageTabsContainer).toBeEmpty();
@@ -83,16 +83,17 @@ describe("Translation fields widget", function() {
 
             // add polish translation
             $base.parent().find(".select-language").val("PL").change(); //select PL
-            $base.parent().find(".m-wrap.new-word").val("Tekst po polsku"); // add translation
+            $base.parent().find(".m-wrap.new-word").val("Poland"); // add translation
             $base.parent().find(".apply").trigger("click"); // click the button
             $("body").trigger("click"); // click the button
 
-            $base.parent().find("#PL").trigger("click").end().find(".translated").val("I was updated!");
+            $base.parent().find("#PL").trigger("click");
+            $base.parent().find(".current-language .translated").val('Zmieniony tekst polski');
             $base.parent().find(".update").trigger("click");
 
             var updatedLanguageValue = $base.parent().find("#PL > input").val();
 
-            expect(updatedLanguageValue).toBe("I was updated!");
+            expect(updatedLanguageValue).toBe("Zmieniony tekst polski");
         });
     });
 });
