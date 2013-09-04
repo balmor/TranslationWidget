@@ -31,7 +31,7 @@
                 "DE": "German"
             },
             addAnimation: "",
-            addAnimationSpeed: 500
+            addAnimationSpeed: 700
         };
 
     // The actual plugin constructor
@@ -210,7 +210,7 @@
                     } 
                     else {
                         $object.css({backgroundColor: "#ffb848"});
-                        $object.animate({backgroundColor: "#eee"}, 700);
+                        $object.animate({backgroundColor: "#eee"}, self.options.addAnimationSpeed);
                     }
 
                     $object
