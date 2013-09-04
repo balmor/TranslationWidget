@@ -260,7 +260,10 @@
             $(function () {
                 $langTabBtn.unbind('click').on('click', '.chosen-language', function() {
 
-                    $current_div = $(this).parent().parent();
+                    $this = $(this);
+                    if($this.hasClass("removed")) return;
+
+                    $current_div = $this.parent().parent();
                     $current_div.children('.open-translation').removeClass('open');
                     $(this).siblings().removeClass('open');
                     $(this).toggleClass('open');
@@ -358,9 +361,15 @@
 
             $(function () {
 
-               $(self.element).next().next().on('click', '.remove', function(e) {
+               $removeIcon = $(self.element);
+               $removeIcon.next().next().on('click', '.remove', function(e) {
 
                     e.preventDefault();
+                    this.blur();
+                    itemToDelete = $(this).parent();
+
+                    if(itemToDelete.hasClass("removed")) return;
+                    
                     self.createConfirmBoxContent();
                     self.createConfirmButtons();
 
@@ -372,15 +381,18 @@
                     $main = $(this).parent().parent().siblings('input');
                     $current_div = $main.parent();
 
-                    itemToDelete = $(this).parent();
 
 
                     $('#confirmButtons').on('click', '#removeYes', function(e) {
+                        if(itemToDelete.hasClass("removed")) return;
                         e.preventDefault();
-                        itemToDelete.remove();
+                        // itemToDelete.remove(); // replace it with a nice animejszyn :D
+                        itemToDelete.addClass("removed").fadeOut(10000, function() {
+                            itemToDelete.remove();
+                        });
+                        self.markTranslatedOptions();
                         $current_div.removeClass('show');
                         $('#confirmOverlay').fadeOut().remove();
-                        self.markTranslatedOptions();
                     });
                     $('#confirmButtons').on('click', '#removeNo', function(e) {
                         e.preventDefault();
@@ -456,9 +468,10 @@
             var $thisElementParent = $(this.element).parent();
             $thisElementParent.find("select option").removeClass("translated");
 
-            $thisElementParent.find(".language-tabs").children("span").each(function(k,v){
+            $thisElementParent.find(".language-tabs").children("span").not(".removed").each(function(k,v){
                 $thisElementParent.find("select option[value='" + $(v).attr("id") + "']").addClass("translated");
             });
+
         },
         /**
          *    It hide/show textarea to pass translation.
