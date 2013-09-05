@@ -105,5 +105,5 @@ If you want to add more languages or remove lines with languages that disturbes,
 
 dduda@nexway.com <br>
 mmaron@nexway.com <br>
-alas@gmail.com <br>
+Ariana Las \<ariana.las@gmail.com\> <br>
 kgorecki@nexway.com
