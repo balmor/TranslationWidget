@@ -209,7 +209,7 @@
                         $object.customAnimation();
                     } 
                     else {
-                        $object.css({backgroundColor: "#ffb848"});
+                        $object.css({backgroundColor: "#000"});
                         $object.animate({backgroundColor: "#eee"}, 700);
                     }
 
@@ -384,7 +384,8 @@
                     });
                     $('#confirmButtons').on('click', '#removeNo', function(e) {
                         e.preventDefault();
-                        $('#confirmOverlay').fadeOut().remove();
+                        $('#confirmOverlay').fadeOut();
+
                     });
                     
                     if(self.options.confirmBox.outerClick == true) {
@@ -397,6 +398,8 @@
                             $('#confirmOverlay').fadeOut().remove();
                         });
                     }
+
+
                 });
             });
             

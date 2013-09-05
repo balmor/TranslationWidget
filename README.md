@@ -57,35 +57,39 @@ Add as many `<div class="control-group">` with content as many words you want to
 ######To run Translation Fields just add 
 ```html
     <script>
-        $('.lang-translation').formWidget();
+        $('.lang-translation').translationFields();
     </script>
 ```
 
 ######Avaible options:
 ```html
     <script>
-        $('.lang-translation').formWidget({
-            inputNamePrefix: "translateWidget-",  // change name text
-            removeText: "Delete this translation?" // change remove text
-        });
-    </script>
-```
-
-* First check out list of languages which is placed in JS file (that is js/form-widget.js):
-
-```javascript
-var data = {
+        $('.lang-translation').translationFields({
+            inputNamePrefix: "widget-",                 // change name prefix text
+            confirmBox: {
+                yesText: "Tak, skasuj",                 // change text for delete translation
+                noText: "Nie, anuluj!",                 // change text for cancel delete translation
+                infoMessage: 'Jesteś pewny?',           // change info message for delete translation
+                hText: 'Confirm your request',          // change heading for delete translation
+                outerClick: false                       // switch true or false                    
+            },
+            // add or remove languages
+            languages: {
                 "select": "Select language",
                 "PL": "Polish",
                 "EN": "English",
                 "FR": "French",
                 "ES": "Spanish",
-                "DE": "German"
-            }
+                "DE": "German",
+                "JP": "Japanse",
+                "PT": "Portuguese",
+                "RT": "Russian"
+            },
+        });
+    </script>
 ```
-If you want to add more languages or remove lines with languages that disturbes, modify this list. It is TEMPORARY way to modify languages list. In the future it will change.
 
-* There is no need to modify anything else in .html and .js files.
+* We have some default list of languages which is placed in JS file (that is js/form-widget.js). If you want to add new languages or remove lines, add your options in your settings.
 
 ### How To Use
 
