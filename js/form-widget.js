@@ -31,7 +31,7 @@
                 "DE": "German"
             },
             addAnimation: "",
-            addAnimationSpeed: 500
+            addAnimationSpeed: 700
         };
 
     // The actual plugin constructor
@@ -209,8 +209,8 @@
                         $object.customAnimation();
                     } 
                     else {
-                        $object.css({backgroundColor: "#000"});
-                        $object.animate({backgroundColor: "#eee"}, 700);
+                        $object.css({backgroundColor: "#ffb848"});
+                        $object.animate({backgroundColor: "#eee"}, self.options.addAnimationSpeed);
                     }
 
                     $object
@@ -384,7 +384,7 @@
                     });
                     $('#confirmButtons').on('click', '#removeNo', function(e) {
                         e.preventDefault();
-                        $('#confirmOverlay').fadeOut();
+                        $('#confirmOverlay').fadeOut().remove();
 
                     });
                     
