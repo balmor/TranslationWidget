@@ -100,19 +100,30 @@
 
     <script>
 
-        $('.lang-translation').translationFields(
-            { // add custom animation
-                // addAnimation: function(){
-                    // return this.css({backgroundColor:"#FFF", position: "relative", top: -25})
-                               // .animate({backgroundColor: "#2be", top: 0}, 500).animate({backgroundColor: "#eee"},200);
-                // }
-
-                // add slideToggle or fadeToggle
-                // addAnimation: "fadeToggle"
-                // addAnimationSpeed: 2000
+        $('.lang-translation').translationFields({
+                inputNamePrefix: "widget-",                 // change name prefix text
+                confirmBox: {
+                    yesText: "Tak, skasuj",                 // change text for delete translation
+                    noText: "Nie, anuluj!",                 // change text for cancel delete translation
+                    infoMessage: 'Jesteś pewny?',           // change info message for delete translation
+                    hText: 'Confirm your request',          // change heading for delete translation
+                    outerClick: true                       // switch true or false                    
+                },
+                // add languages
+                languages: {
+                    "select": "Select language",
+                    "PL": "Polish",
+                    "EN": "English",
+                    "FR": "French",
+                    "ES": "Spanish",
+                    "DE": "German",
+                    "JP": "Japanse",
+                    "PT": "Portuguese",
+                    "RT": "Russian"
+                }
             }
         );
-    </script>   
+    </script>
 
 </body>
 </html>

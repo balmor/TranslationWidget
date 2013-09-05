@@ -20,7 +20,8 @@
                 noText: "No, go away!",
                 infoMessage: 'Are you sure ?',
                 hText: 'Confirm your request',
-                outerClick: false
+                outerClick: false,
+                useKeys: true
             },
             languages: {
                 "select": "Select language",
@@ -31,7 +32,7 @@
                 "DE": "German"
             },
             addAnimation: "",
-            addAnimationSpeed: 500
+            addAnimationSpeed: 700
         };
 
     // The actual plugin constructor
@@ -40,7 +41,7 @@
         this.countWidgetInstances = countWidgetInstances;
         $thisElement = $(this.element);
 
-        this.options = $.extend( {}, defaults, options );
+        this.options = $.extend( true, {}, defaults, options );
         this._defaults = defaults;
         this._name = pluginName;
 
@@ -76,6 +77,7 @@
 
             this.setInputName();
             this.customAddAnimation();
+            this.escKey();
             $thisElement.wrap($wrapBox);
             $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
             $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><textarea class="m-wrap translated" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
@@ -210,7 +212,7 @@
                     } 
                     else {
                         $object.css({backgroundColor: "#ffb848"});
-                        $object.animate({backgroundColor: "#eee"}, 700);
+                        $object.animate({backgroundColor: "#eee"}, self.options.addAnimationSpeed);
                     }
 
                     $object
@@ -260,7 +262,10 @@
             $(function () {
                 $langTabBtn.unbind('click').on('click', '.chosen-language', function() {
 
-                    $current_div = $(this).parent().parent();
+                    $this = $(this);
+                    if($this.hasClass("removed")) return;
+
+                    $current_div = $this.parent().parent();
                     $current_div.children('.open-translation').removeClass('open');
                     $(this).siblings().removeClass('open');
                     $(this).toggleClass('open');
@@ -358,9 +363,15 @@
 
             $(function () {
 
-               $(self.element).next().next().on('click', '.remove', function(e) {
+               $removeIcon = $(self.element);
+               $removeIcon.next().next().on('click', '.remove', function(e) {
 
                     e.preventDefault();
+                    this.blur();
+                    itemToDelete = $(this).parent();
+
+                    if(itemToDelete.hasClass("removed")) return;
+                    
                     self.createConfirmBoxContent();
                     self.createConfirmButtons();
 
@@ -369,22 +380,27 @@
                     buttonYes.appendTo('#confirmButtons');
                     buttonNo.appendTo('#confirmButtons');
 
+
                     $main = $(this).parent().parent().siblings('input');
                     $current_div = $main.parent();
 
-                    itemToDelete = $(this).parent();
 
 
                     $('#confirmButtons').on('click', '#removeYes', function(e) {
+                        if(itemToDelete.hasClass("removed")) return;
                         e.preventDefault();
-                        itemToDelete.remove();
+
+                        itemToDelete.addClass("removed").fadeOut(400, function() {
+                            itemToDelete.remove();
+                        });
+                        self.markTranslatedOptions();
                         $current_div.removeClass('show');
                         $('#confirmOverlay').fadeOut().remove();
-                        self.markTranslatedOptions();
                     });
                     $('#confirmButtons').on('click', '#removeNo', function(e) {
                         e.preventDefault();
                         $('#confirmOverlay').fadeOut().remove();
+
                     });
                     
                     if(self.options.confirmBox.outerClick == true) {
@@ -397,10 +413,26 @@
                             $('#confirmOverlay').fadeOut().remove();
                         });
                     }
+
+
                 });
             });
             
         },
+        escKey: function() {
+            if(this.options.confirmBox.useKeys) {
+                $(document).on('keypress', function(e) {
+                    if (e.keyCode == 27) {
+                        var $overlay = $("#confirmOverlay");
+                        if($overlay.length) {
+                            $overlay.remove();
+                        }
+                        
+                    }
+                });
+            }
+        },
+
         /**
          *    It shows the translation for picked language from select.
          */
@@ -453,9 +485,10 @@
             var $thisElementParent = $(this.element).parent();
             $thisElementParent.find("select option").removeClass("translated");
 
-            $thisElementParent.find(".language-tabs").children("span").each(function(k,v){
+            $thisElementParent.find(".language-tabs").children("span").not(".removed").each(function(k,v){
                 $thisElementParent.find("select option[value='" + $(v).attr("id") + "']").addClass("translated");
             });
+
         },
         /**
          *    It hide/show textarea to pass translation.
