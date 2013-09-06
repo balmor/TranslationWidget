@@ -20,7 +20,8 @@
                 noText: "No, go away!",
                 infoMessage: 'Are you sure ?',
                 hText: 'Confirm your request',
-                outerClick: false
+                outerClick: false,
+                useKeys: true
             },
             languages: {
                 "select": "Select language",
@@ -40,7 +41,7 @@
         this.countWidgetInstances = countWidgetInstances;
         $thisElement = $(this.element);
 
-        this.options = $.extend( {}, defaults, options );
+        this.options = $.extend( true, {}, defaults, options );
         this._defaults = defaults;
         this._name = pluginName;
 
@@ -76,6 +77,7 @@
 
             this.setInputName();
             this.customAddAnimation();
+            this.escKey();
             $thisElement.wrap($wrapBox);
             $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
             $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><textarea class="m-wrap translated" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
@@ -378,6 +380,7 @@
                     buttonYes.appendTo('#confirmButtons');
                     buttonNo.appendTo('#confirmButtons');
 
+
                     $main = $(this).parent().parent().siblings('input');
                     $current_div = $main.parent();
 
@@ -386,8 +389,8 @@
                     $('#confirmButtons').on('click', '#removeYes', function(e) {
                         if(itemToDelete.hasClass("removed")) return;
                         e.preventDefault();
-                        // itemToDelete.remove(); // replace it with a nice animejszyn :D
-                        itemToDelete.addClass("removed").fadeOut(10000, function() {
+
+                        itemToDelete.addClass("removed").fadeOut(400, function() {
                             itemToDelete.remove();
                         });
                         self.markTranslatedOptions();
@@ -416,6 +419,20 @@
             });
             
         },
+        escKey: function() {
+            if(this.options.confirmBox.useKeys) {
+                $(document).on('keypress', function(e) {
+                    if (e.keyCode == 27) {
+                        var $overlay = $("#confirmOverlay");
+                        if($overlay.length) {
+                            $overlay.remove();
+                        }
+                        
+                    }
+                });
+            }
+        },
+
         /**
          *    It shows the translation for picked language from select.
          */
