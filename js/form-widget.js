@@ -225,9 +225,9 @@
 
                     self.markTranslatedOptions();
 
-					$current_div.find('.current-language .new-word').css('display', 'none');
-					$current_div.find('.current-language .translated').css('display', 'inline-block');
-					$current_div.find('.current-language .translated').html(translation).val(translation);
+                    $current_div.find('.current-language .new-word').css('display', 'none');
+                    $current_div.find('.current-language .translated').css('display', 'inline-block');
+                    $current_div.find('.current-language .translated').html(translation).val(translation);
                     $current_div.find('.apply').css('display', 'none');
                     $current_div.find('.update').css('display', 'inline-block');
                     $current_div.children('.open-translation').removeClass('open');
@@ -354,6 +354,16 @@
 
         },
 
+        /**
+         *    Replace content when button was clicked
+         */
+
+        replaceButtonWithSpan: function() {
+
+            $('a#removeYes').replaceWith('<span class="button yes">' + this.options.confirmBox.yesText + '</span>');
+            $('a#removeNo').replaceWith('<span class="button no">' + this.options.confirmBox.noText + '</span>');
+        },
+
          /**
          *    Removes the translation for clicked language.
          */
@@ -384,9 +394,7 @@
                     $main = $(this).parent().parent().siblings('input');
                     $current_div = $main.parent();
 
-
-
-                    $('#confirmButtons').on('click', '#removeYes', function(e) {
+                    $('#confirmButtons').one('click', '#removeYes', function(e) {
                         if(itemToDelete.hasClass("removed")) return;
                         e.preventDefault();
 
@@ -395,11 +403,19 @@
                         });
                         self.markTranslatedOptions();
                         $current_div.removeClass('show');
-                        $('#confirmOverlay').fadeOut().remove();
+                        self.replaceButtonWithSpan();
+                        $('#confirmOverlay').fadeOut(function() {
+                            $(this).remove();
+                        });
+                        self.markTranslatedOptions();
                     });
-                    $('#confirmButtons').on('click', '#removeNo', function(e) {
+                    $('#confirmButtons').one('click', '#removeNo', function(e) {
                         e.preventDefault();
-                        $('#confirmOverlay').fadeOut().remove();
+
+                        self.replaceButtonWithSpan();
+                        $('#confirmOverlay').fadeOut(function() {
+                            $(this).remove();
+                        });
 
                     });
                     
@@ -410,7 +426,9 @@
                         });
 
                         $('body').on('click', function(e) {
-                            $('#confirmOverlay').fadeOut().remove();
+                            $('#confirmOverlay').fadeOut(function() {
+                                $(this).remove();
+                            });
                         });
                     }
 

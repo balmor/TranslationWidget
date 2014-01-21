@@ -61,17 +61,20 @@ describe("Translation fields widget", function() {
 
         it("after click should remove it", function() {
             var openTranslation = $base.prev('.open-translation').trigger("click");
+            var languageTabsContainer = $base.parent().find(".language-tabs");
 
             // add polish translation
-            $base.parent().find(".select-language").val("PL").change(); //select PL
-            $base.parent().find(".m-wrap.new-word").val("Tekst po polsku"); // add translation
-            $base.parent().find(".apply").trigger("click"); // click the button
+            
+            runs(function () {
+                $base.parent().find(".select-language").val("PL").change(); //select PL
+                $base.parent().find(".m-wrap.new-word").val("Tekst po polsku"); // add translation
+                $base.parent().find(".apply").trigger("click"); // click the button
 
-            $base.parent().find("#PL .remove").trigger("click"); // click remove button
-            $("body").find("#removeYes").trigger("click"); // confirm
+                $base.parent().find("#PL .remove").trigger("click"); // click remove button
+                $("body").find("#removeYes").trigger("click"); // confirm
+            });
 
-
-            var languageTabsContainer = $base.parent().find(".language-tabs");
+            waits(700); // because fadeout of removed label equal 400 and for sure we should wait more time for execute test
             expect(languageTabsContainer).toBeEmpty();
         });
     });
