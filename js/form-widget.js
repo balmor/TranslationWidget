@@ -33,6 +33,9 @@
             "FR": "French",
             "ES": "Spanish",
             "DE": "German"
+        },
+        existingData = {
+            // "EN": "Message" - use this data to create default existing data for example from database etc.
         }
 
     // The actual plugin constructor
@@ -43,9 +46,10 @@
 
         this._defaults = defaults;
         this._languages = languages;
+        this._exData = existingData;
         this._name = pluginName;
 
-        this.options = $.extend( true, {}, languages, defaults, options );
+        this.options = $.extend( true, {}, existingData, languages, defaults, options );
 
         this.init();
     }
@@ -65,6 +69,7 @@
             this.applyClick();
             this.markTranslatedOptions();
             this.toggleTranslationInput();
+            this.checkIfDataExist();
 
         },
 
@@ -343,6 +348,47 @@
                 $selectForm.append('<option value="' + key + '">' + value + '</option>');
                 
             });
+
+        }, 
+
+        /**
+         *    Check if data from database exist
+         */
+
+        checkIfDataExist: function() {
+            if (!$.isEmptyObject(this.options.existingData)) {
+                var data = this.options.existingData;
+            } else {
+                var data = this._exData;
+            }
+            self = this;
+            $.each(data, function(index, val) {
+                self.addExistingData(index, val);
+            });
+        },
+
+        /**
+         *    Add existing Data to content
+         */
+
+        addExistingData: function(label, message) {
+
+            var langTabContainer = $(this.element).next().next(),
+                inputName = $(this.element).attr('name');
+
+            $('<span id="'+ label +'" class="chosen-language"/>').text(label).appendTo(langTabContainer);
+            $('<a href="/" class="remove icon-remove" />').appendTo(langTabContainer.children('span#'+label));
+            $('<input type="hidden" class="m-wrap" name="'+name+'['+label+']" value="'+message+'"/>').appendTo(langTabContainer.children('span#'+label));
+
+            if($.isFunction(langTabContainer.customAnimation)){
+                langTabContainer.find('span').customAnimation();
+            } 
+            else {
+                langTabContainer.find('span').css({backgroundColor: "#ffb848"});
+                langTabContainer.find('span').animate({backgroundColor: "#eee"}, this.options.addAnimationSpeed);
+            }
+
+            this.markTranslatedOptions();
 
         },
 
