@@ -306,23 +306,16 @@
                 "tabindex" : 1
             });
             var $contentWidget = $('.translation-content');
-            var items = [];
-
-            // Simple data for select
-            var data = { "select": "Select language" };
-                data = $.extend(data, this.options.languages);
 
             $thisElement.next().children('.translation-content').prepend(sTranslate);
 
-            $.each(data, function(key, value) {
-                
-                items.push('<option value="' + key + '">' + value + '</option>');
-                
-            });
-
             var $selectForm = $thisElement.next().find('.select-language');
 
-            $selectForm.append(items);
+            $.each(this.options.languages, function(key, value) {
+                
+                $selectForm.append('<option value="' + key + '">' + value + '</option>');
+                
+            });
 
         },
 
