@@ -65,7 +65,16 @@
                             <input type="text" class="m-wrap large lang-translation" name="test3" disabled />
 
                         </div>
-                    </div>                                 
+                    </div>   
+
+                    <div class="control-group">
+                        <label class="control-label">Another Translation</label>
+                        <div class="controls">
+
+                            <input type="file" class="m-wrap large lang-translation" name="test3" disabled />
+
+                        </div>
+                    </div>                               
                 </form>
 
             </div>
@@ -103,7 +112,7 @@
         $('.lang-translation').translationFields({
                 inputNamePrefix: "widget-",                 // change name prefix text
                 confirmBox: {
-                    yesText: "Tak, skasuj",                 // change text for delete translation
+                    // yesText: "Tak, skasuj",                 // change text for delete translation
                     noText: "Nie, anuluj!",                 // change text for cancel delete translation
                     infoMessage: 'Jesteś pewny?',           // change info message for delete translation
                     hText: 'Confirm your request',          // change heading for delete translation
@@ -112,14 +121,7 @@
                 // add languages
                 languages: {
                     "select": "Select language",
-                    "PL": "Polish",
-                    "EN": "English",
-                    "FR": "French",
-                    "ES": "Spanish",
-                    "DE": "German",
-                    "JP": "Japanse",
-                    "PT": "Portuguese",
-                    "RT": "Russian"
+                    "PL": "Polish"
                 }
             }
         );

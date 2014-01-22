@@ -23,17 +23,17 @@
                 outerClick: false,
                 useKeys: true
             },
-            languages: {
-                "select": "Select language",
-                "PL": "Polish",
-                "EN": "English",
-                "FR": "French",
-                "ES": "Spanish",
-                "DE": "German"
-            },
             addAnimation: "",
             addAnimationSpeed: 700
-        };
+        },
+        languages = {
+            "select": "Select language",
+            "PL": "Polish",
+            "EN": "English",
+            "FR": "French",
+            "ES": "Spanish",
+            "DE": "German"
+        }
 
     // The actual plugin constructor
     function Plugin( element, options, countWidgetInstances ) {
@@ -41,9 +41,11 @@
         this.countWidgetInstances = countWidgetInstances;
         $thisElement = $(this.element);
 
-        this.options = $.extend( true, {}, defaults, options );
         this._defaults = defaults;
+        this._languages = languages;
         this._name = pluginName;
+
+        this.options = $.extend( true, {}, languages, defaults, options );
 
         this.init();
     }
@@ -74,6 +76,11 @@
             var $wrapBox = $('<div />', {
                 "class" : "input-prepend form-translation"
             });
+            var $replacementInput = $('<input />', {
+                'type': "text",
+                'class': "lang-translation replacement",
+                'disabled': "disabled"
+            });
 
             this.setInputName();
             this.customAddAnimation();
@@ -82,6 +89,20 @@
             $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
             $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><textarea class="m-wrap translated" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
             $thisElement.next().find('.apply').after('<span class="hide-border"></span>');
+
+            // console.log($(this))
+
+            if ($thisElement.attr('type') == 'file') {
+                $thisElement.css({
+                    "z-index": "-1",
+                });
+                $replacementInput.appendTo($thisElement.parent());
+                $thisElement.parent().children(':last').css('left', $thisElement.prev().outerWidth());
+
+                $thisElement.next().find('textarea').remove();
+                $('<input type="file"/>').prependTo($thisElement.next().find('.current-language'));
+
+            };
 
             var langTabs = this.langTab(),
                 $allFormTranslation = $('.form-translation');
@@ -311,7 +332,13 @@
 
             var $selectForm = $thisElement.next().find('.select-language');
 
-            $.each(this.options.languages, function(key, value) {
+            if ($.isEmptyObject(this.options.languages)) {
+                var lang = this._languages
+            } else {
+                var lang = this.options.languages
+            }
+
+            $.each(lang, function(key, value) {
                 
                 $selectForm.append('<option value="' + key + '">' + value + '</option>');
                 
@@ -507,12 +534,14 @@
          */
         toggleTranslationInput: function() {
             var $thisElementParent = $(this.element).parent();
-            
+
             if($thisElementParent.find(".select-language").val() === "select") {
                 $thisElementParent.find(".m-wrap.new-word").addClass("hidden").siblings(".apply").addClass("hidden");
+                $thisElementParent.find("input:file").hide().addClass("hidden").siblings(".apply").addClass("hidden");
             }
             else {
                 $thisElementParent.find(".m-wrap.new-word").removeClass("hidden").siblings(".apply").removeClass("hidden");
+                $thisElementParent.find("input:file").show().removeClass("hidden").siblings(".apply").removeClass("hidden");
             }
         }
 
