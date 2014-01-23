@@ -15,19 +15,19 @@
     var pluginName = "translationFields",
         defaults = {
             inputNamePrefix: "",
+            customSelectLabel: "Please Select",
             confirmBox: {
                 yesText: "Yes, delete",
                 noText: "No, go away!",
                 infoMessage: 'Are you sure ?',
                 hText: 'Confirm your request',
                 outerClick: false,
-                useKeys: true
+                useKeys: true,
             },
             addAnimation: "",
             addAnimationSpeed: 700
         },
         languages = {
-            "select": "Select language",
             "PL": "Polish",
             "EN": "English",
             "FR": "French",
@@ -70,6 +70,7 @@
             this.markTranslatedOptions();
             this.toggleTranslationInput();
             this.checkIfDataExist();
+            this.checkValidInput();
 
         },
 
@@ -83,9 +84,9 @@
             });
             var $replacementInput = $('<input />', {
                 'type': "text",
-                'class': "lang-translation replacement",
+                'class': $thisElement.attr('class'),
                 'disabled': "disabled"
-            });
+            }).addClass('replacement');
 
             this.setInputName();
             this.customAddAnimation();
@@ -95,18 +96,21 @@
             $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><textarea class="m-wrap translated" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
             $thisElement.next().find('.apply').after('<span class="hide-border"></span>');
 
-            // console.log($(this))
-
             if ($thisElement.attr('type') == 'file') {
                 $thisElement.css({
                     "z-index": "-1",
                 });
                 $replacementInput.appendTo($thisElement.parent());
-                $thisElement.parent().children(':last').css('left', $thisElement.prev().outerWidth());
 
                 $thisElement.next().find('textarea').remove();
-                $('<input type="file"/>').prependTo($thisElement.next().find('.current-language'));
-
+                $thisElement.parent().children(':last').css({
+                    'left': $thisElement.prev().outerWidth()
+                });
+                $thisElement.css({
+                    'width': $thisElement.parent().children(':last').outerWidth(),
+                    'height':  $thisElement.parent().children(':last').height(),
+                    'margin-left': "-1px"
+                });
             };
 
             var langTabs = this.langTab(),
@@ -225,6 +229,7 @@
                 $current_div = $main.parent();
                 $selected = $current_div.find('.select-language option:selected').attr('value');
                 translation = $current_div.find('.new-word').val();
+                fileValue = $thisElement.next().find(":file").val();
 
                 if ($selected != "select" && translation != "") {
                     translationBadgeBody = '<span id="' + $selected + '" class="chosen-language">' + $selected;
@@ -281,6 +286,21 @@
         /**
          *    Shows translation body for existing language badge.
          */
+        checkValidInput: function() {
+
+            var langTabs = $thisElement.next().next();
+
+            langTabs.on('DOMNodeInserted', function(event) {
+                if (event.target.nodeName == 'SPAN' && event.target.className == 'chosen-language') {
+                    event.currentTarget.parentNode.getElementsByTagName('input')[0].setAttribute('value', 'ok');
+                };
+            });
+            langTabs.on('DOMNodeRemoved', function(event) {
+                if (event.currentTarget.childNodes.length == 1) { // set 1 because event returns number of childNodes 
+                    event.currentTarget.parentNode.getElementsByTagName('input')[0].setAttribute('value', '');
+                };
+            });
+        },
         langClick: function() {
 
             var $langTabBtn = $(this.element).nextAll(".language-tabs");
@@ -338,10 +358,14 @@
             var $selectForm = $thisElement.next().find('.select-language');
 
             if ($.isEmptyObject(this.options.languages)) {
-                var lang = this._languages
+                var lang = this._languages,
+                    label = this._defaults.customSelectLabel;
             } else {
-                var lang = this.options.languages
+                var lang = this.options.languages,
+                    label = this.options.customSelectLabel;
             }
+
+            $selectForm.append('<option value="'+label+'">'+label+'</option>');
 
             $.each(lang, function(key, value) {
                 
@@ -580,14 +604,21 @@
          */
         toggleTranslationInput: function() {
             var $thisElementParent = $(this.element).parent();
+            $selectedLabel = $thisElement.next().find('option:selected').val();
 
             if($thisElementParent.find(".select-language").val() === "select") {
                 $thisElementParent.find(".m-wrap.new-word").addClass("hidden").siblings(".apply").addClass("hidden");
-                $thisElementParent.find("input:file").hide().addClass("hidden").siblings(".apply").addClass("hidden");
+                $thisElement.next().find("input:file").remove();
             }
             else {
                 $thisElementParent.find(".m-wrap.new-word").removeClass("hidden").siblings(".apply").removeClass("hidden");
-                $thisElementParent.find("input:file").show().removeClass("hidden").siblings(".apply").removeClass("hidden");
+                $thisElement.next().find('select').on('change', function(){
+                    var bb=$thisElement.next().find('.current-language input:file').attr('name');
+                    if(bb == $selectedLabel) {
+                        $thisElement.next().find('.current-language input:file').next(':file').remove();
+                    }
+                })
+                // $('<input type="file" name="'+$selectedLabel+'"/>').prependTo($thisElement.next().find('.current-language'));
             }
         }
 
