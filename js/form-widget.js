@@ -220,6 +220,12 @@
             var $applyBtn = $(this.element).next().find('.apply'),
                 self = this;
 
+            if (!$.isEmptyObject(this.options.customSelectLabel)) {
+                var customSelectLabel = this.options.customSelectLabel;
+            } else {
+                var customSelectLabel = this._defaults.customSelectLabel;
+            }
+
             $applyBtn.on('click', function(e) {
 
                 e.preventDefault();
@@ -231,7 +237,7 @@
                 translation = $current_div.find('.new-word').val();
                 fileValue = $thisElement.next().find(":file").val();
 
-                if ($selected != "select" && translation != "") {
+                if ($selected != customSelectLabel && translation != "") {
                     translationBadgeBody = '<span id="' + $selected + '" class="chosen-language">' + $selected;
                     translationBadgeBody += '<a href="/" class="remove icon-remove"></a>';
                     translationBadgeBody += '<input class="m-wrap" type="hidden" name="' + name + '[' + $selected + ']" value="' + translation + '"/>';
