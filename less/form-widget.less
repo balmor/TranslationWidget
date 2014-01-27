@@ -120,7 +120,20 @@ input.replacement {
                     float: left;
                     width: 190px;
                     padding: 0 6px;
-                    width: inherit !important;
+                    width: 102px !important;
+                }
+                .infoText {
+                    display: block;
+                    .clearfix;
+                    font-size: 14px;
+                    clear: left;
+                    margin-left: 10px;
+                    overflow: hidden;
+                    padding-bottom: 13px;
+                    width: 200px;
+                    &:empty {
+                        display: none;
+                    }
                 }
                 .m-wrap {
                     background: #fff;

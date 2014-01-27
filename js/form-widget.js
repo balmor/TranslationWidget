@@ -5,7 +5,7 @@
  * @author   Mariusz Maroń <mmaron@nexway.com>
  * @author   Damian Duda <dduda@nexway.com>
  *
- * version   0.2.0
+ * version   0.2.1
  *
  */
 
@@ -64,13 +64,13 @@
             this.updateClick();
             this.langClick();
             this.removeClick();
-            this.updateClick();
             this.optionChanged();
             this.applyClick();
             this.markTranslatedOptions();
             this.toggleTranslationInput();
             this.checkIfDataExist();
             this.checkValidInput();
+            this.fileInputChanged();
 
         },
 
@@ -82,11 +82,7 @@
             var $wrapBox = $('<div />', {
                 "class" : "input-prepend form-translation"
             });
-            var $replacementInput = $('<input />', {
-                'type': "text",
-                'class': $thisElement.attr('class'),
-                'readonly': "readonly"
-            }).addClass('replacement');
+            
 
             this.setInputName();
             this.customAddAnimation();
@@ -98,23 +94,7 @@
             $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><textarea class="m-wrap translated" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
             $thisElement.next().find('.apply').after('<span class="hide-border"></span>');
 
-            if ($thisElement.attr('type') == 'file') {
-                $('<input type="file" />').appendTo($thisElement.next().find('.current-language')).hide();
-                $thisElement.css({
-                    "z-index": "-1",
-                });
-                $replacementInput.appendTo($thisElement.parent());
 
-                $thisElement.next().find('textarea').remove();
-                $thisElement.parent().children(':last').css({
-                    'left': $thisElement.prev().outerWidth()
-                });
-                $thisElement.css({
-                    'width': $thisElement.parent().children(':last').outerWidth(),
-                    'height':  $thisElement.parent().children(':last').height(),
-                    'margin-left': "-1px"
-                });
-            };
 
             var langTabs = this.langTab(),
                 $allFormTranslation = $('.form-translation');
@@ -129,6 +109,37 @@
             $allFormTranslation.click(function(e){
                 e.stopPropagation();
             });
+
+            if ($thisElement.attr('type') == 'file') {
+
+                var $replacementInput = $('<input />', {
+                    'type': "text",
+                    'class': $thisElement.attr('class'),
+                    'readonly': "readonly"
+                }).addClass('replacement');
+
+                $('<input type="file" />').appendTo($thisElement.next().find('.current-language')).hide();
+                
+                $thisElement.css({
+                    "z-index": "-1",
+                });
+
+                $('<div />', {
+                    class: 'infoText'
+                }).appendTo($thisElement.next().find('.current-language'));
+                $replacementInput.appendTo($thisElement.parent());
+
+                $thisElement.next().find('textarea').remove();
+                $thisElement.parent().children(':last').css({
+                    'left': $thisElement.prev().outerWidth()
+                });
+                $thisElement.css({
+                    'width': $thisElement.parent().children(':last').outerWidth(),
+                    'height':  $thisElement.parent().children(':last').height(),
+                    'margin-left': "-1px"
+                });
+
+            };
 
             this.checkValidInput();
         },
@@ -154,6 +165,26 @@
         },
 
         /**
+        *     Get file name
+         */
+
+        getFileName: function() {
+            if ($thisElement.attr('type') == 'file') {
+                fileInputValue = $thisElement.next().find(':file').val();
+                return fileInputValue;
+            };
+        },
+
+        fileInputChanged: function() {
+            if ($thisElement.attr('type') == 'file') {
+                $thisElement.next().find(':file').on('change', function() {
+                    value = $(this).val();
+                    $(this).siblings('.infoText').text(value);
+                });     
+            }
+        },
+
+        /**
          *    Bind click event to "new translation" button. It show/hide elements.
          */
         newClick: function() {
@@ -163,6 +194,8 @@
                 
                 var $this        = $(this),
                     $current_div = $this.parent();
+
+                $thisElement.next().find('.infoText').text('')
 
                 $current_div.find('.chosen-language').removeClass('open');
                 $this.toggleClass('open');
@@ -174,9 +207,7 @@
                     $current_div.find('.apply').css('display', 'inline-block');
                     if ($thisElement.attr('type') == 'file') {
                         $thisElement.next().find('.current-language').children(':file').hide();
-                        $thisElement.next().find('select').on('change', function(event) {
-                            // $thisElement.next().find('.current-language').children(':file').val('');
-                        });
+
                     };
                     $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
                     $current_div.find('.select-language').children('option[value="select"]').attr('selected', true);
@@ -192,7 +223,6 @@
                     } else {
                         $current_div.removeClass('show');
                     }
-
                     self.toggleTranslationInput();
             });
         },
@@ -210,7 +240,7 @@
                 $current_div = $(this).parents(".form-translation");
                 $selected = $current_div.find('.select-language option[selected="selected"]').attr('value');
                            
-                if ($thisElement.attr('type') == 'file') {
+                if ($(this).closest('.form-translation').children('input').attr('type') == 'file') {
                     inputFile = $(this).siblings(':file').parent();
                     if ($thisElement.next().find('.current-language').children(':file').attr('name') == $selected) {
                         var spanId = $thisElement.next().next().children('span').attr('id');
@@ -227,18 +257,21 @@
                             $thisElement.next().find('.current-language').children(':file').val('');
                        
                     };
-                } 
-                inputValue = $(this).siblings('.translated').val();
-                if (inputValue.length > 0 ) {
-                    $object = $(self.element).parent().find('.language-tabs > span[id="' + $selected + '"]');
-                    $object.children('input').attr('value', inputValue);
-                    $object.css({backgroundColor: "#ffb848"});
-                    $object.animate({backgroundColor: "#eee"}, 700);
-                    $current_div.removeClass('show');
-                    $current_div.find(".chosen-language").removeClass("open");
-                }    
+                } else {
+                    inputVal = $(this).siblings('.translated').val();
+                    if (inputVal.length > 0 ) {
+                        $object = $(self.element).parent().find('.language-tabs > span[id="' + $selected + '"]');
+                        $object.children('input').attr('value', inputVal);
+                        $object.css({backgroundColor: "#ffb848"});
+                        $object.animate({backgroundColor: "#eee"}, 700);
+                        $current_div.removeClass('show');
+                        $current_div.find(".chosen-language").removeClass("open");
+                    }    
+                }   
+                
             });
         },
+
 
         /**
          *    Bind click event to "apply" button. It creates new "translation badge".
@@ -305,7 +338,9 @@
                                 .clone()
                                 .appendTo($thisElement.next().next().find('span[id="'+$selected+'"]'))
                                 .hide();
+
                             $thisElement.next().find('.current-language').children(':file').val('');
+                            $thisElement.next().find('.fileInfo').text('');
                         };
                     };
                 }
@@ -350,9 +385,10 @@
 
             var $langTabBtn = $(this.element).nextAll(".language-tabs");
 
+            var self = this;
+
             $(function () {
                 $langTabBtn.unbind('click').on('click', '.chosen-language', function() {
-
                     $this = $(this);
                     if($this.hasClass("removed")) return;
 
@@ -379,11 +415,20 @@
                                 return;
                             }
                         });
-                        if ($thisElement.attr('type') == 'file') {
+                        if ($(this).closest('.form-translation').children(':file').attr('type') == 'file') {
 
                             $thisElement.next().find('.current-language').children(':file').remove();
-                            $thisElement.next().find('.current-language').append($(this).children(':file').clone().show());
+                            $thisElement.next().find('.current-language').append($(this).children('input:file').clone().show());
+
+                            self.getFileName();
+
+                            $thisElement.next().find('.infoText').text(fileInputValue).attr('title', fileInputValue);
+
+                            $thisElement.next().find('.infoText').insertAfter(
+                                $thisElement.next().find(':file')
+                            );
                         };
+                        self.fileInputChanged();
                         $current_div.addClass('show');
                     } else {
                         $current_div.removeClass('show');
@@ -625,11 +670,13 @@
 
 
                     if ($the_same == false) {
+
                         $current_div.find('.current-language .translated').css('display', 'none');
                         $current_div.find('.current-language .new-word').attr('value', '').attr('placeholder', 'Text to translate').css('display', 'inline-block');
                         $current_div.find('.current-language .new-word').focus();
                         if ($thisElement.attr('type') == 'file') {
                             $thisElement.next().find('.current-language').children(':file').show().attr('name', $selected).val('');
+                            $thisElement.next().find('.infoText').text('');
                         };
                     } else {
                         $current_div.find('.current-language .new-word').css('display', 'none');
@@ -638,6 +685,16 @@
                         if ($thisElement.attr('type') == 'file') {
                             $thisElement.next().find('.current-language').children(':file').remove();
                             $thisElement.next().find('.current-language').append($thisElement.next().next().find('#'+$selected).children(':file').clone().show());
+
+                            self.getFileName();
+
+                            $thisElement.next().find('.infoText').text(fileInputValue).attr('title', fileInputValue);
+
+                            $thisElement.next().find('.infoText').insertAfter(
+                                $thisElement.next().find(':file')
+                            );
+
+                            self.fileInputChanged();
                         };
                 }
             self.toggleTranslationInput();
@@ -699,9 +756,3 @@
     };
 
 })( jQuery, window, document );
-
-
-
-// new click - select lang: add input file with id of option selected
-// add Click: clone input to span with id of input selected
-// click again on selected lang: remove input from ctn and clone input from labels with current id of lang
