@@ -5,7 +5,7 @@
  * @author   Mariusz Maroń <mmaron@nexway.com>
  * @author   Damian Duda <dduda@nexway.com>
  *
- * version   0.1.4
+ * version   0.2.0
  *
  */
 
@@ -85,18 +85,21 @@
             var $replacementInput = $('<input />', {
                 'type': "text",
                 'class': $thisElement.attr('class'),
-                'disabled': "disabled"
+                'readonly': "readonly"
             }).addClass('replacement');
 
             this.setInputName();
             this.customAddAnimation();
             this.escKey();
+            this.checkValidInput();
+
             $thisElement.wrap($wrapBox);
             $thisElement.before('<span class="add-on open-translation"><i class="icon-reorder"></i><i class="icon-caret-up"></i></span>');
             $thisElement.after('<div class="translation-options"><div class="translation-content"><div class="current-language"><textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea><textarea class="m-wrap translated" placeholder="Text to translate" rows="1"></textarea><a href="#" class="btn blue apply">Apply</a><a href="#" class="btn blue update">Update</a></div></div></div>');
             $thisElement.next().find('.apply').after('<span class="hide-border"></span>');
 
             if ($thisElement.attr('type') == 'file') {
+                $('<input type="file" />').appendTo($thisElement.next().find('.current-language')).hide();
                 $thisElement.css({
                     "z-index": "-1",
                 });
@@ -126,6 +129,8 @@
             $allFormTranslation.click(function(e){
                 e.stopPropagation();
             });
+
+            this.checkValidInput();
         },
 
         /**
@@ -167,6 +172,12 @@
 
                     $current_div.find('.update').css('display', 'none');
                     $current_div.find('.apply').css('display', 'inline-block');
+                    if ($thisElement.attr('type') == 'file') {
+                        $thisElement.next().find('.current-language').children(':file').hide();
+                        $thisElement.next().find('select').on('change', function(event) {
+                            // $thisElement.next().find('.current-language').children(':file').val('');
+                        });
+                    };
                     $current_div.find('.select-language').children('option[selected="selected"]').attr('selected', false);
                     $current_div.find('.select-language').children('option[value="select"]').attr('selected', true);
                     $current_div.find('.current-language .new-word').val('').attr('placeholder', 'Text to translate').css('display', 'inline-block').focus().blur();
@@ -198,17 +209,34 @@
                 e.preventDefault();
                 $current_div = $(this).parents(".form-translation");
                 $selected = $current_div.find('.select-language option[selected="selected"]').attr('value');
-
+                           
+                if ($thisElement.attr('type') == 'file') {
+                    inputFile = $(this).siblings(':file').parent();
+                    if ($thisElement.next().find('.current-language').children(':file').attr('name') == $selected) {
+                        var spanId = $thisElement.next().next().children('span').attr('id');
+                        var selectedLang = $thisElement.next().find('select').children(':selected').val();
+                        
+                            $thisElement.next().next().find('#'+selectedLang).find(':file').remove();
+                            $thisElement.next().next().find('#'+selectedLang).append($thisElement
+                                .next()
+                                .find('.current-language')
+                                .children(':file')
+                                .clone().hide()
+                            );
+                            $thisElement.parent().removeClass('show');
+                            $thisElement.next().find('.current-language').children(':file').val('');
+                       
+                    };
+                } 
                 inputValue = $(this).siblings('.translated').val();
-
-                if (inputValue.length > 0) {
+                if (inputValue.length > 0 ) {
                     $object = $(self.element).parent().find('.language-tabs > span[id="' + $selected + '"]');
                     $object.children('input').attr('value', inputValue);
                     $object.css({backgroundColor: "#ffb848"});
                     $object.animate({backgroundColor: "#eee"}, 700);
                     $current_div.removeClass('show');
                     $current_div.find(".chosen-language").removeClass("open");
-                }                
+                }    
             });
         },
 
@@ -269,6 +297,17 @@
                     $current_div.find('.update').css('display', 'inline-block');
                     $current_div.children('.open-translation').removeClass('open');
                     $object.toggleClass('open');
+
+                    if ($thisElement.attr('type') == 'file') {
+                        if ($thisElement.next().find('.current-language').children(':file').attr('name') == $selected) {
+                            $thisElement.next().find('.current-language')
+                                .children(':file')
+                                .clone()
+                                .appendTo($thisElement.next().next().find('span[id="'+$selected+'"]'))
+                                .hide();
+                            $thisElement.next().find('.current-language').children(':file').val('');
+                        };
+                    };
                 }
             });
             
@@ -340,6 +379,11 @@
                                 return;
                             }
                         });
+                        if ($thisElement.attr('type') == 'file') {
+
+                            $thisElement.next().find('.current-language').children(':file').remove();
+                            $thisElement.next().find('.current-language').append($(this).children(':file').clone().show());
+                        };
                         $current_div.addClass('show');
                     } else {
                         $current_div.removeClass('show');
@@ -528,7 +572,6 @@
                         });
                     }
 
-
                 });
             });
             
@@ -556,6 +599,7 @@
             $selectForm = $(this.element).next().find('.select-language');
 
             $selectForm.on('change', function() {
+
                     $current_div = $(this).parent().parent().parent();
                     $current_div.find('.chosen-language').removeClass('open');
                     $current_div.children('.open-translate').toggleClass('open');
@@ -570,22 +614,31 @@
 
                     $current_div.find('.language-tabs').children('span').each(function() {
 
-                    if ($selected == $(this).attr('id')) {
-                        $current_div.find('.apply').css('display', 'none');
-                        $current_div.find('.update').css('display', 'inline-block');
-                        $the_same = true;
-                        return;
-                    }
+                        if ($selected == $(this).attr('id')) {
+                            $current_div.find('.apply').css('display', 'none');
+                            $current_div.find('.update').css('display', 'inline-block');
+
+                            $the_same = true;
+                            return;
+                        }
                     });
+
 
                     if ($the_same == false) {
                         $current_div.find('.current-language .translated').css('display', 'none');
                         $current_div.find('.current-language .new-word').attr('value', '').attr('placeholder', 'Text to translate').css('display', 'inline-block');
                         $current_div.find('.current-language .new-word').focus();
+                        if ($thisElement.attr('type') == 'file') {
+                            $thisElement.next().find('.current-language').children(':file').show().attr('name', $selected).val('');
+                        };
                     } else {
                         $current_div.find('.current-language .new-word').css('display', 'none');
                         $input = $current_div.find('.language-tabs span[id=' + $selected + ']').children('input');
                         $current_div.find('.current-language .translated').css('display', 'inline-block').html($input.val()).val($input.val());
+                        if ($thisElement.attr('type') == 'file') {
+                            $thisElement.next().find('.current-language').children(':file').remove();
+                            $thisElement.next().find('.current-language').append($thisElement.next().next().find('#'+$selected).children(':file').clone().show());
+                        };
                 }
             self.toggleTranslationInput();
             });
@@ -611,20 +664,24 @@
         toggleTranslationInput: function() {
             var $thisElementParent = $(this.element).parent();
             $selectedLabel = $thisElement.next().find('option:selected').val();
+            $currentLang = $thisElement.next().find('.current-language');
 
-            if($thisElementParent.find(".select-language").val() === "select") {
-                $thisElementParent.find(".m-wrap.new-word").addClass("hidden").siblings(".apply").addClass("hidden");
-                $thisElement.next().find("input:file").remove();
+            if (!$.isEmptyObject(this.options.customSelectLabel)) {
+                var customSelectLabel = this.options.customSelectLabel;
+            } else {
+                var customSelectLabel = this._defaults.customSelectLabel;
+            }
+
+            if($thisElementParent.find(".select-language").val() === customSelectLabel) {
+                $thisElementParent.find(".m-wrap.new-word").addClass("hidden");
+                $thisElementParent.find(".hide-border").siblings(".apply").addClass("hidden");
+                if ($thisElement.attr('type') == 'file') {
+                    $thisElement.next().find('.current-language').children(':file').hide().attr('name', '');
+                };
             }
             else {
-                $thisElementParent.find(".m-wrap.new-word").removeClass("hidden").siblings(".apply").removeClass("hidden");
-                $thisElement.next().find('select').on('change', function(){
-                    var bb=$thisElement.next().find('.current-language input:file').attr('name');
-                    if(bb == $selectedLabel) {
-                        $thisElement.next().find('.current-language input:file').next(':file').remove();
-                    }
-                })
-                // $('<input type="file" name="'+$selectedLabel+'"/>').prependTo($thisElement.next().find('.current-language'));
+                $thisElementParent.find(".m-wrap.new-word").removeClass("hidden");
+                $thisElementParent.find('.hide-border').siblings(".apply").removeClass("hidden");
             }
         }
 
@@ -642,3 +699,9 @@
     };
 
 })( jQuery, window, document );
+
+
+
+// new click - select lang: add input file with id of option selected
+// add Click: clone input to span with id of input selected
+// click again on selected lang: remove input from ctn and clone input from labels with current id of lang
