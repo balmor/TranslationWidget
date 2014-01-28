@@ -175,6 +175,12 @@
             };
         },
 
+        secureInput: function(text) {
+            text = text.replace('<script>', '');
+            text = text.replace('</script>', '');
+            return text;
+        },
+
         fileInputChanged: function() {
             if ($thisElement.attr('type') == 'file') {
                 $thisElement.next().find(':file').on('change', function() {
@@ -264,6 +270,7 @@
                 } 
                 if ($(this).closest('.form-translation').children('input').attr('type') == 'text') {
                     inputVal = $(this).siblings('.translated').val();
+                    inputVal = self.secureInput(inputVal);
                     if (inputVal.length > 0 ) {
                         $object.children('input').attr('value', inputVal);
                         $object.css({backgroundColor: "#ffb848"});
@@ -300,6 +307,7 @@
                 $current_div = $main.parent();
                 $selected = $current_div.find('.select-language option:selected').attr('value');
                 translation = $current_div.find('.new-word').val();
+                translation = self.secureInput(translation);
                 fileValue = $thisElement.next().find(":file").val();
 
                 if ($selected != customSelectLabel && translation != "") {
@@ -329,6 +337,7 @@
 
                     $current_div.find('.current-language .new-word').css('display', 'none');
                     $current_div.find('.current-language .translated').css('display', 'inline-block');
+                    
                     $current_div.find('.current-language .translated').html(translation).val(translation);
                     $current_div.find('.apply').css('display', 'none');
                     $current_div.find('.update').css('display', 'inline-block');
