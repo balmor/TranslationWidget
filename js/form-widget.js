@@ -239,13 +239,14 @@
                 e.preventDefault();
                 $current_div = $(this).parents(".form-translation");
                 $selected = $current_div.find('.select-language option[selected="selected"]').attr('value');
+                $object = $(self.element).parent().find('.language-tabs > span[id="' + $selected + '"]');
                            
                 if ($(this).closest('.form-translation').children('input').attr('type') == 'file') {
                     inputFile = $(this).siblings(':file').parent();
                     if ($thisElement.next().find('.current-language').children(':file').attr('name') == $selected) {
                         var spanId = $thisElement.next().next().children('span').attr('id');
                         var selectedLang = $thisElement.next().find('select').children(':selected').val();
-                        
+
                             $thisElement.next().next().find('#'+selectedLang).find(':file').remove();
                             $thisElement.next().next().find('#'+selectedLang).append($thisElement
                                 .next()
@@ -255,13 +256,15 @@
                             );
                             $thisElement.parent().removeClass('show');
                             $thisElement.next().find('.current-language').children(':file').val('');
+
+                            $object.css({backgroundColor: "#ffb848"});
+                            $object.animate({backgroundColor: "#eee"}, 700);
                        
                     };
                 } 
                 if ($(this).closest('.form-translation').children('input').attr('type') == 'text') {
                     inputVal = $(this).siblings('.translated').val();
                     if (inputVal.length > 0 ) {
-                        $object = $(self.element).parent().find('.language-tabs > span[id="' + $selected + '"]');
                         $object.children('input').attr('value', inputVal);
                         $object.css({backgroundColor: "#ffb848"});
                         $object.animate({backgroundColor: "#eee"}, 700);
@@ -340,7 +343,7 @@
                                 .appendTo($thisElement.next().next().find('span[id="'+$selected+'"]'))
                                 .hide();
 
-                            $thisElement.next().find('.current-language').children(':file').val('');
+                            // $thisElement.next().find('.current-language').children(':file').val('');
                             $thisElement.next().find('.fileInfo').text('');
                         };
                     };
