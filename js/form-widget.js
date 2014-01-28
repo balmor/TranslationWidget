@@ -257,7 +257,8 @@
                             $thisElement.next().find('.current-language').children(':file').val('');
                        
                     };
-                } else {
+                } 
+                if ($(this).closest('.form-translation').children('input').attr('type') == 'text') {
                     inputVal = $(this).siblings('.translated').val();
                     if (inputVal.length > 0 ) {
                         $object = $(self.element).parent().find('.language-tabs > span[id="' + $selected + '"]');
@@ -645,6 +646,9 @@
 
             $selectForm.on('change', function() {
 
+                    $(this).children('option').on('click', function() {
+                        $(this).siblings().attr('selected', false);
+                    });
                     $current_div = $(this).parent().parent().parent();
                     $current_div.find('.chosen-language').removeClass('open');
                     $current_div.children('.open-translate').toggleClass('open');
@@ -667,22 +671,26 @@
                             return;
                         }
                     });
+                    // console.log($(this));
 
 
                     if ($the_same == false) {
-
-                        $current_div.find('.current-language .translated').css('display', 'none');
-                        $current_div.find('.current-language .new-word').attr('value', '').attr('placeholder', 'Text to translate').css('display', 'inline-block');
-                        $current_div.find('.current-language .new-word').focus();
-                        if ($thisElement.attr('type') == 'file') {
+                        if ($(this).closest('.translation-options').prev().attr('type') == 'text') {
+                            $current_div.find('.current-language .translated').css('display', 'none');
+                            $current_div.find('.current-language .new-word').attr('value', '').attr('placeholder', 'Text to translate').css('display', 'inline-block');
+                            $current_div.find('.current-language .new-word').focus();
+                        }
+                        if ($(this).closest('.translation-options').prev().attr('type') == 'file') {
                             $thisElement.next().find('.current-language').children(':file').show().attr('name', $selected).val('');
                             $thisElement.next().find('.infoText').text('');
                         };
                     } else {
-                        $current_div.find('.current-language .new-word').css('display', 'none');
-                        $input = $current_div.find('.language-tabs span[id=' + $selected + ']').children('input');
-                        $current_div.find('.current-language .translated').css('display', 'inline-block').html($input.val()).val($input.val());
-                        if ($thisElement.attr('type') == 'file') {
+                        if ($(this).closest('.translation-options').prev().attr('type') == 'text') {
+                            $current_div.find('.current-language .new-word').css('display', 'none');
+                            $input = $current_div.find('.language-tabs span[id=' + $selected + ']').children('input');
+                            $current_div.find('.current-language .translated').css('display', 'inline-block').html($input.val()).val($input.val());
+                        }
+                        if ($(this).closest('.translation-options').prev().attr('type') == 'file') {
                             $thisElement.next().find('.current-language').children(':file').remove();
                             $thisElement.next().find('.current-language').append($thisElement.next().next().find('#'+$selected).children(':file').clone().show());
 
