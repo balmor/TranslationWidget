@@ -296,7 +296,7 @@
                 e.preventDefault();
 
                 $main = $(this).parents('.translation-options').siblings('input');
-                name = $main.attr('name');
+                name = $main.attr('id');
                 $current_div = $main.parent();
                 $selected = $current_div.find('.select-language option:selected').attr('value');
                 translation = $current_div.find('.new-word').val();
@@ -502,7 +502,7 @@
 
             $('<span id="'+ label +'" class="chosen-language"/>').text(label).appendTo(langTabContainer);
             $('<a href="/" class="remove icon-remove" />').appendTo(langTabContainer.children('span#'+label));
-            $('<input type="hidden" class="m-wrap" name="'+name+'['+label+']" value="'+message+'"/>').appendTo(langTabContainer.children('span#'+label));
+            $('<input type="hidden" class="m-wrap" name="'+$thisElement.attr('id')+'['+label+']" value="'+message+'"/>').appendTo(langTabContainer.children('span#'+label));
 
             if($.isFunction(langTabContainer.customAnimation)){
                 langTabContainer.find('span').customAnimation();
