@@ -1,0 +1,179 @@
+/*
+ * @author Damian Duda <dduda@nexway.com>
+ */
+
+// Bootstrap
+@import "bootstrap/bootstrap.less";
+@import "variables.less";
+@import "font-awesome.less";
+
+@import "form-widget.less";
+
+// ---GENERAL SYTLE---
+
+
+// MY SHORTCUTS
+
+// Apperance
+.appearance (@appearance: none) {
+    -webkit-appearance: @appearance;
+    -moz-appearance: @appearance;
+    -ms-appearance: @arguments;
+    -o-appearance: @arguments;
+    appearance: @appearance;
+}
+
+// TYPE
+
+html, body{ height:100%; }
+
+body {
+    background: @body-background-color;
+    color: @main-text-color;
+    font-family: @font-family-1;
+}
+
+.container {
+    max-width: @container-width;
+    *width: @container-width;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #fff;
+    margin: 0;
+}
+
+
+ul {
+    margin: 0;
+    list-style: none;
+}
+
+a {
+    color: @linkColor;
+    &:hover {
+        color: darken(@linkColor,10%);
+        text-decoration: none;
+    }
+}
+
+p {
+    margin: 0;
+}
+
+img {
+    max-width: none;
+}
+
+// FORM
+
+label {
+    color: #000;
+}
+
+input[type="text"], textarea {
+    background: #fff !important;
+    border: 1px solid #e5e5e5;
+    padding: 6px !important;
+    color: #333;  
+    border-radius: 0;
+    .box-shadow(none);
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    outline: 0;
+    vertical-align: top;
+
+    &.large {
+        width: 300px;
+    }
+
+
+
+    .placeholder(@placeholderText);
+
+    &:focus {
+        background: darken(#fff,10%);
+        .box-shadow(none);
+        .placeholder(darken(#fff,10%));
+    }    
+}
+
+.add-on > [class^="icon-"] {
+    margin-top: 5px;
+    margin-left: 3px;
+    line-height: 24px;
+}
+
+.add-on > .icon-caret-up {
+    line-height: 8px;
+}
+
+input[type="checkbox"] {
+    padding-top: 0;
+    margin-top: 0;
+}
+
+// LAYOUT
+
+body {
+
+    header {
+        padding: 25px 0;
+        background: #999;
+        text-align: center;
+        border-top: 2px solid rgba(255,255,255,.5);
+        border-bottom: 3px solid rgba(255,255,255,.4);
+
+        h1 {
+            font-size: 38px;
+            line-height: 38px;
+            letter-spacing: 1px;
+
+            span {
+                color: #e1e1e1;
+                font-size: 20px;
+                text-transform: none;
+                line-height: 38px;
+                vertical-align: top;
+                margin-left: 10px;
+            }
+        }
+    }
+
+    section {
+        background: #fff;
+        min-height: 600px;
+
+        .container {
+
+            .examples {
+                padding-top: 80px;
+            }
+        }
+    }
+
+    footer {
+        border-top: 1px dashed rgba(0,0,0,.1);
+        padding: 20px 0 40px;
+        color: #666;
+
+        .foot {
+            padding: 0 40px;
+
+            p {
+                text-shadow: @body-text-shadow;
+            }
+
+            h5 {
+                color: #666;
+                margin-bottom: 5px;
+            }    
+
+            .contact li {
+                color: #999;
+                text-shadow: none;
+            }
+        }
+    }
+}

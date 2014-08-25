@@ -1,0 +1,11 @@
+{
+  "name": "translation-widget",
+  "version": "0.0.0",
+  "dependencies": {
+    "bootstrap": "~3.2.0"
+  },
+  "devDependencies": {
+
+  },
+  "appPath": "app"
+}
