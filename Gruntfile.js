@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 
   // Configurable paths for the application
   var appConfig = {
-    app: require('./bower.json').appPath || 'app',
+    app: require('./bower.json').appPath || 'plugin',
     dist: 'dist'
   };
 
@@ -33,21 +33,28 @@ module.exports = function (grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
+      js: {
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+        tasks: ['newer:jshint:all'],
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
+      },
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'casperjs']
+        tasks: ['newer:jshint:test', 'karma']
       },
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
         tasks: ['newer:copy:styles', 'autoprefixer']
       },
       less: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.less'],
+        files: ['<%= yeoman.app %>/less/{,*/}*.less'],
         tasks: ['less']
       },
       coffee: {
         files: ['<%= yeoman.app %>/coffee/{,*/}*.coffee'],
-        tasks: ['coffee']
+        tasks: ['percolator']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -59,7 +66,6 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
-          '.tmp/styles/{,*/}*.less',
           '.tmp/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
@@ -214,29 +220,6 @@ module.exports = function (grunt) {
       }
     },
 
-    less: {
-      development: {
-        options: {
-          paths: ["<%= yeoman.app %>/styles"]
-        },
-        files: {
-          ".tmp/styles/translationWidget.css": "<%= yeoman.app %>/styles/translationWidget.less"
-        }
-      }
-    },
-
-    coffee: {
-      compile: {
-        options: {
-          join: true,
-          //bare: true
-        },
-        files: {
-          '.tmp/scripts/jquery.translationWidget.js': ['<%= yeoman.app %>/coffee/*.coffee'] // compile and concat into single file
-        }
-      }
-    },
-
     imagemin: {
       dist: {
         files: [{
@@ -289,7 +272,6 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'fonts/*'
           ]
@@ -315,12 +297,6 @@ module.exports = function (grunt) {
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
-      server: [
-        //'copy:styles'
-      ],
-      test: [
-        //'copy:styles'
-      ],
       dist: [
         'copy:styles',
         'imagemin',
@@ -328,15 +304,45 @@ module.exports = function (grunt) {
       ]
     },
 
-    // Test settings
-    casperjs: {
-      options: {
-        async: {
-          parallel: false
+    /*coffee: {
+      compileJoined: {
+         options: {
+           join: true
+         },
+         files: {
+           '.tmp/scripts/jq.translationWidget.js': ['<%= yeoman.app %>/coffee/*.coffee']
+         }
+       }
+    },*/
+
+    percolator: {
+      compile: {
+        source: '<%= yeoman.app %>/coffee/',
+        output: '.tmp/scripts/jq.translationWidget.js',
+        main: 'translationWidget.coffee',
+        compile: true,
+        //opts: '--bare'
+      }
+    },
+
+    less: {
+      development: {
+        options: {
+          paths: ["<%= yeoman.app %>/less"]
         },
-      },
-      files: ['test/**/*.coffee']
-    }
+        files: {
+          ".tmp/styles/translationWidget.css": "<%= yeoman.app %>/less/translationWidget.less"
+        }
+      }
+    },
+
+    // Test settings
+    /*karma: {
+      unit: {
+        configFile: 'test/karma.conf.js',
+        singleRun: true
+      }
+    }*/
   });
 
 
@@ -347,8 +353,8 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'less:development',
-      'coffee',
+      'percolator',
+      'less',
       'wiredep',
       'autoprefixer',
       'connect:livereload',
@@ -363,13 +369,16 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'percolator',
+    'less',
     'autoprefixer',
-    'connect:test',
-    'casperjs'
+    'connect:test'
   ]);
 
   grunt.registerTask('build', [
     'clean:dist',
+    'percolator',
+    'less',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',

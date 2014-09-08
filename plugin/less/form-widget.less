@@ -1,0 +1,387 @@
+/**
+ *
+ * Styles for Translation Fields
+ *
+ * @author      Damian Duda <dduda@nexway.com>
+ *
+ */
+
+/* FORM WIDGET STYLES */
+
+.form-translation {
+    position: relative;
+    .input-prepend {
+        display: inline-block;
+        white-space: nowrap;
+    }
+    input[type="text"], textarea {
+
+        &.large {
+            width: 300px;
+        }
+
+        &:focus {
+            background: darken(#fff,10%);
+            .box-shadow(none);
+            .placeholder(darken(#fff,10%));
+        }
+    }
+
+    .add-on > [class^="icon-"] {
+        margin-top: 5px;
+        margin-left: 3px;
+        line-height: 24px;
+    }
+
+    .add-on > .icon-caret-up {
+        line-height: 8px;
+    }
+
+    input[type="checkbox"] {
+        padding-top: 0;
+        margin-top: 0;
+    }
+    input[type="text"].lang-translation,  .form-translation textarea.lang-translation {
+        /*width: 300px;*/
+        background: #fff !important;
+        border: 1px solid #BBBBBB;
+
+        cursor: default;
+    }
+    // from bootstrap
+    .add-on {
+        display: inline-block;
+        position: absolute;
+        left: 1px;
+        top: 1px;
+        width: auto;
+        height: 22px;
+        min-width: 16px;
+        padding: 0 5px;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 24px;
+        text-align: center;
+        text-shadow: 0 1px 0 #FFF;
+        background-color: #eee;
+        border: 1px solid #e5e5e5;
+        &.open {
+            background: #F4F4F4;
+        }
+    }
+    .btn {
+        display: inline-block;
+        .ie7-inline-block();
+        padding: 4px 12px;
+        margin-bottom: 0; // For input.btn
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        color: lighten(#000, 10%);
+        .buttonBackground(#CCCCCC, #CCCCCC, #EEE, 0 1px 1px rgba(255,255,255,.75));
+        border: 1px solid #CCCCCC;
+        *border: 0; // Remove the border to prevent IE7's black border on input:focus
+        border-bottom-color: darken(#CCCCCC, 10%);
+        .border-radius(0);
+        .ie7-restore-left-whitespace(); // Give IE7 some love
+        .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
+        text-decoration: none;
+
+      // Hover/focus state
+      &:hover,
+      &:focus {
+        color: #999;
+        text-decoration: none;
+        background-position: 0 -15px;
+
+        // transition is only when going to hover/focus, otherwise the background
+        // behind the gradient (there for IE<=9 fallback) gets mismatched
+        .transition(background-position .1s linear);
+      }
+
+      // Focus state for keyboard and accessibility
+      &:focus {
+        .tab-focus();
+      }
+
+      // Active state
+      &.active,
+      &:active {
+        background-image: none;
+        outline: 0;
+        .box-shadow(~"inset 0 2px 4px rgba(0,0,0,.15), 0 1px 2px rgba(0,0,0,.05)");
+      }
+
+      // Disabled state
+      &.disabled,
+      &[disabled] {
+        cursor: default;
+        background-image: none;
+        .opacity(65);
+        .box-shadow(none);
+      }
+
+    }
+    /* translation */
+    .open-translation {
+        cursor: pointer;
+
+        &:hover {
+            background: #eee;
+            box-shadow: 0 -4px 7px rgba(255, 255, 255, 0.9) inset;
+        }
+
+        .icon-reorder {
+            margin-left: 0;
+            position: relative;
+            top: 1px;
+            color: #999;
+            cursor: pointer;
+            font-size: 13px;
+
+            &:before {
+                cursor: pointer;
+            }
+        }
+
+        .icon-caret-up {
+            position: absolute;
+            top: -3px;
+            left: 9px;
+            color: #999;
+            font-size: 7px;
+            cursor: pointer;
+
+            &:before {
+                cursor: pointer;
+            }
+        }
+    }
+
+    /* options */
+    .translation-options {
+        position: absolute;
+        bottom: 26px;
+        left: 0;
+        visibility: hidden;
+        background: #f4f4f4;
+        opacity: 0;
+        color: #333;
+        width: 100%;
+        z-index: 1000;
+
+        box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.2);
+        transition: all .4s ease;
+        -webkit-transition: all .4s ease;
+
+        .translation-content {
+            .clearfix;
+            position: relative;
+            padding: 0 5%;
+            border: 1px solid #bbb;
+            border-bottom: none;
+
+            zoom: 1;
+
+            &:after {
+                display: table;
+                content: " ";
+                clear: both;
+            }
+
+            .hide-border {
+                position: absolute;
+                left: 0;
+                bottom: -1px;
+                width: 27px;
+                height: 1px;
+                background: #f4f4f4;
+            }
+
+            .select-language {
+                width: 100%;
+                margin: 16px 0;
+
+                &:focus {
+                    border: 1px solid #999;
+                    outline: 0;
+                }
+
+                option.translated {
+                    font-weight: bold;
+                    font-style: italic;
+                    color: #4D9957;
+                }
+            }
+
+            .current-language {
+                .m-wrap {
+                    background: #fff;
+                    border: 1px solid #d9d9d9 !important;
+                    float: left;
+                    min-width: 40%;
+                    width: 60%;
+                    max-width: 60%;
+                    max-height: 100px;
+                    margin-bottom: 15px;
+                    margin-right: 1%;
+                    display: inline-block;
+
+                    &:focus {
+                        border: 1px solid #999 !important;
+                    }
+
+                    &.hidden {
+                        display: none !important;
+                    }
+                }
+
+                .apply, .update {
+                    float: right;
+                    margin-bottom: 15px;
+                    padding-left: 0;
+                    padding-right: 0;
+                    width: 25%;
+
+                    &.hidden {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+    }
+
+    /* language tabs */
+    .language-tabs {
+        position: absolute;
+        top: 6px;
+        left: 32px;
+        min-width: 260px;
+        max-width: 600px;
+        padding: 0;
+
+        // right: 6px;
+        // overflow: auto;
+
+        span {
+            display: inline-block;
+            // font: 300 12px 'Open Sans';
+        }
+
+        .chosen-language {
+            padding: 0 2px;
+            margin: 0 2px;
+            color: #555;
+            background: #ffb848;
+            width: 51px;
+            text-align: center;
+
+            &:hover {
+                cursor: pointer;
+                background: #e1e1e1;
+            }
+
+            .remove {
+                margin-left: 7px;
+                text-decoration: none;
+                color: #777;
+                font-size: 12px;
+                line-height: 14px;
+
+                &:hover {
+                    color: #333;
+                }
+            }
+        }
+    }
+
+    /* show */
+    &.show {
+        .open-translation {
+            background: #f4f4f4;
+            border-top: 1px solid transparent;
+
+            .icon-reorder {
+                color: #666;
+            }
+
+            .icon-caret-up {
+                color: #555;
+            }
+
+            & + .lang-translation {
+                border-top-right-radius: 0;
+                border-top-left-radius: 0;
+            }
+        }
+
+        .translation-options {
+            display: block;
+            visibility: visible;
+            opacity: 1;
+        }
+    }
+}
+
+// Confirm box
+
+#confirmOverlay {
+
+    width:100%;
+    height:100%;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:100000;
+    background: rgba(0,0,0,.4);
+    .transition(all 1s linear);
+
+    #confirmBox {
+        width:260px;
+        position:absolute;
+        left:50%;
+        top:50%;
+        margin:-130px 0 0 -250px;
+        background: white;
+        border: 1px solid rgba(0,0,0,.1);
+        // @shadow: 0 -1px 3px rgba(0,0,0,.1);
+        // .box-shadow(@shadow);
+        h1 {
+            color:#fff;
+            text-shadow: 1px 0 0 rgba(0,0,0,.2);
+            font-size: 14px;
+            background: rgba(0,0,0,.3);
+            padding: 0 5px;
+            margin: 0;
+            line-height: 30px
+        }
+
+        p {
+            background:none;
+            font-size:12px;
+            padding: 10px;
+        }
+        #confirmButtons {
+            display:block;
+            color:white;
+            .button {
+                width: 35%;
+                display: inline-block;
+                text-align: center;
+                line-height: 20px;
+                color: #fff;
+                font-size: 12px;
+                &.yes {
+                    background: #4D90FE;
+                    float: left;
+                }
+                &.no {
+                    background: red;
+                    float: right;
+                }
+            }
+        }
+    }
+}

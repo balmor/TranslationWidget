@@ -1,0 +1,112 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Translation Widget</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <!-- build:css(.tmp) pluginName/jq.pluginName.css -->
+    <link rel="stylesheet" href="styles/translationWidget.css">
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Add your site or application content here -->
+    <div class="container">
+      <div class="header">
+        <h3 class="text-muted">Translation Widget</h3>
+      </div>
+      <div id="pluginPlayground" class="examples">
+        <form action="#" class="form-horizontal">
+          <table cellspacing="0" class="form-list">
+            <tbody>
+                <tr>
+                  <td class="label"><label for="title">Title <span class="required">*</span></label></td>
+                  <td class="value">
+                    <div class="control-group form-translation">
+                      <div class="controls">
+                        <input type="text" name="word-to-translate" class="m-wrap lang-translation large" disabled />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr><td>&nbsp;</td></tr>
+
+                <tr>
+                  <td class="label"><label for="title">Sub Title <span class="required">*</span></label></td>
+                  <td class="value">
+                    <div class="control-group form-translation">
+                      <div class="controls">
+                        <input type="text" name="word-to-translate" class="m-wrap lang-translation large" disabled />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr><td>&nbsp;</td></tr>
+
+                <tr>
+                  <td class="label"><label for="title">File <span class="required">*</span></label></td>
+                  <td class="value">
+                    <div class="control-group form-translation">
+                      <div class="controls">
+                        <input type="file" name="word-to-translate" class="m-wrap lang-translation large" disabled />
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+
+
+              </tbody>
+            </table>
+
+          </form>
+        </div>
+        <div class="footer">
+          <p><span class="glyphicon glyphicon-heart"></span> from the Nexway team</p>
+        </div>
+      </div>
+      <!-- build:js(.) scripts/oldieshim.js -->
+      <!--[if lt IE 9]>
+      <script src="bower_components/es5-shim/es5-shim.js"></script>
+      <script src="bower_components/json3/lib/json3.min.js"></script>
+      <![endif]-->
+      <!-- endbuild -->
+      <!-- build:js(.) scripts/vendor.js -->
+      <!-- bower:js -->
+      <script src="bower_components/jquery/dist/jquery.js"></script>
+      <script src="bower_components/json3/lib/json3.js"></script>
+      <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+      <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script>
+      <!-- endbower -->
+      <!-- endbuild -->
+      <!-- build:js({.tmp,app}) scripts/jq.translationWidget.min.js -->
+      <script src="scripts/jq.translationWidget.js"></script>
+      <!-- endbuild -->
+      <script>
+      // instantiate plugin here
+
+      var plugins = $('.lang-translation').translationWidget({
+        debug: true
+      },
+      {
+        "RU": "Russian"
+      });
+
+
+
+      </script>
+    </body>
+  </html>
