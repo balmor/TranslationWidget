@@ -1,3 +1,13 @@
+#import EditorBase
+#import TextEditor
+#import FileEditor
+
+#
+# @author   Michal Katanski (mkatanski@nexway.com)
+# @author   Ariana Las <ariana.las@gmail.com>
+# @author   Mariusz Maroń <mmaron@nexway.com>
+# @author   Damian Duda <dduda@nexway.com>
+# @version 1.0.1
 class EditorWindow
 
   constructor: (@base) ->
@@ -5,25 +15,12 @@ class EditorWindow
     @base.log 'Editor Window rendered'
     @status = 'closed'
 
-    # add button onClick event
+    # Assign onClick event for button
     @_currentElement.find('.apply').on 'click.'+@base.pluginName, (e) =>
       e.preventDefault()
+      @currentEditor.save()
+      return
 
-      # get current translation
-      tr = null
-      if @base._inputType is 'text'
-        tr = @_currentElement.find('.new-word').val()
-      else
-        tr =  @_currentElement.find('input[type=file]')
-
-      # check if translation exists
-      if @base.languageTabs.translationExists @translation
-        #update existing translation
-        @base.languageTabs.updateTranslation @translation, tr
-      else
-        #add new translation
-        @base.languageTabs.addTranslation @translation, tr
-      @hide()
     return
 
   # Show window command
@@ -50,27 +47,21 @@ class EditorWindow
     @_setEditorFor @translation
 
     # open editor window
-    $(@base.baseElement).addClass 'show'
+    $(@base.baseElement).find('.input-prepend').addClass 'show'
     @status = 'open'
     @base.log "Show editor window (translation: #{@translation})"
     return
 
   _setEditorFor: (lang) ->
+    editors = @_currentElement.find('.editors')
     if lang is 'new'
-      @_currentElement.find('.editors').hide()
+      editors.hide()
     else
-      @_currentElement.find('.editors').show()
-      # If lang is existing translation
-      if @base.languageTabs.translationExists lang
-        # get existing translation and display it in
-        # editor input element
-        @_currentElement.find('.new-word').val @base.languageTabs.getTranslation lang
-        # update button text
-        @_currentElement.find('.apply').text 'Update'
+      if @base._inputType is 'text'
+        @currentEditor = new TextEditor @base, editors, lang
       else
-        # reset input element
-        @_currentElement.find('.new-word').val ''
-        @_currentElement.find('.apply').text 'Apply'
+        @currentEditor = new FileEditor @base, editors, lang
+      editors.show()
     return
 
 
@@ -87,7 +78,7 @@ class EditorWindow
     # append list of languages
     $.each @base.languages, (key, value) =>
         option = $("<option value=\"#{key}\">#{value}</option>")
-        if @base.languageTabs.translationExists key
+        if @base.languageTabs.buttonExists key
           option.addClass 'translated'
         @langList.append option
 
@@ -97,6 +88,8 @@ class EditorWindow
     # create on change event
     @langList.on 'change.'+@base.pluginName, =>
       @translation = @langList.val()
+      if @currentEditor?
+        @currentEditor.discard()
       @_setEditorFor @langList.val()
 
     # finally insert lang list into editor window
@@ -104,16 +97,25 @@ class EditorWindow
     @base.log 'List of languages created'
     return
 
+  removeLang: (langCode) ->
+    # make sure that current editor is set for language
+    # which is going to be removed
+    @_setEditorFor langCode
+    # remove language
+    @currentEditor.remove()
 
   # Hide window command
   hide: ->
     if @status is 'open'
       @base.log 'Hide editor window'
-      $(@base.baseElement).removeClass 'show'
+      $(@base.baseElement).find('.input-prepend').removeClass 'show'
 
       # clear window
       # remove lang list
       @langList.remove()
+      # discard changes
+      if @currentEditor?
+        @currentEditor.discard()
       @status = 'closed'
     return
 
@@ -123,7 +125,6 @@ class EditorWindow
       <div class="translation-content">
         <div class="current-language">
           <div class="editors">
-            <textarea class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea>
             <a href="#" class="btn blue apply">Apply</a>
           </div>
           <span class="hide-border"></span>
@@ -136,12 +137,4 @@ class EditorWindow
 
     # Set _currentElement as ToggleBtn HTML
     @_currentElement = @base.baseElement.find '.translation-options'
-
-    # set content to file if base input type is file
-    if @base._inputType is 'file'
-      @base.log 'Replace editor to file input'
-      @_currentElement.find('.new-word').hide()
-      editors = @_currentElement.find '.editors'
-      $('<input type="file" style="display: block" />').appendTo editors
-      $('<div class="infoText" />').appendTo editors
     return

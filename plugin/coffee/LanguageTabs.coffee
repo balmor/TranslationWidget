@@ -1,10 +1,17 @@
-#import LangBtn
-#import LangFileBtn
-
+#
+# @author   Michal Katanski (mkatanski@nexway.com)
+# @author   Ariana Las <ariana.las@gmail.com>
+# @author   Mariusz Maroń <mmaron@nexway.com>
+# @author   Damian Duda <dduda@nexway.com>
+# @version 1.0.1
 class LanguageTabs
 
+  HIGHLIGHT_COLOR =   '#ffb848'
+  MOUSE_OVER_COLOR =  '#e1e1e1'
+  BASE_COLOR =        '#eee'
+
   constructor: (@base) ->
-    @translations = []
+    @buttons = []
 
     @base.log 'Language tabs created'
     @_render()
@@ -19,65 +26,58 @@ class LanguageTabs
     @base.log 'Language tabs rendered'
 
 
-  addTranslation: (langCode, translation) ->
-    if @translationExists langCode
-      @base.log "Cannot add [#{langCode}]! Translation exists. Please use updateTranslation method."
+  addButton: (langCode) ->
+    if @buttonExists langCode
+      @base.log "Cannot add [#{langCode}]! Button exists."
       return
 
-    # Create new translation button and append it to translation list list
-    button = null
-    if @base._inputType is 'file'
-      button = new LangFileBtn(@base, langCode, translation)
+    span = $("<span id=\"#{langCode}\" class=\"chosen-language\"/>").text langCode
+    removeIcon = $('<a href="#" class="remove icon-remove" />')
+    removeIcon.appendTo span
+
+    removeIcon.on 'click.'+@base.pluginName, (e) =>
+      e.preventDefault()
+      e.stopPropagation()
+      @base.showConfirmBox =>
+        @base.edWindow.removeLang langCode
+        @base.edWindow.hide()
+        # finally remove button from document
+        span.remove()
+        return
+
+    # Add onClick event for button to show editor window in edit mode
+    # or hide it when its already opened
+    span.on 'click.'+@base.pluginName, =>
+      @base.log "LangBtn [#{langCode}] clicked"
+      @base.edWindow.show langCode
+
+    # add mouse events for highlighting item
+    span.on 'mouseover.'+@base.pluginName, =>
+      span.css {backgroundColor: MOUSE_OVER_COLOR}
+    span.on 'mouseleave.'+@base.pluginName, =>
+      span.css {backgroundColor: BASE_COLOR}
+
+    span.appendTo @_currentElement
+
+    @base.log "Button added: #{langCode}"
+    return
+
+  removeButton: (langCode) ->
+    @_currentElement.find('#'+langCode).remove()
+    @base.log "Button [#{langCode}] removed"
+    return
+
+  buttonExists: (langCode) ->
+    return if @_currentElement.find('#'+langCode).length is 1 then true else false
+
+  highlight: (langCode) ->
+    button = @_currentElement.find('#'+langCode)
+    if $.isFunction @.customAnimation
+        button.customAnimation()
     else
-      button = new LangBtn(@base, langCode, translation)
-
-    @translations.push button
-
-    # Render translation button
-    button.get().appendTo @_currentElement
-    button.highlight()
-
-    @base.log "Translation added: #{langCode}=#{translation}"
+      button.css {backgroundColor: HIGHLIGHT_COLOR}
+      button.animate {"backgroundColor": BASE_COLOR}, @base.options.addAnimationSpeed
     return
-
-  updateTranslation: (langCode, translation) ->
-    tr = @findTranslation(langCode)
-    if tr isnt null
-      tr.update(translation)
-      tr.highlight()
-      @base.log "Translation updated: #{langCode}=#{translation}"
-    return
-
-  removeTranslation: (trBtn) ->
-    index = -1
-    i = -1
-    for btn in @translations
-      i = i + 1
-      if btn is trBtn
-        index = i
-
-    if index > -1
-      @translations.splice(index, 1)
-      trBtn.domElement.remove()
-      @base.log 'Translation removed.'
-    return
-
-
-  findTranslation: (langCode) ->
-    for button in @translations
-      if button.langCode is langCode
-        return button
-    return null
-
-  translationExists: (langCode) ->
-    found = false
-    if @findTranslation(langCode) isnt null
-      found = true
-    return found
-
-  # return translation
-  getTranslation: (langCode) ->
-    return @findTranslation(langCode).translation
 
   _addCustomAnimation: ->
     animationNames = ["slideToggle", "fadeToggle"]
