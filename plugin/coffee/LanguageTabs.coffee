@@ -17,6 +17,10 @@ class LanguageTabs
     @_render()
     @_addCustomAnimation()
 
+    #Get original width of base input
+    @baseInputWidth = parseInt @base.baseElement.find('.lang-translation').width()
+    return
+
   _render: ->
     ltHTML = '''
     <div class="language-tabs"></div>
@@ -42,7 +46,7 @@ class LanguageTabs
         @base.edWindow.removeLang langCode
         @base.edWindow.hide()
         # finally remove button from document
-        span.remove()
+        @removeButton langCode
         return
 
     # Add onClick event for button to show editor window in edit mode
@@ -60,11 +64,13 @@ class LanguageTabs
     span.appendTo @_currentElement
 
     @base.log "Button added: #{langCode}"
+    @_updateInputWidth()
     return
 
   removeButton: (langCode) ->
     @_currentElement.find('#'+langCode).remove()
     @base.log "Button [#{langCode}] removed"
+    @_updateInputWidth()
     return
 
   buttonExists: (langCode) ->
@@ -77,6 +83,18 @@ class LanguageTabs
     else
       button.css {backgroundColor: HIGHLIGHT_COLOR}
       button.animate {"backgroundColor": BASE_COLOR}, @base.options.addAnimationSpeed
+    return
+
+  _updateInputWidth: ->
+    #Calculation for each languages
+    btnsCount = @_currentElement.children('span').length
+    btnsSpacing = btnsCount * 11
+    btnsTotalWidth = @_currentElement.children('span').width() * btnsCount + btnsSpacing
+
+    if btnsTotalWidth > @baseInputWidth
+      @base.baseElement.find('.lang-translation').width btnsTotalWidth + 14
+    else
+      @base.baseElement.find('.lang-translation').width @baseInputWidth
     return
 
   _addCustomAnimation: ->
