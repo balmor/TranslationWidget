@@ -52,13 +52,13 @@ class EditorWindow
     @base.log "Show editor window (translation: #{@translation})"
     return
 
-  _setEditorFor: (lang) ->
+  _setEditorFor: (lang, initialValue='') ->
     editors = @_currentElement.find('.editors')
     if lang is 'new'
       editors.hide()
     else
       if @base._inputType is 'text'
-        @currentEditor = new TextEditor @base, editors, lang
+        @currentEditor = new TextEditor @base, editors, lang, initialValue
       else
         @currentEditor = new FileEditor @base, editors, lang
       editors.show()
@@ -103,6 +103,16 @@ class EditorWindow
     @_setEditorFor langCode
     # remove language
     @currentEditor.remove()
+
+  # Manually add translation for existing langCode
+  #
+  #
+  addLang: (langCode, translation) ->
+    if @base.languages[langCode]?
+      @_setEditorFor langCode, translation
+      @currentEditor.save()
+    else
+      @base.log "There is no #{langCode} language", 'warning'
 
   # Hide window command
   hide: ->

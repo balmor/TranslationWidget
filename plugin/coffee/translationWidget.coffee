@@ -12,11 +12,13 @@
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
-# @version 1.0.1
+# @version 1.0.4
 class TranslationWidget extends Plugin
 
   #default options
   defaultOptions =
+    dataSource: 'json' # object, function
+    useDefaultLanguages: true
     inputNamePrefix:    ''
     customSelectLabel:  'Please Select'
     addAnimation:       ''
@@ -36,15 +38,16 @@ class TranslationWidget extends Plugin
     "ES": "Spanish"
     "DE": "German"
 
-  existingData = {}
-
   # Construct base class.
   #
   # @param [Object] jQuery plugin object
   #
   constructor: (element, options, instanceName, @pluginName, languages) ->
-    @languages = $.extend(true, {}, defLanguages, languages)
     options = $.extend({}, defaultOptions, options)
+    if options.useDefaultLanguages
+      @languages = $.extend(true, {}, defLanguages, languages)
+    else
+      @languages = languages
 
     # set custom instance name
     instanceName = $(element).parents(".control-group").find("label").text().replace " " , "_"
@@ -59,12 +62,10 @@ class TranslationWidget extends Plugin
     # Check if initial input is input
     elementName = @_currentElement.prop("tagName").toLowerCase()
     unless elementName is 'input'
-      @log 'Element should be HTML <input />'
+      @log 'Element should be HTML <input />', 'error'
       return
     else
       @_constructSkeleton()
-      # Initialize classes and create DOM elements
-      @_init()
 
     return
 
@@ -72,7 +73,7 @@ class TranslationWidget extends Plugin
   #
   # @private
   #
-  _init: ->
+  init: ->
     # Set .control-group div as base element
     # <div class="control-group form-translation">...</div>
     @baseElement = @_currentElement.parents('.control-group')
@@ -83,14 +84,15 @@ class TranslationWidget extends Plugin
       @log 'Input type is file'
       @_currentElement.attr('type', 'text').addClass('replacement')
 
+    # Create new toggle button
+    @_createToggleBtn()
+
     # Create editor window
     @edWindow = new EditorWindow(@)
 
     # Create language tabs
     @languageTabs = new LanguageTabs(@)
 
-    # Create new toggle button
-    @_createToggleBtn()
     @tglBtn.on 'click.' + @pluginName, =>
       @log 'toggleBtn clicked!'
       @edWindow.show()
@@ -103,14 +105,17 @@ class TranslationWidget extends Plugin
     # add onClick event for document which will
     # close all editor windows if opened
     $('body').on 'click.' + @pluginName, =>
-      @closeAllEditors()
+       @closeAllEditors()
 
     # disable event propagation for plugin context
     # so closing all windows will not affect
     # plugin onClick events
-    $(@baseElement).click (e) ->
+    $(@baseElement).on 'click.' + @pluginName, (e) ->
       e.stopPropagation()
       return
+
+    # Populate existing translations
+    @_fillData()
 
     return
 
@@ -139,22 +144,52 @@ class TranslationWidget extends Plugin
     # Set _currentElement as ToggleBtn HTML
     @tglBtn = @baseElement.find '.open-translation'
 
-  closeAllEditors: ->
-    @log 'Closing all editor windows'
-    $('body').find('.control-group').removeClass('show')
+  # Create existing translations
+  #
+  # @private
+  #
+  _fillData: ->
+    # variable containing exsiting translations
+    dataObject = null
+    # check whether data source is custom function
+    if $.isFunction @options.dataSource
+      @log 'dataSource is a function'
+      # set dataObject to result of a function
+      @_processDataForEach @options.dataSource(@instanceName)
+    else if typeof @options.dataSource is 'object'
+      @log 'dataSource is an object'
+      # set dataObject to dataSource
+      @_processDataForEach @options.dataSource
+    else
+      @log 'No data source', 'warning'
 
-    i = 0
-    # Set generic plugin name to temporary variable
-    # so it will be visible within 'each' scope
-    iName = @pluginName
-    # iterate through every instance of translation widget
-    $('input.lang-translation').each ->
-      i = i + 1
-      # get translationWidget instance and
-      # close editor window if is open
-      $.data(@, iName + '_' + i).edWindow.hide()
     return
 
+  _processDataForEach: (dataObject) ->
+    @runForEachInstance 'input.lang-translation', (instance) ->
+      #instance.edWindow.show()
+      curTransObj = dataObject[instance.instanceName]
+      for langCode, translation of curTransObj
+        instance.edWindow.addLang langCode, translation
+      return
+
+
+  # Close all opened editor windows in document
+  #
+  # @public
+  #
+  closeAllEditors: ->
+      @log 'Closing all editor windows'
+      $('body').find('.control-group').removeClass('show')
+      # close all editor windows for each active instance
+      @runForEachInstance 'input.lang-translation', (instance) ->
+        instance.edWindow.hide()
+      return
+
+  # Show confirm box
+  #
+  # @public
+  #
   showConfirmBox: (callback) ->
     containerHTML = """
     <div id="confirmOverlay">
@@ -199,11 +234,22 @@ class TranslationWidget extends Plugin
   pluginName = "translationWidget"
   $.fn[pluginName] = (options, languages) ->
     count = 0
+    instanceCount = @.length
     @each ->
       count = count + 1
+      if instanceCount is 1
+        # if its only one instance do not generate
+        # index number. Try to use elements id instead.
+        # This will enable possibility to instantiate
+        # plugin by id.
+        count = '#' + $(this).attr('id')
+
       instanceName = pluginName + '_' + count
       newInstance = new TranslationWidget(this, options, instanceName, pluginName, languages)
-      $.data this, instanceName, newInstance unless $.data(this, instanceName)
+      unless $.data(this, instanceName)
+        $.data this, instanceName, newInstance
+        newInstance.init()
+    return
 
   return
 ) jQuery, window, document

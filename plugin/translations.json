@@ -1,0 +1,12 @@
+{
+    "Translation": {
+      "PL": "Polski",
+      "EN": "English",
+      "RU": "Russian"
+    },
+    "Another_Translation": {
+      "PL": "Inny polski",
+      "EN": "Another english",
+      "BU": "Bulgarian"
+    }
+}

@@ -36,7 +36,7 @@
                   <div class="control-group">
                       <label class="control-label">Translation</label>
                       <div class="controls">
-                          <input type="text" class="m-wrap large lang-translation" readonly />
+                          <input id="input1" type="text" class="m-wrap large lang-translation" readonly />
                       </div>
                   </div>
                 </td>
@@ -49,7 +49,7 @@
                   <div class="control-group">
                       <label class="control-label">Another Translation</label>
                       <div class="controls">
-                          <input type="text" class="m-wrap large lang-translation" readonly />
+                          <input id="input2" type="text" class="m-wrap large lang-translation" readonly />
                       </div>
                   </div>
                 </td>
@@ -62,7 +62,7 @@
                     <div class="control-group">
                         <label class="control-label">File</label>
                         <div class="controls">
-                            <input type="file" class="m-wrap large lang-translation" readonly />
+                            <input id="input3" type="file" class="m-wrap large lang-translation" readonly />
                         </div>
                     </div>
                   </td>
@@ -96,11 +96,45 @@
       <script>
       // instantiate plugin here
 
-      var plugins = $('.lang-translation').translationWidget({
-        debug: true
+      var langs = new Object();
+      langs["Translation"] = {
+          EN: 'English translation',
+          PL: 'Polskie tłumaczenie 111',
+      };
+
+      langs["Another_Translation"] = {
+          BU: 'Bulgarian translation',
+          PL: 'Polskie tłumaczenie 222',
+      };
+
+      var input1 = $('#input1').translationWidget({
+        debug: true,
+        dataSource: langs
       },
       {
         "RU": "Russian"
+      });
+
+
+
+     var input2 = $('#input2').translationWidget({
+        debug: true,
+        useDefaultLanguages: true,
+        dataSource: function(instanceName) {
+          return langs;
+        }
+      },
+      {
+        "BU": "Bulgarian"
+      });
+
+     $('#input1').translationWidget.test();
+
+     $('#input3').translationWidget({
+        debug: true
+      },
+      {
+        "AR": "Arabian"
       });
 
 

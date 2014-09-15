@@ -6,7 +6,7 @@
 # @version 1.0.1
 class TextEditor extends EditorBase
 
-  constructor: (base, parent, langCode) ->
+  constructor: (base, parent, langCode, initialValue='') ->
     @Type = 'TextEditor'
     name = base.instanceName + "[#{langCode}]"
     @editorHtml = """
@@ -15,6 +15,9 @@ class TextEditor extends EditorBase
     </div>
     """
     super(base, parent, langCode)
+
+    if initialValue isnt ''
+      @_currentElement.find('.new-word').val(initialValue)
 
     if @mode is 'edit'
       @_currentElement.data 'current', @_currentElement.find('.new-word').val()

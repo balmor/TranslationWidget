@@ -3,7 +3,7 @@
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
-# @version 1.0.1
+# @version 1.0.3
 class LanguageTabs
 
   HIGHLIGHT_COLOR =   '#ffb848'
@@ -19,6 +19,9 @@ class LanguageTabs
 
     #Get original width of base input
     @baseInputWidth = parseInt @base.baseElement.find('.lang-translation').width()
+    # get width of toggle button
+    @tglBtnWidth = parseInt @base.baseElement.find('.open-translation').width()
+    @tglBtnMarginRight = parseInt @base.baseElement.find('.open-translation').css('marginRight')
     return
 
   _render: ->
@@ -32,7 +35,7 @@ class LanguageTabs
 
   addButton: (langCode) ->
     if @buttonExists langCode
-      @base.log "Cannot add [#{langCode}]! Button exists."
+      @base.log "Cannot add [#{langCode}]! Button exists.", 'error'
       return
 
     span = $("<span id=\"#{langCode}\" class=\"chosen-language\"/>").text langCode
@@ -86,14 +89,20 @@ class LanguageTabs
     return
 
   _updateInputWidth: ->
-    #Calculation for each languages
-    btnsCount = @_currentElement.children('span').length
-    btnsSpacing = btnsCount * 11
-    btnsTotalWidth = @_currentElement.children('span').width() * btnsCount + btnsSpacing
+    # static margin
+    margin = 20
+    #Get btns element and count single btn width
+    btns = @_currentElement.children('span')
+    btnMargins = parseInt(btns.css('marginLeft')) + parseInt(btns.css('marginRight'))
+    btnWidth = parseInt(btns.width()) + btnMargins
+    # count total length of btns
+    btnsTotalWidth = (btnWidth * btns.length) + @tglBtnWidth + @tglBtnMarginRight + margin
 
     if btnsTotalWidth > @baseInputWidth
-      @base.baseElement.find('.lang-translation').width btnsTotalWidth + 14
+      # set new width for main input element
+      @base.baseElement.find('.lang-translation').width btnsTotalWidth + margin
     else
+      # reset width of main input element to initial
       @base.baseElement.find('.lang-translation').width @baseInputWidth
     return
 
