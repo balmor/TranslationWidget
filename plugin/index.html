@@ -14,7 +14,7 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-    <!-- build:css(.tmp) pluginName/jq.pluginName.css -->
+    <!-- build:css(.tmp) styles/translationWidget.css -->
     <link rel="stylesheet" href="styles/translationWidget.css">
     <!-- endbuild -->
   </head>
@@ -25,7 +25,7 @@
     <!-- Add your site or application content here -->
     <div class="container">
       <div class="header">
-        <h3 class="text-muted">Translation Widget</h3>
+        <h1 style="color: black">TranslationWidget v. 1.0.2</h1>
       </div>
       <div id="pluginPlayground" class="examples">
         <form action="#" class="form-horizontal">
@@ -39,6 +39,7 @@
                           <input id="input1" type="text" class="m-wrap large lang-translation" readonly />
                       </div>
                   </div>
+                  <a href="#" data-input="input1" class="removeBtn">Clear</a>
                 </td>
                 </tr>
 
@@ -52,6 +53,7 @@
                           <input id="input2" type="text" class="m-wrap large lang-translation" readonly />
                       </div>
                   </div>
+                  <a href="#" data-input="input2" class="removeBtn">Clear</a>
                 </td>
                 </tr>
 
@@ -60,11 +62,12 @@
                 <tr>
                   <td>
                     <div class="control-group">
-                        <label class="control-label">File</label>
+                        <label class="control-label">File</label> (beta)
                         <div class="controls">
                             <input id="input3" type="file" class="m-wrap large lang-translation" readonly />
                         </div>
                     </div>
+                    <a href="#" data-input="input3" class="removeBtn">Clear</a>
                   </td>
                 </tr>
 
@@ -74,6 +77,11 @@
 
           </form>
         </div>
+        <h3 style="color: black">External controlls</h3>
+        <p>Examples of controlling TranslationWidget using external functions</p>
+        <br/>
+        <a href="#" id="clearAllDataConfirm">Clear all data</a><br />
+        <a href="#" id="clearAllData">Clear all data (no confirmation example)</a>
         <div class="footer">
           <p><span class="glyphicon glyphicon-heart"></span> from the Nexway team</p>
         </div>
@@ -99,17 +107,18 @@
       var langs = new Object();
       langs["Translation"] = {
           EN: 'English translation',
-          PL: 'Polskie tłumaczenie 111',
+          PL: 'Polskie tłumaczenie',
       };
 
       langs["Another_Translation"] = {
           BU: 'Bulgarian translation',
-          PL: 'Polskie tłumaczenie 222',
+          PL: 'Polskie tłumaczenie',
       };
 
       var input1 = $('#input1').translationWidget({
         debug: true,
-        dataSource: langs
+        dataSource: langs,
+        messageScope: 'warning'
       },
       {
         "RU": "Russian"
@@ -128,7 +137,6 @@
         "BU": "Bulgarian"
       });
 
-     $('#input1').translationWidget.test();
 
      $('#input3').translationWidget({
         debug: true
@@ -138,6 +146,43 @@
       });
 
 
+     $('.removeBtn').on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var id = $(this).data('input');
+
+        var instance = $('#'+id).data('translationWidget_#'+id);
+        instance.clearData();
+
+     });
+
+
+
+     $('#clearAllDataConfirm').on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var instance = $('#input1').data('translationWidget_#input1');
+        instance.showConfirmBox(function(){
+          instance.runForEachInstance('input.lang-translation', function(instance){
+            instance.clearData(false);
+          });
+        });
+     });
+
+
+     $('#clearAllData').on('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        var instance = $('#input1').data('translationWidget_#input1');
+
+        instance.runForEachInstance('input.lang-translation', function(instance){
+          instance.clearData(false);
+
+        });
+     });
 
       </script>
     </body>

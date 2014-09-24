@@ -12,7 +12,7 @@
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
-# @version 1.0.4
+# @version 1.0.5
 class TranslationWidget extends Plugin
 
   #default options
@@ -119,6 +119,18 @@ class TranslationWidget extends Plugin
 
     return
 
+  clearData: (showConfirmation = true)->
+    list = @languageTabs.getAllLanguages()
+    if showConfirmation
+      @showConfirmBox =>
+        for langCode in list
+          @languageTabs.removeLanguage(langCode)
+        return
+    else
+      for langCode in list
+        @languageTabs.removeLanguage(langCode)
+    return
+
 
   # Create required HTML for widget
   #
@@ -172,7 +184,6 @@ class TranslationWidget extends Plugin
       for langCode, translation of curTransObj
         instance.edWindow.addLang langCode, translation
       return
-
 
   # Close all opened editor windows in document
   #

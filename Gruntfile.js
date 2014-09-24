@@ -86,6 +86,7 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               connect.static('.tmp'),
+              connect.static('test'),
               connect().use(
                 '/bower_components',
                 connect.static('./bower_components')
@@ -304,16 +305,16 @@ module.exports = function (grunt) {
       ]
     },
 
-    /*coffee: {
-      compileJoined: {
-         options: {
-           join: true
-         },
-         files: {
-           '.tmp/scripts/jq.translationWidget.js': ['<%= yeoman.app %>/coffee/*.coffee']
-         }
-       }
-    },*/
+    casperjs: {
+      options: {
+        // Task-specific options go here.
+        clientScripts:  [
+               'bower_components/jquery/dist/jquery.js'
+           ]
+      },
+      files: ['test/casperjs/**/*.coffee'],
+
+    },
 
     percolator: {
       compile: {
@@ -336,13 +337,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Test settings
-    /*karma: {
-      unit: {
-        configFile: 'test/karma.conf.js',
-        singleRun: true
-      }
-    }*/
   });
 
 
@@ -372,7 +366,8 @@ module.exports = function (grunt) {
     'percolator',
     'less',
     'autoprefixer',
-    'connect:test'
+    'connect:test',
+    'casperjs'
   ]);
 
   grunt.registerTask('build', [
@@ -387,7 +382,7 @@ module.exports = function (grunt) {
     'copy:dist',
     'cssmin',
     'uglify',
-    'filerev',
+    //'filerev',
     'usemin',
     'htmlmin'
   ]);

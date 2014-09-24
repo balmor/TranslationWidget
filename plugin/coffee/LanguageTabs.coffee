@@ -3,7 +3,7 @@
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
-# @version 1.0.3
+# @version 1.0.4
 class LanguageTabs
 
   HIGHLIGHT_COLOR =   '#ffb848'
@@ -46,10 +46,7 @@ class LanguageTabs
       e.preventDefault()
       e.stopPropagation()
       @base.showConfirmBox =>
-        @base.edWindow.removeLang langCode
-        @base.edWindow.hide()
-        # finally remove button from document
-        @removeButton langCode
+        @removeLanguage langCode
         return
 
     # Add onClick event for button to show editor window in edit mode
@@ -70,7 +67,9 @@ class LanguageTabs
     @_updateInputWidth()
     return
 
-  removeButton: (langCode) ->
+  removeLanguage: (langCode) ->
+    @base.edWindow.removeLang langCode
+    @base.edWindow.hide()
     @_currentElement.find('#'+langCode).remove()
     @base.log "Button [#{langCode}] removed"
     @_updateInputWidth()
@@ -78,6 +77,15 @@ class LanguageTabs
 
   buttonExists: (langCode) ->
     return if @_currentElement.find('#'+langCode).length is 1 then true else false
+
+  getAllLanguages: ->
+    list = new Array()
+    langBtns = @_currentElement.find('.chosen-language')
+    langBtns.each ->
+      list.push $(@).attr('id')
+
+    return list
+
 
   highlight: (langCode) ->
     button = @_currentElement.find('#'+langCode)
