@@ -8,10 +8,11 @@
 #
 # Main translationWidget class
 #
-# @author   Michal Katanski (mkatanski@nexway.com)
+# @author   Michal Katanski <mkatanski@nexway.com>
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
+# @author   Karol Gorecki <kgorecki@nexway.com>
 # @version 1.0.5
 class TranslationWidget extends Plugin
 
@@ -40,7 +41,11 @@ class TranslationWidget extends Plugin
 
   # Construct base class.
   #
-  # @param [Object] jQuery plugin object
+  # @param [Object] element jQuery plugin object
+  # @param [Object] options User options
+  # @param [String] instanceName Instance name
+  # @param [String] pluginName Plugin name
+  # @param [Object] languages Languages list
   #
   constructor: (element, options, instanceName, @pluginName, languages) ->
     options = $.extend({}, defaultOptions, options)
@@ -70,8 +75,6 @@ class TranslationWidget extends Plugin
     return
 
   # Initialize class instances for plugin controls
-  #
-  # @private
   #
   init: ->
     # Set .control-group div as base element
@@ -119,6 +122,10 @@ class TranslationWidget extends Plugin
 
     return
 
+  # Remove all translation from current instance
+  #
+  # @param [Bool] showConfirmation Show confirmation box if true
+  #
   clearData: (showConfirmation = true)->
     list = @languageTabs.getAllLanguages()
     if showConfirmation
@@ -143,6 +150,9 @@ class TranslationWidget extends Plugin
     @_currentElement.wrap(wrapBox)
     return
 
+  # Create and render ToggleButton
+  #
+  # @private
   _createToggleBtn: ->
     tgHTML = '''
     <span class="add-on open-translation">
@@ -177,6 +187,11 @@ class TranslationWidget extends Plugin
 
     return
 
+  # Add language translation for each instance
+  #
+  # @private
+  # @param [Object] dataObject List of translations for each instance
+  #
   _processDataForEach: (dataObject) ->
     @runForEachInstance 'input.lang-translation', (instance) ->
       #instance.edWindow.show()
@@ -186,8 +201,6 @@ class TranslationWidget extends Plugin
       return
 
   # Close all opened editor windows in document
-  #
-  # @public
   #
   closeAllEditors: ->
       @log 'Closing all editor windows'
@@ -199,7 +212,7 @@ class TranslationWidget extends Plugin
 
   # Show confirm box
   #
-  # @public
+  # @param [Method] callback Code to execute when user accept
   #
   showConfirmBox: (callback) ->
     containerHTML = """

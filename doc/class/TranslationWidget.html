@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>CoffeeScript API Documentation</title>
+  <script src='../javascript/application.js'></script>
+  <script src='../javascript/search.js'></script>
+  <link rel='stylesheet' href='../stylesheets/application.css' type='text/css'>
+</head>
+  <body>
+    <div id='base' data-path='../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../alphabetical_index.html' title='Index'>
+      Index
+    </a>
+    &raquo;
+    <span class='title'>TranslationWidget</span>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        TranslationWidget
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>plugin&#47;coffee&#47;translationWidget.coffee</td>
+        </tr>
+        <tr>
+          <td>Inherits:</td>
+          <td>
+            <a href='../class/Plugin.html'>Plugin</a>
+          </td>
+        </tr>
+      </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <hr>
+<pre><code>                                        TranslationWidget
+</code></pre><p>Main translationWidget class</p>
+</div>
+<div class='tags'>
+  <h3>Author:</h3>
+  <ul class='author'>
+    <li>
+      Michal Katanski <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#58;&#x6d;&#x6b;&#97;&#x74;&#97;&#110;&#x73;&#107;&#105;&#64;&#110;&#x65;&#x78;&#x77;&#97;&#121;&#x2e;&#99;&#x6f;&#x6d;">&#x6d;&#x6b;&#97;&#x74;&#97;&#110;&#x73;&#107;&#105;&#64;&#110;&#x65;&#x78;&#x77;&#97;&#121;&#x2e;&#99;&#x6f;&#x6d;</a> 
+    </li>
+    <li>
+      Ariana Las <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x61;&#114;&#105;&#x61;&#x6e;&#97;&#46;&#108;&#x61;&#115;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;">&#x61;&#114;&#105;&#x61;&#x6e;&#97;&#46;&#108;&#x61;&#115;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#111;&#x6d;</a> 
+    </li>
+    <li>
+      Mariusz Maroń <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x6d;&#x6d;&#97;&#x72;&#111;&#110;&#x40;&#x6e;&#101;&#120;&#x77;&#97;&#121;&#46;&#x63;&#111;&#109;">&#x6d;&#x6d;&#97;&#x72;&#111;&#110;&#x40;&#x6e;&#101;&#120;&#x77;&#97;&#121;&#46;&#x63;&#111;&#109;</a> 
+    </li>
+    <li>
+      Damian Duda <a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#100;&#x64;&#x75;&#x64;&#97;&#x40;&#x6e;&#x65;&#120;&#x77;&#x61;&#x79;&#46;&#x63;&#111;&#x6d;">&#100;&#x64;&#x75;&#x64;&#97;&#x40;&#x6e;&#x65;&#120;&#x77;&#x61;&#x79;&#46;&#x63;&#111;&#x6d;</a> 
+    </li>
+    <li>
+      Karol Gorecki <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x6b;&#103;&#x6f;&#x72;&#101;&#99;&#x6b;&#x69;&#x40;&#110;&#101;&#120;&#119;&#x61;&#x79;&#46;&#99;&#x6f;&#x6d;">&#x6b;&#103;&#x6f;&#x72;&#101;&#99;&#x6b;&#x69;&#x40;&#110;&#101;&#120;&#119;&#x61;&#x79;&#46;&#99;&#x6f;&#x6d;</a> 
+    </li>
+  </ul>
+  <h3>Version:</h3>
+  <ul class='version'>
+    <li>
+      1.0.5 
+    </li>
+  </ul>
+</div>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#init-dynamic'>
+        #
+(void)
+<b>init</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Initialize class instances for plugin controls 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#clearData-dynamic'>
+        #
+(void)
+<b>clearData</b><span>(showConfirmation = true)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Remove all translation from current instance 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_constructSkeleton-dynamic'>
+        #
+(void)
+<b>_constructSkeleton</b><span>()</span>
+      </a>
+    </span>
+    <span class='note private title'>Private</span>
+    <span class='desc'>
+      Create required HTML for widget 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_createToggleBtn-dynamic'>
+        #
+(void)
+<b>_createToggleBtn</b><span>()</span>
+      </a>
+    </span>
+    <span class='note private title'>Private</span>
+    <span class='desc'>
+      Create and render ToggleButton 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_fillData-dynamic'>
+        #
+(void)
+<b>_fillData</b><span>()</span>
+      </a>
+    </span>
+    <span class='note private title'>Private</span>
+    <span class='desc'>
+      Create existing translations 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#_processDataForEach-dynamic'>
+        #
+(void)
+<b>_processDataForEach</b><span>(dataObject)</span>
+      </a>
+    </span>
+    <span class='note private title'>Private</span>
+    <span class='desc'>
+      Add language translation for each instance 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#closeAllEditors-dynamic'>
+        #
+(void)
+<b>closeAllEditors</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Close all opened editor windows in document 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#showConfirmBox-dynamic'>
+        #
+(void)
+<b>showConfirmBox</b><span>(callback)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Show confirm box 
+    </span>
+  </li>
+</ul>
+      <h2>
+        <small>Inherited Method Summary</small>
+        <h3 class='inherited'>
+          Methods inherited from
+          <a href='../class/Plugin.html'>Plugin</a>
+        </h3>
+        <p class='inherited'>
+          <a href='../class/Plugin.html#log-dynamic'>#log</a>
+          <a href='../class/Plugin.html#getPluginByInstanceName-dynamic'>#getPluginByInstanceName</a>
+          <a href='../class/Plugin.html#runForEachInstance-dynamic'>#runForEachInstance</a>
+        </p>
+      </h2>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-dynamic'>
+      #
+(void)
+<b>constructor</b><span>(element, options, instanceName, pluginName, languages)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Construct base class.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>jQuery plugin object </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>User options </span>
+    </li>
+    <li>
+      <span class='name'>instanceName</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Instance name </span>
+    </li>
+    <li>
+      <span class='name'>pluginName</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Plugin name </span>
+    </li>
+    <li>
+      <span class='name'>languages</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Languages list </span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='init-dynamic'>
+      #
+(void)
+<b>init</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Initialize class instances for plugin controls</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='clearData-dynamic'>
+      #
+(void)
+<b>clearData</b><span>(showConfirmation = true)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Remove all translation from current instance</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>showConfirmation</span>
+      <span class='type'>
+        (
+          <tt>Bool</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Show confirmation box if true </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_constructSkeleton-dynamic'>
+      #
+(void)
+<b>_constructSkeleton</b><span>()</span>
+      <span class='note private'>Private</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Create required HTML for widget</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_createToggleBtn-dynamic'>
+      #
+(void)
+<b>_createToggleBtn</b><span>()</span>
+      <span class='note private'>Private</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Create and render ToggleButton</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_fillData-dynamic'>
+      #
+(void)
+<b>_fillData</b><span>()</span>
+      <span class='note private'>Private</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Create existing translations</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='_processDataForEach-dynamic'>
+      #
+(void)
+<b>_processDataForEach</b><span>(dataObject)</span>
+      <span class='note private'>Private</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Add language translation for each instance</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>dataObject</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>List of translations for each instance </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='closeAllEditors-dynamic'>
+      #
+(void)
+<b>closeAllEditors</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Close all opened editor windows in document</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='showConfirmBox-dynamic'>
+      #
+(void)
+<b>showConfirmBox</b><span>(callback)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Show confirm box</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Method</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Code to execute when user accept </span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  October 03, 14 15:06:13 by
+  <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
+    Codo
+  </a>
+  2.0.9
+  &#10034;
+  Press H to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/netzpirat' target='_parent'>@netzpirat</a>
+  &#10034;
+  <a href='http://twitter.com/_inossidabile' target='_parent'>@_inossidabile</a>
+</div>
+<iframe id='search_frame'></iframe>
+<div id='fuzzySearch'>
+  <input type='text'>
+  <ol></ol>
+</div>
+<div id='help'>
+  <p>
+    Quickly fuzzy find classes, mixins, methods, file:
+  </p>
+  <ul>
+    <li>
+      <span>T</span>
+      Open fuzzy finder dialog
+    </li>
+  </ul>
+  <p>
+    Control the navigation frame:
+  </p>
+  <ul>
+    <li>
+      <span>L</span>
+      Toggle list view
+    </li>
+    <li>
+      <span>C</span>
+      Show class list
+    </li>
+    <li>
+      <span>I</span>
+      Show mixin list
+    </li>
+    <li>
+      <span>F</span>
+      Show file list
+    </li>
+    <li>
+      <span>M</span>
+      Show method list
+    </li>
+    <li>
+      <span>E</span>
+      Show extras list
+    </li>
+  </ul>
+  <p>
+    You can focus and blur the search input:
+  </p>
+  <ul>
+    <li>
+      <span>S</span>
+      Focus search input
+    </li>
+    <li>
+      <span>Esc</span>
+      Blur search input
+    </li>
+  </ul>
+</div>
+  </body>
+</html>

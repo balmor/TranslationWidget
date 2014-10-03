@@ -2,14 +2,21 @@
 #import TextEditor
 #import FileEditor
 
+# EditorWindow class
 #
-# @author   Michal Katanski (mkatanski@nexway.com)
+# Language editing functionality. Language translation management.
+#
+# @author   Michal Katanski <mkatanski@nexway.com>
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
 # @version 1.0.1
 class EditorWindow
 
+  # Construct EditorWindow class
+  #
+  # @param [class] base TranslationWidget class
+  #
   constructor: (@base) ->
     @_render()
     @base.log 'Editor Window rendered'
@@ -23,7 +30,11 @@ class EditorWindow
 
     return
 
-  # Show window command
+  # Show editor window. If language cod is set to 'new' (default)
+  # Editor will be in 'new language' mode. Otherwise, editor will open
+  # language to translate by its code.
+  #
+  # @param [String] translation language code of translation to edit. Default is 'new'.
   show: (translation = 'new') ->
 
     # if editor window is open and new translation
@@ -52,6 +63,12 @@ class EditorWindow
     @base.log "Show editor window (translation: #{@translation})"
     return
 
+  # Set appropriate editor to display and edit translation
+  #
+  # @private
+  # @param [String] lang Language code
+  # @param [String] initialValue initial value to show in editor
+  #
   _setEditorFor: (lang, initialValue='') ->
     editors = @_currentElement.find('.editors')
     if lang is 'new'
@@ -65,6 +82,11 @@ class EditorWindow
     return
 
 
+  # Create drop-down box with list of all available languages
+  #
+  # @note List of all available languages is set by initialization method
+  #
+  # @private
   _createLangList: ->
     @langList = $('<select />', {
         "class" : "select-language",
@@ -97,6 +119,11 @@ class EditorWindow
     @base.log 'List of languages created'
     return
 
+  # Completely removes language translation. Language is still avaiable
+  # for further translate.
+  #
+  # @param [String] langCode Code of language to remove from list of translated languages
+  #
   removeLang: (langCode) ->
     # make sure that current editor is set for language
     # which is going to be removed
@@ -104,8 +131,12 @@ class EditorWindow
     # remove language
     @currentEditor.remove()
 
-  # Manually add translation for existing langCode
+  # Programatically add translation for existing langCode
   #
+  # @note Usefull for editing translations using external extensions
+  #
+  # @param [String] langCode Language code in ISO format
+  # @param [String] translation Translated string
   #
   addLang: (langCode, translation) ->
     if @base.languages[langCode]?
@@ -114,7 +145,8 @@ class EditorWindow
     else
       @base.log "There is no #{langCode} language", 'warning'
 
-  # Hide window command
+  # Hide editor window
+  #
   hide: ->
     if @status is 'open'
       @base.log 'Hide editor window'
@@ -129,6 +161,9 @@ class EditorWindow
       @status = 'closed'
     return
 
+  # Create HTML of editor window and render it into DOM
+  #
+  # @private
   _render: ->
     ewHTML = '''
     <div class="translation-options">

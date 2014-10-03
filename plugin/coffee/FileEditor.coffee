@@ -1,11 +1,23 @@
+# FileEditor class
 #
-# @author   Michal Katanski (mkatanski@nexway.com)
+# Creates file input type for translating languages
+#
+# @author   Michal Katanski <mkatanski@nexway.com>
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
 # @version 1.0.1
 class FileEditor extends EditorBase
 
+  # Construct FileEditor class, inherits from EditorBase class
+  #
+  # Creates file input html element as an editor
+  #
+  # @param [class] base TranslationWidget class
+  # @param [class] parent Parent class
+  # @param [string] langCode Code of the language to translate
+  # @param [string] value Info text string
+  #
   constructor: (base, parent, langCode, value = '') ->
     @Type = 'FileEditor'
     name = base.instanceName + "[#{langCode}]"

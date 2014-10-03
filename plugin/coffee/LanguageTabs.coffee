@@ -1,5 +1,8 @@
+# LanguageTabs class
 #
-# @author   Michal Katanski (mkatanski@nexway.com)
+# Manage language tabs (add, edit, remove)
+#
+# @author   Michal Katanski <mkatanski@nexway.com>
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
@@ -10,6 +13,10 @@ class LanguageTabs
   MOUSE_OVER_COLOR =  '#e1e1e1'
   BASE_COLOR =        '#eee'
 
+  # Construct LanguageTabs class
+  #
+  # @param [class] base TranslationWidget class
+  #
   constructor: (@base) ->
     @buttons = []
 
@@ -24,6 +31,8 @@ class LanguageTabs
     @tglBtnMarginRight = parseInt @base.baseElement.find('.open-translation').css('marginRight')
     return
 
+  # Render LanguageTabs HTML into DOM
+  # @private
   _render: ->
     ltHTML = '''
     <div class="language-tabs"></div>
@@ -32,7 +41,9 @@ class LanguageTabs
     @_currentElement = @base.baseElement.find '.language-tabs'
     @base.log 'Language tabs rendered'
 
-
+  # Create new button (tab) and append it to the list
+  #
+  # @param [String] langCode Code of the language that button refers to
   addButton: (langCode) ->
     if @buttonExists langCode
       @base.log "Cannot add [#{langCode}]! Button exists.", 'error'
@@ -67,6 +78,12 @@ class LanguageTabs
     @_updateInputWidth()
     return
 
+  # Remove button (tab) from the list
+  #
+  # @deprecated
+  # @note To completely remove language translation, use EditorWindow::removeLang instead of using this method.
+  #
+  # @param [String] langCode Code of the language that button refers to
   removeLanguage: (langCode) ->
     @base.edWindow.removeLang langCode
     @base.edWindow.hide()
@@ -75,9 +92,16 @@ class LanguageTabs
     @_updateInputWidth()
     return
 
+  # Check whether button refering provided language exists
+  #
+  # @param [String] langCode Code of the language that button refers to
+  # @return [Bool] Return true if button exists
   buttonExists: (langCode) ->
     return if @_currentElement.find('#'+langCode).length is 1 then true else false
 
+  # Get list of all languages that have its own button
+  #
+  # @return [Array] list of buttons id's
   getAllLanguages: ->
     list = new Array()
     langBtns = @_currentElement.find('.chosen-language')
@@ -86,7 +110,11 @@ class LanguageTabs
 
     return list
 
-
+  # Highlight selected button. By default method is using standard animation.
+  # If custom animation exists, it will use custom animation instead.
+  #
+  # @param [String] langCode Code of the language that button refers to
+  #
   highlight: (langCode) ->
     button = @_currentElement.find('#'+langCode)
     if $.isFunction @.customAnimation
@@ -96,6 +124,8 @@ class LanguageTabs
       button.animate {"backgroundColor": BASE_COLOR}, @base.options.addAnimationSpeed
     return
 
+  # Updates main input width to fit buttons (tabs) width
+  # @private
   _updateInputWidth: ->
     # static margin
     margin = 20
@@ -114,6 +144,12 @@ class LanguageTabs
       @base.baseElement.find('.lang-translation').width @baseInputWidth
     return
 
+  # Method checks custom animation option (options.addAnimation).
+  # If the option is function, it will bind this function as new animation
+  # Otherwise it will assume that option is a name of animation and will set
+  # new animation type.
+  #
+  # @private
   _addCustomAnimation: ->
     animationNames = ["slideToggle", "fadeToggle"]
 

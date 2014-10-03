@@ -1,11 +1,23 @@
+# TextEditor class
 #
-# @author   Michal Katanski (mkatanski@nexway.com)
+# Creates text editor type for translating languages
+#
+# @author   Michal Katanski <mkatanski@nexway.com>
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
 # @version 1.0.1
 class TextEditor extends EditorBase
 
+  # Construct TextEditor class, inherits from EditorBase class
+  #
+  # Creates textarea html element as an editor
+  #
+  # @param [class] base TranslationWidget class
+  # @param [class] parent Parent class
+  # @param [string] langCode Code of the language to translate
+  # @param [string] initialValue Initial editor value
+  #
   constructor: (base, parent, langCode, initialValue='') ->
     @Type = 'TextEditor'
     name = base.instanceName + "[#{langCode}]"
@@ -26,11 +38,19 @@ class TextEditor extends EditorBase
       @parent.find('.apply').text 'Apply'
     return
 
+  # Save translation
+  #
+  # @note Overrides EditorBase::save method
+  #
   save: ->
     @_currentElement.removeData 'current'
     super()
     return
 
+  # Cancel changes in editor
+  #
+  # @note Overrides EditorBase::discard method
+  #
   discard: ->
     super()
     unless @_currentElement.hasClass('toRemove')
