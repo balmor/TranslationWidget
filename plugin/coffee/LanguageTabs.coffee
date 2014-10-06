@@ -6,6 +6,7 @@
 # @author   Ariana Las <ariana.las@gmail.com>
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
+# @author   Karol Gorecki <kgorecki@nexway.com>
 # @version 1.0.4
 class LanguageTabs
 
