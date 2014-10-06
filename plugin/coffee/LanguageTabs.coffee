@@ -51,7 +51,7 @@ class LanguageTabs
       return
 
     span = $("<span id=\"#{langCode}\" class=\"chosen-language\"/>").text langCode
-    removeIcon = $('<a href="#" class="remove icon-remove" />')
+    removeIcon = $('<a href="#" class="remove icon icon-remove" />')
     removeIcon.appendTo span
 
     removeIcon.on 'click.'+@base.pluginName, (e) =>

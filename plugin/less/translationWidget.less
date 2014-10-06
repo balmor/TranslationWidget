@@ -3,12 +3,10 @@
  */
 
 // Bootstrap
-@import "../../bower_components/bootstrap/less/bootstrap.less";
-@import "../../oldVersion/less/font-awesome.less";
-@import "../../oldVersion/less/font-awesome-ie7.less";
-//@import "bootstrap/responsive.less";
+// @import "../../bower_components/bootstrap/less/bootstrap.less";
+@import "icomoon.less";
 @import "variables.less";
-//@import "mixins.less";
+@import "mixins.less";
 
 @import "form-widget.less";
 
@@ -16,8 +14,6 @@
 
 
 // MY SHORTCUTS
-
-//
 
 // Apperance
 .appearance (@appearance: none) {
@@ -102,16 +98,6 @@ input[type="text"], textarea {
         .box-shadow(none);
         .placeholder(darken(#fff,10%));
     }
-}
-
-.add-on > [class^="icon-"] {
-    margin-top: 5px;
-    margin-left: 3px;
-    line-height: 24px;
-}
-
-.add-on > .icon-caret-up {
-    line-height: 8px;
 }
 
 input[type="checkbox"] {

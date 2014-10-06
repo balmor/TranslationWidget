@@ -156,8 +156,7 @@ class TranslationWidget extends Plugin
   _createToggleBtn: ->
     tgHTML = '''
     <span class="add-on open-translation">
-      <i class="icon-reorder"></i>
-      <i class="icon-caret-up"></i>
+      <i class="icon icon-options"></i>
     </span>
     '''
     # insert ToggleBtn HTML before main input element
