@@ -27,6 +27,7 @@ class EditorWindow
     @_currentElement.find('.apply').on 'click.'+@base.pluginName, (e) =>
       e.preventDefault()
       @currentEditor.save()
+      @setOptionAsTranslated @translation
       return
 
     return
@@ -118,6 +119,11 @@ class EditorWindow
     # finally insert lang list into editor window
     @_currentElement.find('.translation-content').prepend @langList
     @base.log 'List of languages created'
+    return
+
+  setOptionAsTranslated: (langCode) ->
+    @langlist = @_currentElement.find('select')
+    @langlist.find("option[value=\"#{langCode}\"]").addClass 'translated'
     return
 
   # Completely removes language translation. Language is still avaiable

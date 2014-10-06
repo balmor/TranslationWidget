@@ -6,6 +6,11 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/normalize-css/normalize.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
@@ -18,69 +23,56 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <!-- Add your site or application content here -->
-    <div class="container">
-      <div class="header">
-        <h1 style="color: black">TranslationWidget v. 1.0.2</h1>
-      </div>
-      <div id="pluginPlayground" class="examples">
-        <form action="#" class="form-horizontal">
-          <table cellspacing="0" class="form-list">
-            <tbody>
-                <tr>
-                <td>
-                  <div class="control-group">
-                      <label class="control-label">Translation</label>
-                      <div class="controls">
-                          <input id="input1" type="text" class="m-wrap large lang-translation" readonly />
+
+      <header>
+        <div class="container">
+          <h1 style="color: black">TranslationWidget v. 1.0.3</h1>
+        </div>
+      </header>
+      <section>
+        <div class="container">
+          <div id="pluginPlayground" class="examples">
+            <form action="#" class="form-horizontal">
+
+                      <div class="control-group">
+                          <label class="control-label">Translation</label>
+                          <div class="controls">
+                              <input id="input1" type="text" class="m-wrap large lang-translation" readonly />
+                          </div>
                       </div>
-                  </div>
-                  <a href="#" data-input="input1" class="removeBtn">Clear</a>
-                </td>
-                </tr>
+                      <a href="#" data-input="input1" class="removeBtn">Clear</a>
 
-                <tr><td>&nbsp;</td></tr>
-
-                <tr>
-                  <td>
-                  <div class="control-group">
-                      <label class="control-label">Another Translation</label>
-                      <div class="controls">
-                          <input id="input2" type="text" class="m-wrap large lang-translation" readonly />
+                      <div class="control-group">
+                          <label class="control-label">Another Translation</label>
+                          <div class="controls">
+                              <input id="input2" type="text" class="m-wrap large lang-translation" readonly />
+                          </div>
                       </div>
-                  </div>
-                  <a href="#" data-input="input2" class="removeBtn">Clear</a>
-                </td>
-                </tr>
+                      <a href="#" data-input="input2" class="removeBtn">Clear</a>
 
-                <tr><td>&nbsp;</td></tr>
-
-                <tr>
-                  <td>
-                    <div class="control-group">
-                        <label class="control-label">File</label> (beta)
-                        <div class="controls">
-                            <input id="input3" type="file" class="m-wrap large lang-translation" readonly />
+                        <div class="control-group">
+                            <label class="control-label">File (beta)</label>
+                            <div class="controls">
+                                <input id="input3" type="file" class="m-wrap large lang-translation" readonly />
+                            </div>
                         </div>
-                    </div>
-                    <a href="#" data-input="input3" class="removeBtn">Clear</a>
-                  </td>
-                </tr>
+                        <a href="#" data-input="input3" class="removeBtn">Clear</a>
 
+              </form>
+          </div>
 
-              </tbody>
-            </table>
-
-          </form>
+          <h3 style="color: black">External controlls</h3>
+          <p>Examples of controlling TranslationWidget using external functions</p>
+          <br/>
+          <a href="#" id="clearAllDataConfirm">Clear all data</a><br />
+          <a href="#" id="clearAllData">Clear all data (no confirmation example)</a>
         </div>
-        <h3 style="color: black">External controlls</h3>
-        <p>Examples of controlling TranslationWidget using external functions</p>
-        <br/>
-        <a href="#" id="clearAllDataConfirm">Clear all data</a><br />
-        <a href="#" id="clearAllData">Clear all data (no confirmation example)</a>
-        <div class="footer">
-          <p><span class="glyphicon glyphicon-heart"></span> from the Nexway team</p>
+      </section>
+      <footer>
+        <div class="container">
+          <p>Nexway Lab</p>
         </div>
-      </div>
+      </footer>
       <!-- build:js(.) scripts/oldieshim.js -->
       <!--[if lt IE 9]>
       <script src="bower_components/es5-shim/es5-shim.js"></script>

@@ -6,7 +6,7 @@
     "jquery-ui": "latest"
   },
   "devDependencies": {
-
+    "normalize-css": "~3.0.2"
   },
   "appPath": "plugin"
 }
