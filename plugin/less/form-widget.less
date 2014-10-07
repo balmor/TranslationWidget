@@ -14,75 +14,46 @@
         display: inline-block;
         white-space: nowrap;
     }
-    input[type="text"], textarea {
 
-        &.large {
-            width: 300px;
-        }
-
-        &:focus {
-            background: darken(#fff,10%);
-            .box-shadow(none);
-            .placeholder(darken(#fff,10%));
-        }
-    }
-
-    .add-on > [class^="icon-"] {
-        margin-top: 5px;
-        margin-left: 3px;
-        line-height: 24px;
-    }
-
-    .add-on > .icon-caret-up {
-        line-height: 8px;
-    }
-
-    input[type="checkbox"] {
-        padding-top: 0;
-        margin-top: 0;
-    }
     input[type="text"].lang-translation,  .form-translation textarea.lang-translation {
-        /*width: 300px;*/
-        background: #fff !important;
-        border: 1px solid #BBBBBB;
-
+        border: 1px solid #ccc; // generic
         cursor: default;
     }
-    // from bootstrap
+
     .add-on {
         display: inline-block;
         position: absolute;
         left: 1px;
         top: 1px;
+        bottom: 1px;
         width: auto;
-        height: 24px;
         min-width: 16px;
         padding: 0 5px;
-        font-size: 14px;
+        font-size: 14px; // generic
         font-weight: normal;
-        line-height: 24px;
+        line-height: 26px; // generic
         text-align: center;
-        background-color: #eee;
-        border: 1px solid #e5e5e5;
+        background-color: #eee; // generic
+        border: 1px solid #e5e5e5; // generic
         &.open {
-            background: #F4F4F4;
+            background: #f4f4f4; // generic
         }
     }
     .btn {
         display: inline-block;
         .ie7-inline-block();
-        padding: 4px 12px;
+        padding: 0 12px;
         margin-bottom: 0; // For input.btn
         font-size: 14px;
-        line-height: 24px;
+        line-height: 32px; // generic
         text-align: center;
         vertical-align: middle;
         cursor: pointer;
-        color: lighten(#000, 10%);
-        .buttonBackground(#CCCCCC, #CCCCCC, #EEE, 0 1px 1px rgba(255,255,255,.75));
-        border: 1px solid #CCCCCC;
+        color: #111;
+        #gradient .vertical(#fff,#f6f6f6);
+        border: 1px solid #d9d9d9;
         *border: 0; // Remove the border to prevent IE7's black border on input:focus
-        border-bottom-color: darken(#CCCCCC, 10%);
+        border-bottom-color: darken(#d9d9d9, 10%);
         .border-radius(0);
         .ie7-restore-left-whitespace(); // Give IE7 some love
         .box-shadow(~"inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05)");
@@ -91,13 +62,9 @@
       // Hover/focus state
       &:hover,
       &:focus {
-        color: #999;
+        color: #000;
         text-decoration: none;
-        background-position: 0 -15px;
-
-        // transition is only when going to hover/focus, otherwise the background
-        // behind the gradient (there for IE<=9 fallback) gets mismatched
-        .transition(background-position .1s linear);
+        background: #fff;
       }
 
       // Focus state for keyboard and accessibility
@@ -128,15 +95,15 @@
         cursor: pointer;
 
         &:hover {
-            background: #eee;
-            box-shadow: 0 -4px 7px rgba(255, 255, 255, 0.9) inset;
+            background: #eee;  // generic
+            box-shadow: 0 -4px 7px rgba(255, 255, 255, 0.9) inset;  // generic
         }
 
         .icon-options {
-            color: #999;
+            color: #999; // generic
             cursor: pointer;
-            font-size: 14px;
-            text-shadow: 0 1px 0 #fff;
+            font-size: 14px; // generic
+            text-shadow: 0 1px 0 #fff; // generic
 
             &:before {
                 cursor: pointer;
@@ -147,12 +114,12 @@
     /* options */
     .translation-options {
         position: absolute;
-        bottom: 26px;
+        bottom: 100%;
         left: 0;
         visibility: hidden;
-        background: #f4f4f4;
+        background: #f4f4f4; // generic
         opacity: 0;
-        color: #333;
+        color: #333; // generic
         width: 100%;
         z-index: 1000;
 
@@ -181,7 +148,7 @@
                 bottom: -1px;
                 width: 27px;
                 height: 1px;
-                background: #f4f4f4;
+                background: #f4f4f4; // generic
             }
 
             .select-language {
@@ -196,23 +163,29 @@
                 option.translated {
                     font-weight: bold;
                     font-style: italic;
-                    color: #4D9957;
+                    color: #4D9957; // generic
                 }
             }
 
             .current-language {
+
+                .editors {
+                  .clearfix;
+                    padding-bottom: 15px;
+                }
+
                 .m-wrap {
                     background: #fff;
-                    border: 1px solid #d9d9d9 !important;
+                    border: 1px solid #d9d9d9 !important;  // generic
                     float: left;
-                    min-width: 70%;
-                    width: 70%;
-                    max-width: 70%;
+                    min-width: 64%; // generic
+                    width: 64%; // generic
+                    max-width: 64%; // generic
                     max-height: 100px;
-                    margin-bottom: 15px;
                     margin-right: 1%;
                     display: inline-block;
-                    height: 35px;
+                    height: 30px; // generic
+                    padding: 5px; // generic
 
                     &:focus {
                         border: 1px solid #999 !important;
@@ -225,10 +198,9 @@
 
                 .apply, .update {
                     float: right;
-                    margin-bottom: 15px;
                     padding-left: 0;
                     padding-right: 0;
-                    width: 25%;
+                    width: 25%;  // generic
 
                     &.hidden {
                         display: none !important;
@@ -241,42 +213,42 @@
     /* language tabs */
     .language-tabs {
         position: absolute;
-        top: 3px;
+        top: 1px;
+        bottom: 1px;
         left: 32px;
-        min-width: 260px;
-        max-width: 600px;
-        padding: 0;
-
-        // right: 6px;
-        // overflow: auto;
+        min-width: 260px; // generic
+        max-width: 600px; // generic
+        padding: 3px 0; // generic
 
         span {
             display: inline-block;
-            // font: 300 12px 'Open Sans';
         }
 
         .chosen-language {
+            font-size: 13px; // generic
             padding: 0 2px;
             margin: 0 2px;
-            color: #555;
-            background: #ffb848;
+            color: #555;  // generic
+            background: #ffb848; // generic
             width: 51px;
             text-align: center;
+            height: 100%;
+            line-height: 24px; // generic
 
             &:hover {
                 cursor: pointer;
-                background: #e1e1e1;
+                background: #e1e1e1; // generic
             }
 
             .remove {
                 margin-left: 7px;
                 text-decoration: none;
-                color: #777;
-                font-size: 12px;
-                line-height: 14px;
+                color: #777; // generic
+                font-size: 12px; // generic
+                line-height: 14px; // generic
 
                 &:hover {
-                    color: #333;
+                    color: #333; // generic
                 }
             }
         }
@@ -285,15 +257,11 @@
     /* show */
     &.show {
         .open-translation {
-            background: #f4f4f4;
+            background: #f4f4f4;  // generic
             border-top: 1px solid transparent;
 
-            .icon-reorder {
-                color: #666;
-            }
-
-            .icon-caret-up {
-                color: #555;
+            .icon-options {
+                color: #666; // generic
             }
 
             & + .lang-translation {
