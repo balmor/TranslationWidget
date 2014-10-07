@@ -18,7 +18,7 @@
     }
 
     input[type="text"].lang-translation,  .form-translation textarea.lang-translation {
-        border: 1px solid #ccc; // generic
+        border: @tr-input-border; // generic
         cursor: default;
     }
 
@@ -31,16 +31,19 @@
         width: auto;
         min-width: 16px;
         padding: 0 5px;
-        font-size: 14px; // generic
-        font-weight: normal;
-        line-height: 26px; // generic
+        font-size: @tr-add-on-font-size;
+        font-weight: @tr-add-on-font-weight;
+        line-height: @tr-add-on-line-height;
         text-align: center;
-        background-color: #eee; // generic
-        border: 1px solid #e5e5e5; // generic
-        &.open {
-            background: #f4f4f4; // generic
+        background: @tr-add-on-backgroud;
+        border: @tr-add-on-border;
+
+        &:hover {
+            background: @tr-add-on-hover-background;
+            box-shadow: @tr-add-on-hover-box-shadow;
         }
     }
+
     .btn {
         display: inline-block;
         .ie7-inline-block();
@@ -92,20 +95,16 @@
       }
 
     }
+
     /* translation */
     .open-translation {
         cursor: pointer;
 
-        &:hover {
-            background: #eee;  // generic
-            box-shadow: 0 -4px 7px rgba(255, 255, 255, 0.9) inset;  // generic
-        }
-
-        .icon-options {
-            color: #999; // generic
+        .icon {
+            color: @tr-open-icon-color;
             cursor: pointer;
-            font-size: 14px; // generic
-            text-shadow: 0 1px 0 #fff; // generic
+            font-size: @tr-open-icon-font-size;
+            text-shadow: @tr-open-icon-text-shadow;
 
             &:before {
                 cursor: pointer;
@@ -119,9 +118,9 @@
         bottom: 100%;
         left: 0;
         visibility: hidden;
-        background: #f4f4f4; // generic
+        background: @tr-options-background;
         opacity: 0;
-        color: #333; // generic
+        color: @tr-options-color;
         width: 100%;
         z-index: 1000;
 
@@ -150,7 +149,7 @@
                 bottom: -1px;
                 width: 27px;
                 height: 1px;
-                background: #f4f4f4; // generic
+                background: @tr-options-hide-border-background;
             }
 
             .select-language {
@@ -165,10 +164,11 @@
                 option.translated {
                     font-weight: bold;
                     font-style: italic;
-                    color: #4D9957; // generic
+                    color: @tr-options-languages-translated-color;
                 }
             }
 
+            /* current languages */
             .current-language {
 
                 .editors {
@@ -177,20 +177,19 @@
                 }
 
                 .m-wrap {
-                    background: #fff;
-                    border: 1px solid #d9d9d9 !important;  // generic
+                    border: @tr-currnet-textarea-border;
                     float: left;
-                    min-width: 64%; // generic
-                    width: 64%; // generic
-                    max-width: 64%; // generic
-                    max-height: 100px;
+                    min-width: @tr-currnet-textarea-width;
+                    width: @tr-currnet-textarea-width;
+                    max-width: @tr-currnet-textarea-width;
+                    max-height: @tr-currnet-textarea-max-height;
                     margin-right: 1%;
                     display: inline-block;
-                    height: 25px; // generic
-                    padding: 5px; // generic
+                    height: @tr-currnet-textarea-height;
+                    padding: @tr-currnet-textarea-padding;
 
                     &:focus {
-                        border: 1px solid #999 !important;
+                        border: @tr-currnet-textarea-focus-border;
                     }
 
                     &.hidden {
@@ -202,7 +201,7 @@
                     float: right;
                     padding-left: 0;
                     padding-right: 0;
-                    width: 25%;  // generic
+                    width: @tr-btn-width;
 
                     &.hidden {
                         display: none !important;
@@ -218,39 +217,39 @@
         top: 1px;
         bottom: 1px;
         left: 32px;
-        min-width: 260px; // generic
-        max-width: 600px; // generic
-        padding: 3px 0; // generic
+        min-width: @tr-language-tabs-min-width;
+        max-width: @tr-language-tabs-max-width;
+        padding: @tr-language-tabs-padding;
 
         span {
             display: inline-block;
         }
 
         .chosen-language {
-            font-size: 13px; // generic
+            font-size: @tr-language-chosen-font-size;
             padding: 0 2px;
             margin: 0 2px;
-            color: #555;  // generic
-            background: #ffb848; // generic
+            color: @tr-language-chosen-color;
+            background: @tr-language-chosen-background;
             width: 51px;
             text-align: center;
             height: 100%;
-            line-height: 24px; // generic
+            line-height: @tr-language-chosen-line-height;
 
             &:hover {
                 cursor: pointer;
-                background: #e1e1e1; // generic
+                background: @tr-language-chosen-background-hover;
             }
 
             .remove {
                 margin-left: 7px;
                 text-decoration: none;
-                color: #777; // generic
-                font-size: 12px; // generic
-                line-height: 14px; // generic
+                color: @tr-language-remove-color;
+                font-size: @tr-language-remove-font-size;
+                line-height: @tr-language-remove-line-height;
 
                 &:hover {
-                    color: #333; // generic
+                    color: @tr-language-remove-color-hover;
                 }
             }
         }
@@ -259,11 +258,11 @@
     /* show */
     &.show {
         .open-translation {
-            background: #f4f4f4;  // generic
+            background: @tr-show-add-on-background;
             border-top: 1px solid transparent;
 
             .icon-options {
-                color: #666; // generic
+                color: @tr-show-open-icon-color;
             }
 
             & + .lang-translation {
