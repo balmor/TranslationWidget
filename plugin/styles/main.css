@@ -54,6 +54,7 @@ label {
   width: 165px;
   padding-right: 10px;
   text-align: right;
+  vertical-align: -5px;
 }
 
 .controls {
