@@ -10,10 +10,6 @@
 # @version 1.0.4
 class LanguageTabs
 
-  HIGHLIGHT_COLOR =   ''
-  MOUSE_OVER_COLOR =  ''
-  BASE_COLOR =        ''
-
   # Construct LanguageTabs class
   #
   # @param [class] base TranslationWidget class
@@ -81,9 +77,11 @@ class LanguageTabs
   removeLanguage: (langCode) ->
     @base.edWindow.removeLang langCode
     @base.edWindow.hide()
-    @_currentElement.find('#'+langCode).remove()
-    @base.log "Button [#{langCode}] removed"
-    @_updateInputWidth()
+    @_currentElement.find('#'+langCode).fadeOut =>
+      @_currentElement.find('#'+langCode).remove()
+      @base.log "Button [#{langCode}] removed"
+      @_updateInputWidth()
+      return
     return
 
   # Check whether button refering provided language exists
@@ -110,7 +108,6 @@ class LanguageTabs
   #
   highlight: (langCode) ->
     button = @_currentElement.find('#'+langCode)
-
 
     if button.hasClass 'init'
       button.replaceWith(button.clone(true))
