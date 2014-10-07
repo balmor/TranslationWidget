@@ -1,4 +1,4 @@
-TranslationWidget
+Translation Widget
 =================
 
 Translation Widget is a jQuery widget which you can use to enable sending text strings and/or files in different languages.
@@ -54,7 +54,7 @@ $('.lang-translation').translationWidget();
 </script>
 
 ```
-
+------------
 
 Options
 ------------
