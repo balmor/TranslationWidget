@@ -8,6 +8,26 @@
 
 /* FORM WIDGET STYLES */
 
+
+/* flash animation */
+@-webkit-keyframes flash {
+  0%   { background: @tr-language-chosen-background-init; }
+  100% { background: @tr-language-chosen-background; }
+}
+@-moz-keyframes flash {
+  0%   { background: @tr-language-chosen-background-init; }
+  100% { background: @tr-language-chosen-background; }
+}
+@-o-keyframes flash {
+  0%   { background: @tr-language-chosen-background-init; }
+  100% { background: @tr-language-chosen-background; }
+}
+@keyframes flash {
+  0%   { background: @tr-language-chosen-background-init; }
+  100% { background: @tr-language-chosen-background; }
+}
+
+/* Form translation */
 .form-translation {
     position: relative;
     display: inline-block;
@@ -236,6 +256,13 @@
             height: 100%;
             line-height: @tr-language-chosen-line-height;
 
+            &.init {
+                -webkit-animation: @tr-language-chosen-animation-init;
+                -moz-animation:    @tr-language-chosen-animation-init;
+                -o-animation:      @tr-language-chosen-animation-init;
+                animation:         @tr-language-chosen-animation-init;
+            }
+
             &:hover {
                 cursor: pointer;
                 background: @tr-language-chosen-background-hover;
@@ -300,8 +327,7 @@
         margin:-130px 0 0 -250px;
         background: white;
         border: 1px solid rgba(0,0,0,.1);
-        // @shadow: 0 -1px 3px rgba(0,0,0,.1);
-        // .box-shadow(@shadow);
+
         h1 {
             color:#fff;
             text-shadow: 1px 0 0 rgba(0,0,0,.2);

@@ -28,6 +28,7 @@ class EditorWindow
       e.preventDefault()
       @currentEditor.save()
       @setOptionAsTranslated @translation
+      @_currentElement.find('.apply').text 'Update'
       return
 
     return

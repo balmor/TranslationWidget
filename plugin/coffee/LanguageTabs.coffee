@@ -10,9 +10,9 @@
 # @version 1.0.4
 class LanguageTabs
 
-  HIGHLIGHT_COLOR =   '#ffb848'
-  MOUSE_OVER_COLOR =  '#e1e1e1'
-  BASE_COLOR =        '#eee'
+  HIGHLIGHT_COLOR =   ''
+  MOUSE_OVER_COLOR =  ''
+  BASE_COLOR =        ''
 
   # Construct LanguageTabs class
   #
@@ -23,7 +23,6 @@ class LanguageTabs
 
     @base.log 'Language tabs created'
     @_render()
-    @_addCustomAnimation()
 
     #Get original width of base input
     @baseInputWidth = parseInt @base.baseElement.find('.lang-translation').width()
@@ -67,12 +66,6 @@ class LanguageTabs
       @base.log "LangBtn [#{langCode}] clicked"
       @base.edWindow.show langCode
 
-    # add mouse events for highlighting item
-    span.on 'mouseover.'+@base.pluginName, =>
-      span.css {backgroundColor: MOUSE_OVER_COLOR}
-    span.on 'mouseleave.'+@base.pluginName, =>
-      span.css {backgroundColor: BASE_COLOR}
-
     span.appendTo @_currentElement
 
     @base.log "Button added: #{langCode}"
@@ -111,18 +104,18 @@ class LanguageTabs
 
     return list
 
-  # Highlight selected button. By default method is using standard animation.
-  # If custom animation exists, it will use custom animation instead.
+  # Highlight selected button.
   #
   # @param [String] langCode Code of the language that button refers to
   #
   highlight: (langCode) ->
     button = @_currentElement.find('#'+langCode)
-    if $.isFunction @.customAnimation
-        button.customAnimation()
+
+
+    if button.hasClass 'init'
+      button.replaceWith(button.clone(true))
     else
-      button.css {backgroundColor: HIGHLIGHT_COLOR}
-      button.animate {"backgroundColor": BASE_COLOR}, @base.options.addAnimationSpeed
+      button.addClass 'init'
     return
 
   # Updates main input width to fit buttons (tabs) width
@@ -144,26 +137,3 @@ class LanguageTabs
       # reset width of main input element to initial
       @base.baseElement.find('.lang-translation').width @baseInputWidth
     return
-
-  # Method checks custom animation option (options.addAnimation).
-  # If the option is function, it will bind this function as new animation
-  # Otherwise it will assume that option is a name of animation and will set
-  # new animation type.
-  #
-  # @private
-  _addCustomAnimation: ->
-    animationNames = ["slideToggle", "fadeToggle"]
-
-    # if custom animation is function
-    if $.isFunction @base.options.addAnimation
-      # set new custom animation function
-      $.fn["customAnimation"] = @base.options.addAnimation;
-      @base.log 'Added custom animation as new function'
-    else
-      # else check if name of animation is valid
-      if $.inArray(@base.options.addAnimation , animationNames) isnt -1
-        # set new animation based on valid animation name
-        $.fn["customAnimation"] = ->
-          @[@base.options.addAnimation] 0
-          return @[@base.options.addAnimation] @base.options.addAnimationSpeed
-        @base.log 'Added custom animation based on name'

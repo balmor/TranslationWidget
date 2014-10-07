@@ -22,8 +22,6 @@ class TranslationWidget extends Plugin
     useDefaultLanguages: true
     inputNamePrefix:    ''
     customSelectLabel:  'Please Select'
-    addAnimation:       ''
-    addAnimationSpeed:  700
     confirmBox:
       yesText:          'Yes, delete'
       noText:           'No, go away!'
