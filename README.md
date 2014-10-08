@@ -41,14 +41,16 @@ First you have to create basic html skeleton for each instance like this:
 </div>
 ```
 
-Note that input id attribute is optional and it depends on how you want to initialize plugin. There are two methods of doing this: by class or by id. The second method will be discussed later in this document. The main difference betweent those two methods is when plugins are intialized by class name, all options are equal for each instance on page. Initialization by id gives each instance more independent behaviour.
+It should be noted that the id attribute is optional and depends on how you want to initialize the plug-ins. There are two methods of doing this: by class or by id. The main difference between these two methods is that when plug-ins are initiated by the class name, all the options are the same for each instance on the page. Initialization by id gives each instance more independent behaviour.
 
-Label content is also instance name. However if label contains some spaces those spaces are being removed from instance name. For example:<br>
+*Tip: You can create different classes for different groups of inputs. This way you can have two independent groups of widgets on your page with different settings and translations.*
+
+Label content is also instance name. However, if the label contains spaces, they will be removed from the instance name. For example:<br>
 **Label content = Translation Widget**<br>
 **Instance name = TranslationWidget**
 
 
-Below is simple initialization examples just to make the plugin work. Both for class and id methods. Place it somewhere in your document (for example at the bottom, just before ```</body>``` tag).
+Below are some simple examples of initialization only needed to run plugins. For both methods of initialization by the class and id. Place it somewhere in your document (for example at the bottom, just before ```</body>``` tag).
 ```html
 
 <script>
@@ -85,15 +87,16 @@ $('.lang-translation').translationWidget({
 
 ###Available languages
 
-By default Translation Widget has list of 5 available languages: Polish, English, French, Spanish, German. You can append new language to the list or override with your own cutom list.
+By default Translation Widget has list of 5 available languages: Polish, English, French, Spanish, German. You can append new language to the list or override with your own custom list.
 
-To append new languages simply pass it during initialization as an JavaScript object just after options list like this:
+To include new languages simply pass them during initialization as a JavaScript object just after the list of options:
 ```html
 <script>
 // WIDGET INITIALIZATION BY CLASS
 $('.lang-translation').translationWidget({
- // options list
+ // list of options
 }, {
+ // list of additional languages
  'RU': 'Russian'
 });
 </script>
@@ -113,9 +116,9 @@ $('.lang-translation').translationWidget({
 
 ### Existing translations
 
-There are at least two ways to load existing translations. The simplest one is to create javascript object which stores translations for each plugin instance on page. Then set this object to plugins **dataSource** parameter.
+There are at least two ways to load existing translations. The simplest one is to create object which stores translations for each plugin on page. You then assign this object to the parameter **dataSource**.
 
-The translations object has its own schema which looks like this:
+The object has its own schema which looks like this:
 
 ```JS
 {
@@ -125,9 +128,9 @@ The translations object has its own schema which looks like this:
 }
 ```
 
-where *instanceName* is the name of widget instance on page, *langCode* is the code name of language. This standard allows us to pass translations for all widgets instances independently even if widgets where initialized only once by class reference.
+where *instanceName* is the name of widget instance on page, *langCode* is the code name of language. This standard allows us to pass the translations for all widgets independently even if widgets are initialized only once by the class name.
 
-Working example:
+Example:
 ```JS
 var translationsObject = new Object();
 
@@ -154,11 +157,11 @@ $('.lang-translation').translationWidget({
 
 ### Other options
 
-1. **inputNamePrefix** - it will be added to every input name at the beginning.
+1. **inputNamePrefix** - string that will be added to every input name at the beginning.
 
 2. **customSelectLabel** - default text for language drop-down menu. You can change it if you want to translate plugin for your own language.
 
-3. **confirmBox** - list of texts and options for confirm box. You can change it if you want to translate plugin for your own language.
+3. **confirmBox** - list of texts and options for confirm box.
  + **confirmBox: yesText** - Accept button label
  + **confirmBox: noText** - Cancel button label
  + **confirmBox: infoMessage** - Confirm box message
