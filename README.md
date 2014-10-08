@@ -122,7 +122,7 @@ There are at least two ways to load existing translations. The simplest one is t
 
 The object has its own schema which looks like this:
 
-```JS
+```javascript
 {
   'instanceName': {
     langCode: 'Translation',
@@ -133,7 +133,7 @@ The object has its own schema which looks like this:
 where *instanceName* is the name of widget instance on page, *langCode* is the code name of language. This standard allows us to pass the translations for all widgets independently even if widgets are initialized only once by the class name.
 
 Example:
-```JS
+```javascript
 var translationsObject = new Object();
 
 // Translations for first instance
@@ -161,7 +161,7 @@ In some cases, you may want to filter the translation before passing them to an 
 
 Here is example which result is exactly the same as above but it uses custom function instaed of assigning javascript object to plugins *dataSource*:
 
-```JS
+```javascript
 $('.lang-translation').translationWidget({
       dataSource: function(instanceName) {
         return translationsObject;
@@ -190,7 +190,7 @@ Note that the function takes one parameter called "instanceName". It contains th
 
 ### List of all options with their default values
 
-```JS
+```javascript
 defaultOptions = {
     dataSource: '',
     useDefaultLanguages: true,
