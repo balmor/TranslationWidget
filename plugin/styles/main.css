@@ -80,7 +80,7 @@ input[type="text"], textarea {
     border: 1px solid #e5e5e5;
     color: #333;
     border-radius: 0;
-    .box-shadow(none);
+    box-shadow: none;
     font-size: 14px;
     height: 26px;
     line-height: 20px;
@@ -90,11 +90,6 @@ input[type="text"], textarea {
 
 input.large {
   width: 300px;
-}
-
-input:focus {
-        background: darken(#fff,10%);
-        .box-shadow(none);
 }
 
 
