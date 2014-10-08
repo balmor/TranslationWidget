@@ -1,4 +1,4 @@
-Translation Widget
+Translation Widget v.1.0.5
 =================
 
 Translation Widget is a jQuery widget which you can use to enable sending text strings and/or files in different languages.
