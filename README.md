@@ -14,8 +14,11 @@ Translation Widget is a jQuery widget which you can use to enable sending text s
       * [Use custom function](#custom)
     * [Other options](#Other)
     * [List of all options with their default values](#List)
-5. [License](#License)
-6. [Contact](#Contact)
+5. [API](#API) 
+6. [More examples](#More)
+8. [File input](#File)
+9. [License](#License)
+10. [Contact](#Contact)
 
 
 -------------
@@ -61,7 +64,7 @@ First you have to create basic html skeleton for each instance like this:
 
 It should be noted that the id attribute is optional and depends on how you want to initialize the plug-ins. There are two methods of doing this: by class or by id. The main difference between these two methods is that when plug-ins are initiated by the class name, all the options are the same for each instance on the page. Initialization by id gives each instance more independent behaviour.
 
-*Tip: You can create different classes for different groups of inputs. This way you can have two independent groups of widgets on your page with different settings and translations.*
+> *Tip: You can create different classes for different groups of inputs. This way you can have two independent groups of widgets on your page with different settings and translations.*
 
 Label content is also instance name. However, if the label contains spaces, they will be removed from the instance name. For example:<br>
 **Label content = Translation Widget**<br>
@@ -83,7 +86,7 @@ $('#input1').translationWidget();
 
 ```
 
-Note that if you want to intialize widget by input ID, you have to do it separately for each input.
+> Note that if you want to intialize widget by input ID, you have to do it separately for each input.
 
 ------------
 
@@ -188,7 +191,7 @@ $('.lang-translation').translationWidget({
 
 ```
 
-Note that the function takes one parameter called "instanceName". It contains the name of the instance for which there is data loading. This can be useful if you want to have more control over assigning translations to a specific instance of the plugin at the same time using the initialization by the class name.
+> Note that the function takes one parameter called "instanceName". It contains the name of the instance for which there is data loading. This can be useful if you want to have more control over assigning translations to a specific instance of the plugin at the same time using the initialization by the class name.
 
 
 ### Other options<a name="Other"></a>
@@ -225,6 +228,25 @@ defaultOptions = {
   };
 ```
 --------------
+
+API <a name="API"></a>
+--------------
+
+TO-DO
+
+
+More examples <a name="More"></a>
+--------------
+
+TO-DO
+
+
+
+File input <a name="File"></a>
+--------------
+
+TO-DO
+
 
 License<a name="License"></a>
 --------------
