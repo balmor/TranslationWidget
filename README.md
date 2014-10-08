@@ -116,6 +116,8 @@ $('.lang-translation').translationWidget({
 
 ### Existing translations
 
+#### Use JavaScript object
+
 There are at least two ways to load existing translations. The simplest one is to create object which stores translations for each plugin on page. You then assign this object to the parameter **dataSource**.
 
 The object has its own schema which looks like this:
@@ -153,6 +155,22 @@ $('.lang-translation').translationWidget({
 
 ```
 
+#### Use custom function
+
+In some cases, you may want to filter the translation before passing them to an instance of the plugin. Or maybe you want to take advantage of the AJAX to retrieve the translation from the server. All you need to do is assign a custom function to **dataSource** parameter. The function, however, must return the same object with translations as described above. 
+
+Here is example which result is exactly the same as above but it uses custom function instaed of assigning javascript object to plugins *dataSource*:
+
+```JS
+$('.lang-translation').translationWidget({
+      dataSource: function(instanceName) {
+        return translationsObject;
+   }
+});
+
+```
+
+Note that the function takes one parameter called "instanceName". It contains the name of the instance for which there is data loading. This can be useful if you want to have more control over assigning translations to a specific instance of the plugin at the same time using the initialization by the class name.
 
 
 ### Other options
@@ -170,7 +188,7 @@ $('.lang-translation').translationWidget({
  + **confirmBox: useKeys** - Set to *true* if you want to use Escape key to close confirm box
 
 
-List of all options with their default values:
+### List of all options with their default values
 
 ```JS
 defaultOptions = {
@@ -188,7 +206,7 @@ defaultOptions = {
     }
   };
 ```
-
+--------------
 
 License
 --------------
