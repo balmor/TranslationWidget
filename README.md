@@ -3,17 +3,23 @@ Translation Widget
 
 Translation Widget is a jQuery widget which you can use to enable sending text strings and/or files in different languages.
 
-## Table of Content
+## Table of Contents
 1. [Requirements](#Requirements)
 2. [Installation](#Installation)
 3. [Initialization](#Initialization)
 4. [Options](#Options)
     * [Available languages](#Available)
     * [Existing translations](#Existing)
+      * [Use JavaScript object](#JavaScript)
+      * [Use custom function](#custom)
     * [Other options](#Other)
     * [List of all options with their default values](#List)
 5. [License](#License)
 6. [Contact](#Contact)
+
+
+-------------
+
 
 Requirements<a name="Requirements"></a>
 -------------
