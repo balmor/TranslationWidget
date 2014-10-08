@@ -43,7 +43,12 @@ First you have to create basic html skeleton for each instance like this:
 
 Note that input id attribute is optional and it depends on how you want to initialize plugin. There are two methods of doing this: by class or by id. The second method will be discussed later in this document. The main difference betweent those two methods is when plugins are intialized by class name, all options are equal for each instance on page. Initialization by id gives each instance more independent behaviour.
 
-Below is simple initialization by class reference just to make the plugin work. Place it somewhere in your document (for example at the bottom, just before ```</body>``` tag).
+Label content is also instance name. However if label contains some spaces those spaces are being removed from instance name. For example:<br>
+**Label content = Translation Widget**<br>
+**Instance name = TranslationWidget**
+
+
+Below is simple initialization examples just to make the plugin work. Both for class and id methods. Place it somewhere in your document (for example at the bottom, just before ```</body>``` tag).
 ```html
 
 <script>
@@ -51,9 +56,15 @@ Below is simple initialization by class reference just to make the plugin work. 
 // WIDGET INITIALIZATION BY CLASS
 $('.lang-translation').translationWidget();
 
+// WIDGET INITIALIZATION BY ID
+$('#input1').translationWidget();
+
 </script>
 
 ```
+
+Note that if you want to intialize widget by input ID, you have to do it separately for each input.
+
 ------------
 
 Options
@@ -100,6 +111,47 @@ $('.lang-translation').translationWidget({
 </script>
 ```
 
+### Existing translations
+
+There are at least two ways to load existing translations. The simplest one is to create javascript object which stores translations for each plugin instance on page. Then set this object to plugins **dataSource** parameter.
+
+The translations object has its own schema which looks like this:
+
+```JS
+{
+  'instanceName': {
+    langCode: 'Translation',
+  },
+}
+```
+
+where *instanceName* is the name of widget instance on page, *langCode* is the code name of language. This standard allows us to pass translations for all widgets instances independently even if widgets where initialized only once by class reference.
+
+Working example:
+```JS
+var translationsObject = new Object();
+
+// Translations for first instance
+translationsObject["Instance1"] = {
+   EN: 'English translation',
+   PL: 'Polskie tłumaczenie',
+};
+
+// Translations for second instance
+translationsObject["Instance2"] = {
+   EN: 'Another translation',
+   PL: 'Inne tłumaczenie',
+};
+
+// Initialize all widgets by class reference
+$('.lang-translation').translationWidget({
+ dataSource: translationsObject, // pass translationObject to load translations
+});
+
+```
+
+
+
 ### Other options
 
 1. **inputNamePrefix** - it will be added to every input name at the beginning.
@@ -113,6 +165,7 @@ $('.lang-translation').translationWidget({
  + **confirmBox: hText** - Confirm box title
  + **confirmBox: outerClick** - Set to *true* if you want to close confirm box on outer click
  + **confirmBox: useKeys** - Set to *true* if you want to use Escape key to close confirm box
+
 
 List of all options with their default values:
 
