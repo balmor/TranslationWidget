@@ -3,12 +3,17 @@ Translation Widget
 
 Translation Widget is a jQuery widget which you can use to enable sending text strings and/or files in different languages.
 
-Requirements
+## Content
+1. [Requirements](#Requirements)
+2. [Installation](#Installation)
+3. [Initialization](#Initialization)
+
+Requirements<a name="Requirements"></a>
 -------------
 
 Translation Widget requires [jquery](http://jquery.com/) library to work.
 
-Installation
+Installation<a name="Installation"></a>
 -------------
 
 To enable this widget on your website you have to include javascript documents in your document head section:
@@ -28,7 +33,7 @@ Also there is need to include css styles sheets:
 
 --------------
 
-Initialization
+Initialization<a name="Initialization"></a>
 -----------
 
 First you have to create basic html skeleton for each instance like this:
@@ -69,7 +74,7 @@ Note that if you want to intialize widget by input ID, you have to do it separat
 
 ------------
 
-Options
+Options<a name="Options"></a>
 ------------
 
 You can change widget settings by passing them as an JavaScript Object during initialization.
@@ -85,7 +90,7 @@ $('.lang-translation').translationWidget({
 
 ```
 
-###Available languages
+###Available languages<a name="Available"></a>
 
 By default Translation Widget has list of 5 available languages: Polish, English, French, Spanish, German. You can append new language to the list or override with your own custom list.
 
@@ -114,9 +119,9 @@ $('.lang-translation').translationWidget({
 </script>
 ```
 
-### Existing translations
+### Existing translations<a name="Existing"></a>
 
-#### Use JavaScript object
+#### Use JavaScript object<a name="JavaScript"></a>
 
 There are at least two ways to load existing translations. The simplest one is to create object which stores translations for each plugin on page. You then assign this object to the parameter **dataSource**.
 
@@ -155,7 +160,7 @@ $('.lang-translation').translationWidget({
 
 ```
 
-#### Use custom function
+#### Use custom function<a name="custom"></a>
 
 In some cases, you may want to filter the translation before passing them to an instance of the plugin. Or maybe you want to take advantage of the AJAX to retrieve the translation from the server. All you need to do is assign a custom function to **dataSource** parameter. The function, however, must return the same object with translations as described above. 
 
@@ -173,7 +178,7 @@ $('.lang-translation').translationWidget({
 Note that the function takes one parameter called "instanceName". It contains the name of the instance for which there is data loading. This can be useful if you want to have more control over assigning translations to a specific instance of the plugin at the same time using the initialization by the class name.
 
 
-### Other options
+### Other options<a name="Other"></a>
 
 1. **inputNamePrefix** - string that will be added to every input name at the beginning.
 
@@ -188,7 +193,7 @@ Note that the function takes one parameter called "instanceName". It contains th
  + **confirmBox: useKeys** - Set to *true* if you want to use Escape key to close confirm box
 
 
-### List of all options with their default values
+### List of all options with their default values<a name="List"></a>
 
 ```javascript
 defaultOptions = {
@@ -208,12 +213,12 @@ defaultOptions = {
 ```
 --------------
 
-License
+License<a name="License"></a>
 --------------
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Translation Widget</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a> and also available under [the MIT License](LICENSE.txt).
 
-Contact/Help
+Contact/Help<a name="Contact"></a>
 -------------
 
 + <mkatanski@nexway.com>
