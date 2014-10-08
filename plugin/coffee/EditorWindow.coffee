@@ -124,7 +124,7 @@ class EditorWindow
 
   # Set options as translated in select languages list.
   #
-  # @param [String] Add class "translated"
+  # @param [String] langCode Language code to set as translated
   #
   setOptionAsTranslated: (langCode) ->
     @langlist = @_currentElement.find('select')

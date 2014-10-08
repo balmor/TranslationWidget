@@ -109,10 +109,10 @@ class LanguageTabs
   highlight: (langCode) ->
     button = @_currentElement.find('#'+langCode)
 
-    if button.hasClass 'init'
+    if button.hasClass 'highlight'
       button.replaceWith(button.clone(true))
     else
-      button.addClass 'init'
+      button.addClass 'highlight'
     return
 
   # Updates main input width to fit buttons (tabs) width
