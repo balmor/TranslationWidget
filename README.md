@@ -16,7 +16,7 @@ Translation Widget is a jQuery widget which you can use to enable sending text s
     * [List of all options with their default values](#List)
 5. [API](#API) 
 6. [More examples](#More)
-8. [File input](#File)
+8. [File input (beta)](#File)
 9. [License](#License)
 10. [Contact](#Contact)
 
@@ -151,7 +151,9 @@ The object has its own schema which looks like this:
 }
 ```
 
-where *instanceName* is the name of widget instance on page, *langCode* is the code name of language. This standard allows us to pass the translations for all widgets independently even if widgets are initialized only once by the class name.
+where *instanceName* is the name of widget instance* on page, *langCode* is the code name of language. This standard allows us to pass the translations for all widgets independently even if widgets are initialized only once by the class name.
+
+* more info about instance name is in [Initialization](#Initialization) section of this document
 
 Example:
 ```javascript
@@ -256,7 +258,7 @@ If you have node.js installed on your machine, run: ```grunt serve``` in termina
 
 
 
-File input ^beta <a name="File"></a>
+File input (beta) <a name="File"></a>
 --------------
 
 Instead of using html's text input you can use file input to translate files and sending them to the server. However, file handling is in beta so may not working correctly. Also some of widget functionality may or may not be compatible with this type of input.
