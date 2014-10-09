@@ -232,20 +232,34 @@ defaultOptions = {
 API <a name="API"></a>
 --------------
 
-TO-DO
+Plugin is object oriented and has a number of public methods that can be used for advanced control and expand its capabilities.
+
+To get access to the main class of the plugin you must assign an instance variable:
+```javascript
+var instance = $('#input1').data('translationWidget_#input1');
+```
+where '#input1' is an ID of html input element.
+
+Now you can invoke built in methods. For example to clear all translations of **input1** write something like this:
+```javascript
+instance.clearData();
+```
+More information about the available methods and variables can be found in the **/docs** folder.
 
 
 More examples <a name="More"></a>
 --------------
 
-TO-DO
+More working examples can be found in **/plugin** folder. see *index.html* source to check some possibilities.
+
+If you have node.js installed on your machine, run: ```grunt serve``` in terminal or console to test plugin behaviour.
 
 
 
-File input <a name="File"></a>
+File input ^beta <a name="File"></a>
 --------------
 
-TO-DO
+Instead of using html's text input you can use file input to translate files and sending them to the server. However, file handling is in beta so may not working correctly. Also some of widget functionality may or may not be compatible with this type of input.
 
 
 License<a name="License"></a>
