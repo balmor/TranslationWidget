@@ -66,9 +66,9 @@ It should be noted that the id attribute is optional and depends on how you want
 
 > *Tip: You can create different classes for different groups of inputs. This way you can have two independent groups of widgets on your page with different settings and translations.*
 
-Label content is also instance name. However, if the label contains spaces, they will be removed from the instance name. For example:<br>
+Label content is also instance name. However, if the label contains spaces, they will be replaced by underscore character (_). For example:<br>
 **Label content = Translation Widget**<br>
-**Instance name = TranslationWidget**
+**Instance name = Translation_Widget**
 
 
 Below are some simple examples of initialization only needed to run plugins. For both methods of initialization by the class and id. Place it somewhere in your document (for example at the bottom, just before ```</body>``` tag).
