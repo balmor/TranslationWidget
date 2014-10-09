@@ -29,6 +29,7 @@ class EditorWindow
       @currentEditor.save()
       @setOptionAsTranslated @translation
       @_currentElement.find('.apply').text 'Update'
+      @_checkTranslationExistence
       return
 
     return
