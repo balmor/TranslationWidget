@@ -142,6 +142,8 @@ class EditorWindow
     @_setEditorFor langCode
     # remove language
     @currentEditor.remove()
+    @_checkTranslationExistence()
+    return
 
   # Programatically add translation for existing langCode
   #
@@ -154,6 +156,7 @@ class EditorWindow
     if @base.languages[langCode]?
       @_setEditorFor langCode, translation
       @currentEditor.save()
+      @_checkTranslationExistence()
     else
       @base.log "There is no #{langCode} language", 'warning'
 
@@ -194,4 +197,16 @@ class EditorWindow
 
     # Set _currentElement as ToggleBtn HTML
     @_currentElement = @base.baseElement.find '.translation-options'
+    return
+
+  # Check if any translation exists in current instance and
+  # sets main input value according to result
+  # @private
+  _checkTranslationExistence: ->
+
+    if (@base.languageTabs.getAllLanguages().length > 0)
+      @base._currentElement.val 'filled'
+    else
+      @base._currentElement.val ''
+
     return
