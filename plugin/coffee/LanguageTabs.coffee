@@ -7,7 +7,7 @@
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
 # @author   Karol Gorecki <kgorecki@nexway.com>
-# @version 1.0.4
+# @version 1.0.5
 class LanguageTabs
 
   # Construct LanguageTabs class
@@ -66,6 +66,7 @@ class LanguageTabs
 
     @base.log "Button added: #{langCode}"
     @_updateInputWidth()
+    @base._checkTranslationExistence()
     return
 
   # Remove button (tab) from the list
@@ -81,6 +82,7 @@ class LanguageTabs
       @_currentElement.find('#'+langCode).remove()
       @base.log "Button [#{langCode}] removed"
       @_updateInputWidth()
+      @base._checkTranslationExistence()
       return
     return
 

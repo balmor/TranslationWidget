@@ -11,7 +11,7 @@
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
 # @author   Karol Gorecki <kgorecki@nexway.com>
-# @version 1.0.1
+# @version 1.0.3
 class EditorWindow
 
   # Construct EditorWindow class
@@ -24,12 +24,12 @@ class EditorWindow
     @status = 'closed'
 
     # Assign onClick event for button
-    @_currentElement.find('.apply').on 'click.'+@base.pluginName, (e) =>
+    applyBtn = @_currentElement.find('.apply')
+    applyBtn.on 'click.'+@base.pluginName, (e) =>
       e.preventDefault()
       @currentEditor.save()
       @setOptionAsTranslated @translation
-      @_currentElement.find('.apply').text 'Update'
-      @_checkTranslationExistence
+      applyBtn.text 'Update'
       return
 
     return
@@ -143,7 +143,6 @@ class EditorWindow
     @_setEditorFor langCode
     # remove language
     @currentEditor.remove()
-    @_checkTranslationExistence()
     return
 
   # Programatically add translation for existing langCode
@@ -157,7 +156,6 @@ class EditorWindow
     if @base.languages[langCode]?
       @_setEditorFor langCode, translation
       @currentEditor.save()
-      @_checkTranslationExistence()
     else
       @base.log "There is no #{langCode} language", 'warning'
 
@@ -198,16 +196,4 @@ class EditorWindow
 
     # Set _currentElement as ToggleBtn HTML
     @_currentElement = @base.baseElement.find '.translation-options'
-    return
-
-  # Check if any translation exists in current instance and
-  # sets main input value according to result
-  # @private
-  _checkTranslationExistence: ->
-
-    if (@base.languageTabs.getAllLanguages().length > 0)
-      @base._currentElement.val 'filled'
-    else
-      @base._currentElement.val ''
-
     return

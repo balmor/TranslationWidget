@@ -1,6 +1,6 @@
 {
   "name": "translationWidget",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "dependencies": {
     "es5-shim": "~3.1.0",
     "jquery-ui": "latest"

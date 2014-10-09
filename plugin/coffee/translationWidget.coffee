@@ -13,7 +13,7 @@
 # @author   Mariusz Maroń <mmaron@nexway.com>
 # @author   Damian Duda <dduda@nexway.com>
 # @author   Karol Gorecki <kgorecki@nexway.com>
-# @version 1.0.5
+# @version 1.0.6
 class TranslationWidget extends Plugin
 
   #default options
@@ -54,7 +54,7 @@ class TranslationWidget extends Plugin
 
     # set custom instance name
     instanceName = $(element).parents(".control-group").find("label").text().replace " " , "_"
-    instanceName = options.inputNamePrefix + instanceName
+    instanceName = instanceName
 
     super(element, options, instanceName, languages)
 
@@ -243,6 +243,17 @@ class TranslationWidget extends Plugin
 
     msgBox.hide().appendTo('body').fadeIn();
 
+    return
+
+
+  # Check if any translation exists in current instance and
+  # sets main input value according to result
+  # @private
+  _checkTranslationExistence: ->
+    if (@languageTabs.getAllLanguages().length > 0)
+      @_currentElement.val 'filled'
+    else
+      @_currentElement.val ''
     return
 
 

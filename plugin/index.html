@@ -103,7 +103,7 @@
       var input1 = $('#input1').translationWidget({
         debug: true,
         dataSource: langs,
-        messageScope: 'warning'
+        messageScope: 'info'
       },
       {
         "RU": "Russian"
@@ -114,6 +114,8 @@
      var input2 = $('#input2').translationWidget({
         debug: true,
         useDefaultLanguages: true,
+        inputNamePrefix: 'prefix_',
+        messageScope: 'info',
         dataSource: function(instanceName) {
           return langs;
         }

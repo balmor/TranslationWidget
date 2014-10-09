@@ -21,7 +21,7 @@ class TextEditor extends EditorBase
   #
   constructor: (base, parent, langCode, initialValue='') ->
     @Type = 'TextEditor'
-    name = base.instanceName + "[#{langCode}]"
+    name = base.options.inputNamePrefix + base.instanceName + "[#{langCode}]"
     @editorHtml = """
     <div id="#{langCode}" class="editor toRemove" >
       <textarea name="#{name}" class="m-wrap new-word" placeholder="Text to translate" rows="1"></textarea>
