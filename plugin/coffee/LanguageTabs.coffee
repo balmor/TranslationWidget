@@ -121,11 +121,13 @@ class LanguageTabs
   # @private
   _updateInputWidth: ->
     # static margin
-    margin = 20
+    margin = 8
     #Get btns element and count single btn width
     btns = @_currentElement.children('span')
     btnMargins = parseInt(btns.css('marginLeft')) + parseInt(btns.css('marginRight'))
-    btnWidth = parseInt(btns.width()) + btnMargins
+    btnPadding = (parseInt(btns.css('paddingLeft')) + parseInt(btns.css('paddingRight')))
+
+    btnWidth = parseInt(btns.width()) + btnPadding + btnMargins
     # count total length of btns
     btnsTotalWidth = (btnWidth * btns.length) + @tglBtnWidth + @tglBtnMarginRight + margin
 
